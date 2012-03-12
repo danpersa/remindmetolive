@@ -1,0 +1,15 @@
+.users_show, .users_ideas, .users_following, .users_followers, .idea_lists_show, .idea_lists_index {
+  .profile-avatar-panel {
+    padding: 20px;
+    border-image: initial;
+    .profile-avatar-name {
+      margin-top: 28px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+  }
+
+  #follow-form {
+    padding-top: 33px;
+  }
+}

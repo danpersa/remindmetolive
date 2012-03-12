@@ -1,0 +1,20 @@
+<div class="centered-supersized-form-div">
+  <div class="row">
+    <div class="six columns centered">
+      <h3>Settings</h3>
+      <%= render 'form_edit' %>
+    </div>
+  </div>
+</div>
+<div class="text-container">
+  <div class="text">
+    <div class="row">
+      <%= link_to "Delete your account", user_path(current_user), 
+        :method => :delete,
+        :confirm => "Once you delete your account, there is no going back. Please be certain. Are you really sure?",
+        :title => "Delete your account" %>
+    </div>
+    <span class="red radius label">Important</span> This will delete all your account information, all your reminders, all your private ideas and all your public ideas that weren't shared with others.
+    The public ideas that have been shared with other users will live in the Community</p> 
+  </div>
+</div>

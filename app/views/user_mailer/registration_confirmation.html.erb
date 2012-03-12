@@ -1,0 +1,10 @@
+<p>Dear <%= @user.display_name %>,</p>
+
+<p>Thank you for registering!</p>
+
+<p>To activate your account use the following <%= link_to "link", url_for(:controller => 'users', :action => 'activate', :only_path => false, :activation_code => @user.activation_code) %></p>
+
+<p>
+  Regards,<br />
+      Remind Me To Live Team
+</p>

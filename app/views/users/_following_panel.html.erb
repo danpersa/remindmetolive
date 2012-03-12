@@ -1,0 +1,11 @@
+<div class="panel following-panel">
+  <h5>Following (<%= current_user.following_count %>)</h5>
+  <div class="view-all-div">
+    <%= link_to 'view all »', following_user_path(current_user) %>
+  </div>
+  <ul class="block-grid five-up">
+    <% @following.entries.each do |following| %>
+    <li><%= link_to gravatar_for(following, :size => 80), following %></li>
+    <% end %>
+  </ul>
+</div>

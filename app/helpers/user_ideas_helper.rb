@@ -1,0 +1,2 @@
+module UserIdeasHelper
+end

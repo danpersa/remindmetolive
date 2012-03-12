@@ -1,0 +1,5 @@
+<%= simple_form_for @idea_list, :remote => remote?, :builder => SupersizeFormBuilder do |f| %>
+  <%= f.input :name, :autofocus => :true, :placeholder => 'Name' %>
+  <hr />
+  <%= f.submit @title, :class => "nice large radius blue button" %>
+<% end %>

@@ -1,0 +1,7 @@
+<% social_events.each do |social_event| %>
+  <% if social_event.instance_of? CreateIdeaSocialEvent %>
+    <%= render :partial => 'social_events/create_idea_social_event', :locals => {:create_idea_social_event => social_event} %>
+  <% elsif social_event.instance_of? FollowingUserSocialEvent %>
+    <%= render :partial => 'social_events/following_user_social_event', :locals => {:following_user_social_event => social_event} %>
+  <% end %>
+<% end %>

@@ -1,0 +1,16 @@
+<div class="row mobile">
+  <div class="nine columns phone-four">
+    <%= render 'users/profile_avatar' %>
+  </div>
+  <div class="three columns phone-four right">
+    <div id="new-idea-list-button-div">
+      <%= link_to 'New list', new_idea_list_path, :remote => true, :id => 'new-idea-list-button', :class => 'nice small radius blue button' %>
+    </div>
+  </div>
+</div>
+
+<div class="row mobile">
+  <div class="twelve columns phone-four">
+    <h5>...has the next lists of ideas...</h5>
+  </div>
+</div>

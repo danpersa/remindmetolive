@@ -1,0 +1,39 @@
+html, body {
+  background: #F5F5F5;
+  background-color: #F5F5F5;
+}
+
+.table-row {
+
+  border-bottom: 1px solid #EEE;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  .table-item {
+    margin-top: 5px;
+	font-size: 15px;
+	font-family: 'Quattrocento Sans', Arial, sans-serif; 
+  }
+
+  .bottom-bar {
+  	vertical-align: bottom;	
+  }
+}
+
+.quick-links-panel, .lists-of-ideas-panel, settings-links-panel {
+  /* border: 1px solid #EEE; */
+  padding: 20px;
+  border-image: initial;
+}	
+
+.current-user-avatar-panel {
+  padding: 20px;
+  border-image: initial;
+  .current-user-avatar-name {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+}

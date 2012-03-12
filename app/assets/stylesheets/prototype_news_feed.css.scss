@@ -1,0 +1,133 @@
+/* ZURB bar */
+#zurBar {
+  background: #222222;
+  border-bottom: solid 4px #1FB3D8;
+  padding: 15px 20px 13px 20px;
+}
+
+
+@media handheld, only screen and (max-width: 767px) {
+  #zurBar { padding: 15px 0px 13px 0px; }
+}
+
+#zurBar h1, #zurBar h2 {
+  margin-bottom: 0;
+  line-height: 16px;
+}
+
+#zurBar h1 {
+  color: #1FB3D8;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+#zurBar h1 a {
+  color: #1FB3D8;
+}
+
+#zurBar .left strong { display: block; margin: 0; height: 14px; line-height: 14px; position: relative; bottom: 4px;
+    padding-top: 5px;
+}
+#zurBar .left strong a {
+  line-height: 14px;
+  color: #fff;
+  font-weight: 500;
+  padding-right: 12px;
+}
+#zurBar .left strong a.button { padding: 4px 10px; font-weight: bold; }
+
+
+#zurBar .right strong { display: block; margin: 0; height: 14px; line-height: 14px; position: relative; bottom: 4px;
+  padding-top: 5px;
+}
+#zurBar .right strong a {
+  line-height: 14px;
+  color: #fff;
+  font-weight: 500;
+  padding-right: 12px;
+}
+#zurBar .right strong a.button { padding: 4px 10px; font-weight: bold; }
+
+
+.exampleBody {
+  margin-top: 20px;
+}
+
+.custom .dropdown {
+  width: 262px;
+}
+
+.main-form-label {
+  font-size: 16px;
+  line-height: 20px;
+  height: 25px;
+  padding-left: 2px;
+  padding-top: 5px;
+}
+
+.main-privacy-dropdown {
+  padding-top: 8px;
+}
+
+.timestamp {
+  font-size: 85%;
+  color: #666;
+}
+
+.toolbar {
+  font-size: 85%;
+}
+
+.feed-row {
+    border-bottom: 1px solid #EEE;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#characters-left {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+span.wrap {
+  background: #EEE;
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px;
+  line-height: 1;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.invisible {
+  display: none;
+}
+
+.feed-item {
+  margin-top: 5px;
+  font-size: 15px;
+  font-family: 'Quattrocento Sans', Arial, sans-serif;
+}
+
+.main-avatar-panel {
+  padding: 20px;
+  border-image: initial;
+  .main-avatar-name {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.quick-links-panel, .lists-of-ideas-panel, settings-links-panel {
+  /* border: 1px solid #EEE; */
+  padding: 20px;
+  border-image: initial;
+}
+
+
+.view-all-div {
+
+}

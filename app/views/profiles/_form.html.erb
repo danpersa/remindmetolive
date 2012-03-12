@@ -1,0 +1,9 @@
+<%= simple_form_for(@profile, :url => user_profile_path(current_user), :method => :post, :builder => SupersizeFormBuilder) do |f| %>
+  <%= render :partial => "layouts/flash", :locals => {:flash => flash} %>
+  <%= f.input :name, :placeholder => "Name", :autofocus => :true %>
+  <%= f.input :email, :placeholder => "example@domain.com"%>
+  <%= f.input :location, :placeholder => "Eg. Romania" %>
+  <%= f.input :website, :placeholder => "http://www.example.com" %>
+  <hr/>
+  <%= f.submit "Update Public Profile", :class => 'nice large radius blue button' %>
+<% end %>

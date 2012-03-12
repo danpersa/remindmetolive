@@ -1,0 +1,7 @@
+<%= simple_form_for @change_reseted_password, :builder => SupersizeFormBuilder do |f| %>
+  <%= f.input :password_reset_code, :as => 'hidden' %>
+  <%= f.input :password, :label => 'New password', :autofocus => :true %>
+  <%= f.input :password_confirmation, :label => 'Confirmation', :required => true %>
+  <hr />
+  <%= f.submit 'Change Password', :class => 'nice large radius blue button' %>
+<% end %>

@@ -1,0 +1,63 @@
+<% if signed_in? %>
+  <%= render 'news_feed/news_feed_stream' %>
+  <%# render 'shared/idea_form' %>
+  <%# render 'shared/tabs' %>
+
+  <div id="table-div">
+    <%# render 'feeds/table' %>
+  </div>
+
+  <%# render 'shared/remind_me_too_dialog' %>
+
+  <% content_for :sidebar do %>
+    <%# render 'shared/sidebar' %>
+  <% end %>
+<% else %>
+  <%= render :partial => "layouts/flash", :locals => {:flash => flash} %>
+  <header class="twelve columns">
+    <%= link_to logo, root_path %>
+    <h2>Do you have an idea that <strong>can change your life...</strong> but right now you don't have the time to implement it?<strong>Start remembering your ideas forever!</strong></h2>
+    <p>If you don't store your idea, in time will fade away, will vanish!</p>
+    <p>You have to keep track of this kind of ideas and <strong>remember</strong> them when the time is right!</p>
+    <p><span class="inline-logo">remind me to live</span> will make your life better, by recalling all the <strong>catchy ideas</strong>, on the right time!</p>
+    <p>Share your ideas with friends and family, start improving your life right now!</p>
+    <%= link_to signup_path, :class => "nice radius blue button" do %>
+      Sign Up Now<br><small>Ideas • Sharing • Fun • Friends</small>
+    <% end %>
+    <p><%= link_to "Already a member?", signin_path %><%= link_to "Help", help_path %></p>
+  </header>
+
+<!--
+  <div class="row">
+    <div class="span6">
+      <h2>Heading</h2>
+      <p>How do we get this idea? This is the <b>hard thing</b>! Maybe it passes throught our mind one day... but ideas, and mostly good ideas go as they come... <b>fast</b>...</p>
+      <p>We also want to share the great ideas that changed out lives with the ones we <b>love</b> and care about, to help them <b>improve their lives</b> too...</p>
+      <p><a class="btn" href="#">View details &raquo;</a></p>
+    </div>
+    <div class="span5">
+      <h2>Heading</h2>
+      <p>We don't have to let these <b>great ideas</b> fade away... We need something to keep our ideas safe... and we need something to remind us these <b>great ideas</b> at the most desirable time!</p>
+      <p>We also want to find out the ideas that <b>changed someone else's life</b> too, in order to see if it fits us too...</p>
+      <p><a class="btn" href="#">View details &raquo;</a></p>
+    </div>
+    <div class="span5">
+      <h2>Heading</h2>
+      <p><b>Happiness</b> is unique for every of us... for one it means money, for other love, for other his work, for other to travel... there is however something common for all of us...</p> 
+      <p>We all want to change the world... we all want to know that our live matters...</p>
+      <p>Until now, the Internet has given us ways to connect with others... families, friends... this is a good thing,  but in order for the circle to close, we need ways <b>to connect to our inner selves</b>... We need ways <b>to connect to our souls</b>... we need to find out what <b>makes us happy</b>... we need to experiment...</p>
+      <p>Introducing <b>remind me to live</b>, a tool that helps you make your life better</p>        
+      <p><a class="btn" href="#">View details &raquo;</a></p>
+    </div>
+  </div> -->
+
+  <!--
+      <p>Whats the purpose of life? The purpose of life is <b>being happy</b>! To be happy means to like your way of living... But we all know that this is a difficult thing...</p>           
+      <p>
+        We are all designed to get bored of the things we have very quickly... we want new things every day... we want to change our lifes every day... we want to improve our lifes every day...
+      </p>
+      <p>We all want a <b>better life</b>! But what do we need to make this happen? The answer is simple:</p>
+      <h3 >WE NEED AN IDEA!</h3> -->
+
+
+<% end %>

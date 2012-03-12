@@ -1,0 +1,5 @@
+<%= render :partial => 'idea_lists/idea_lists_head' %>
+<%= render :partial => 'layouts/flash', :locals => {:flash => flash} %>
+<div id="table-div">
+  <%= render :partial => 'idea_lists/table', :locals => {:idea_lists => @idea_lists } %>
+</div>

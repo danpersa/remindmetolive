@@ -1,0 +1,75 @@
+.pages_home {
+  header {
+    text-align: center;
+    position: relative;
+    z-index: 100;
+    margin-top: 45px;
+  }
+
+  header h1 {
+    font-weight: 300;
+    font-size: 76px;
+    font-size: 7.6rem;
+    position: relative;
+    margin-bottom: 0;
+  }
+
+  header h1 small {
+    font-weight: normal;
+    font-size: 32px;
+    font-size: 3.2rem;
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    margin-left: -32px;
+  }
+
+  header h2 {
+    font-weight: 300;
+    font-size: 20px;
+    font-size: 2rem;
+    margin-top: 34px;
+    margin-bottom: 34px;
+    padding: 0 23%;
+  }
+
+  header h2 strong {
+    display: block;
+  }
+  header .button.nice {
+    font-size: 19px;
+    font-size: 1.9rem;
+    background-position: 0 -20px;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  header .button.nice small {
+    font-size: 11px;
+    font-size: 1.1rem;
+    font-weight: 300;
+    text-shadow: none;
+  }
+
+  header p {
+    margin-top: 8px;
+  }
+
+  header p a {
+    margin-right: 20px;
+    font-size: 12px;
+    font-size: 1.2rem;
+  }
+  header p a + a {
+    margin-right: 0;
+  }
+
+  header img {
+    margin-top: 7px;
+  }
+
+  .inline-logo {
+    color: #1FB3D8;
+    font-size: 23px;
+  }
+}

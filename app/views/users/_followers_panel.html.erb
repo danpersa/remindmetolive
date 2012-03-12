@@ -1,0 +1,11 @@
+<div class="panel followers-panel">
+  <h5>Followers (<%= current_user.followers_count %>)</h5>
+  <div class="view-all-div">
+    <%= link_to 'view all »', followers_user_path(current_user) %>
+  </div>
+  <ul class="block-grid five-up">
+    <% @followers.entries.each do |follower| %>
+    <li><%= link_to gravatar_for(follower, :size => 80), follower %></li>
+    <% end %>
+  </ul>
+</div>

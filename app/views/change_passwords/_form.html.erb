@@ -1,0 +1,8 @@
+<%= simple_form_for(@change_password, :builder => SupersizeFormBuilder) do |f| %>
+  <%= render :partial => "layouts/flash", :locals => {:flash => flash} %>
+  <%= f.input :old_password, :label => 'Old Password', :autofocus => :true, :required => :true, :class => 'supersize input-text' %>
+  <%= f.input :password, :label => "New password" %>
+  <%= f.input :password_confirmation, :label => "Password confirmation", :required => :true, :class => 'supersize input-text' %>
+  <hr />
+  <%= f.submit "Change Password", :class => 'nice large radius blue button' %>
+<% end %>

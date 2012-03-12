@@ -1,0 +1,5 @@
+<%= simple_form_for @reset_password, :builder => SupersizeFormBuilder do |f| %>
+  <%= f.input :email, :placeholder => "example@domain.com", :autofocus => :true %>
+  <hr />
+  <%= f.submit "Reset Password", :class => "nice large radius blue button" %>
+<% end %>

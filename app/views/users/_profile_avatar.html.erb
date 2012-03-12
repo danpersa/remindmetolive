@@ -1,0 +1,10 @@
+<div class="profile-avatar-panel">
+  <div class="row">
+    <div class="three phone-one columns">
+      <%= gravatar_for @user, :size => 100 %>
+    </div>
+    <div class="nine phone-three columns">
+      <div class="profile-avatar-name"><%= link_to @user.display_name, @user %></div>
+    </div>
+  </div>
+</div>

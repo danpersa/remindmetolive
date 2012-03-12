@@ -1,0 +1,57 @@
+/* --------------------------------------------------
+   Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Page Name 1
+:: Page Name 2
+*/
+
+
+
+/* -----------------------------------------
+   Header and Footer
+----------------------------------------- */
+
+  header { margin-bottom: 20px; }
+  header nav ul { margin: 0 0 0 -20px; padding: 0; float: right; overflow: hidden; }
+  header nav ul li { margin: 0 0 0 20px; padding: 0; display: block; float: left; }
+
+  footer { padding-bottom: 20px; }
+  footer .row { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; }
+  
+
+/* -----------------------------------------
+   Homepage
+----------------------------------------- */
+
+  .jumbotron { position: relative; margin-bottom: 30px; }
+  .jumbotron h1 { position: absolute; left: 20px; bottom: 20px; }
+
+  .homepage .content { position: absolute; left: 80px; bottom: 20px; width: 50%; background: rgba(255,255,255,0.85); padding: 20px; }
+  .homepage .content blockquote { padding: 0; border-left: none; font-size: 24px; font-weight: bold; }
+  .homepage .content h1 { position: relative; left: 0px; bottom: 0px; font-size: 18px; font-weight: normal; }
+
+  .homepage a.slider { display: block; background: #fff; width: 60px; height: 80px; line-height: 80px; position: absolute; top: 50%; margin-top: -40px; text-align: center; }
+  .homepage a#prev { left: 0px; }
+  .homepage a#next { right: 0px; }
+
+
+/* -----------------------------------------
+   Culinary Academy
+----------------------------------------- */
+
+  .culinary .content { position: absolute; left: 0; bottom: 0; width: 100%; background: rgba(255,255,255,0.85); }
+  .culinary .content p { width: 60%; padding: 20px; font-size: 15px; color: #555; margin: 0; }
+  .culinary .content .button { position: absolute; right: 20px; bottom: 20px; }
+
+
+/* -----------------------------------------
+   Event
+----------------------------------------- */
+
+  .cta { margin: 30px 0; text-align: center; }
+  .date { padding: 20px 0; background: #ddd; text-align: center; }
+  .date span { display: block; text-align: center; margin-bottom: 6px; }
+  .date strong { font-size: 30px; }
+
+  a.map { display: block; }

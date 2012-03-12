@@ -1,0 +1,2 @@
+$("#table-div").html("<%= escape_javascript(render(:partial => "idea_lists/table", :locals => {:idea_lists => @idea_lists })) %>");
+initToolbars();

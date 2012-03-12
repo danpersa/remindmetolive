@@ -1,0 +1,3 @@
+<% user_ideas.each do |user_idea| %>
+  <%= render :partial => 'user_ideas/user_idea', :locals => {:idea => user_idea.idea, :user_idea => user_idea} %>
+<% end %>

@@ -1,0 +1,8 @@
+<div class="lists-of-ideas-panel">
+  <h5>Show ideas in list</h5>
+  <dl class="nice tabs vertical">
+    <% @idea_lists.entries.each do |idea_list| %>
+      <dd><%= link_to idea_list.name, idea_list, :class => idea_list_active_class(@idea_list, idea_list) %></dd>
+    <% end %>
+  </dl>
+</div>

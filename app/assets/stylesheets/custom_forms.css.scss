@@ -1,0 +1,58 @@
+.centered-supersized-form-div {
+
+  margin-top: 20px;
+
+  hr {
+    width: 315px;
+  }
+
+  .button {
+    width: 315px;
+  }
+
+  div#flash-container {
+    width: 315px;
+  }
+}
+
+
+input.input-text.supersize, textarea.supersize {
+  font-size: 22px !important;
+  padding: 6px 8px !important;
+  width: 297px;
+}
+
+.form-field.error small.supersize, small.error.supersize {
+  width: 305px;
+}
+
+form.nice div.form-field.error small.recaptcha, form.nice small.error.recaptcha {
+  margin-left: 3px;
+  margin-top: -6px;
+  width: 302px;
+}
+
+#user_idea_idea_content {
+  width: 415px;
+  height: 80px;
+  resize: none;
+}
+#user_idea_reminder_date {
+  width: 150px;
+}
+
+#characters-left {
+  margin-top: -1px;
+}
+
+@media only screen and (max-width: 767px) {
+  #user_idea_idea_content {
+    width: auto;
+    height: auto;
+    resize: none;
+  }
+}
+
+#user_idea_privacy {
+  display:none;
+}

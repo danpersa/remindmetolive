@@ -1,0 +1,4 @@
+<%= form_tag unfollow_path, :remote => true, :method => :delete do %>
+  <%= hidden_field_tag :id, @user.id %>
+  <%= submit_tag 'Unfollow', :class => "nice large radius white button" %>
+<% end %>

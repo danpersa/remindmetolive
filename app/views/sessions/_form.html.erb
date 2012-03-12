@@ -1,0 +1,7 @@
+<%= simple_form_for :session, :url => sessions_path, :builder => SupersizeFormBuilder do |f| %>
+  <%= render :partial => "layouts/flash", :locals => {:flash => flash} %>
+  <%= f.input :email, :placeholder => "example@domain.com", :autofocus => :true, :class => 'supersize input-text' %>
+  <%= f.input :password, :class => 'supersize input-text' %>
+  <hr />
+  <%= f.submit "Sign in", :class => 'nice large radius blue button' %>
+<% end %>

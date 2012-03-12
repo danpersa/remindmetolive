@@ -1,0 +1,10 @@
+<div class="current-user-avatar-panel">
+  <div class="row">
+    <div class="three phone-one columns">
+      <%= link_to gravatar_for(current_user, :size => 50), current_user %>
+    </div>
+    <div class="nine phone-three columns">
+      <div class="current-user-avatar-name"><%= link_to current_user.display_name, current_user %></div>
+    </div>
+  </div>
+</div>

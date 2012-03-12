@@ -1,0 +1,10 @@
+<%= simple_form_for(@user, :builder => SupersizeFormBuilder) do |f| %>
+  <%= render :partial => "layouts/flash", :locals => {:flash => flash} %>
+  <%= f.input :username, :placeholder => "Name" %>
+  <%= f.input :email, :placeholder => "example@domain.com" %>
+  <%= gravatar_for @user, :size => 75 %>
+  <a href="http://gravatar.com/emails">change</a>   
+  <hr />
+  <%= f.submit "Update Account", :class => 'nice large radius blue button' %>
+
+<% end %>

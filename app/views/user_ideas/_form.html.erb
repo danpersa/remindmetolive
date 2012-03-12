@@ -1,0 +1,48 @@
+<%= simple_form_for @user_idea, :class => 'custom' do |f| %>
+  <fieldset>
+    <div class="row mobile">
+      <div class="twelve columns">
+        <h5>Remind me to</h5>
+      </div>
+    </div>
+    <div class="row mobile">
+      <div class="ten columns phone-three">
+        <%= f.simple_fields_for :idea do |idea_form| %>
+          <%= idea_form.input :content, :as => :text , :label => false, :autofocus => true, :placeholder => 'eg: learn to play the piano' %>
+        <% end %>
+      </div>
+      <div class="two columns phone-one">
+        <span  id="characters-left" class="wrap">140</span>
+      </div>
+    </div>
+    <div class="row mobile">
+      <div class="two columns">
+        <div class="main-form-label">on</div>
+      </div>
+      <div class="four columns">
+        <%= f.input :reminder_date, :label => false, :placeholder => 'eg: 10/10/2011 (optional)', :size => 20 %>
+      </div>
+      <div class="one columns">
+        <div class="main-form-label">as</div>
+      </div>
+      <div class="three columns">
+        <div class="main-privacy-dropdown">
+          <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last, :style => "display:none;" %>
+          <div class="custom dropdown">
+            <a href="#" class="current">
+              This is a dropdown
+            </a>
+            <a href="#" class="selector"></a>
+            <ul>
+              <li>Public</li>
+              <li>Private</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="two columns">
+        <input id="post-button" class="nice small radius blue button right" name="commit" type="submit" value="Post" />
+      </div>
+    </div>
+  </fieldset>
+<% end %>

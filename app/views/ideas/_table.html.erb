@@ -1,0 +1,3 @@
+<% idea_maps.each do |idea_map| %>
+  <%= render :partial => 'ideas/idea', :locals => {:idea => idea_map[:idea], :user_idea => idea_map[:user_idea]} %>
+<% end %>

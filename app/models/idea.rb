@@ -1,0 +1,63 @@
+require 'notifications'
+
+class Idea
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  extend RemindMeToLive::Notifications
+
+  attr_accessor :users_marked_the_idea_good
+  attr_accessor :users_marked_the_idea_done
+
+  field :content                         ,  type: String
+  field :privacy                         ,  type: Integer
+  field :users_marked_the_idea_good_count,  type: Integer, default: 0
+  field :users_marked_the_idea_done_count,  type: Integer, default: 0
+
+  belongs_to :created_by, :class_name => 'User'
+  belongs_to :owned_by,   :class_name => 'User'
+
+  has_and_belongs_to_many     :users_marked_the_idea_good, :class_name => 'User', :inverse_of => nil
+  has_and_belongs_to_many     :users_marked_the_idea_done, :class_name => 'User', :inverse_of => nil
+
+  # we don't need this because the ideas can be in idea lists from different users
+  # and for now, we don't want to filter by user
+  # has_and_belongs_to_many     :idea_lists
+
+  validates_presence_of       :privacy
+  validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]
+
+  validates_presence_of       :content
+  validates_length_of         :content, minimum: 3, maximum: 255
+
+  def mark_as_good_by! user
+    self.users_marked_the_idea_good << user
+    self.users_marked_the_idea_good_count += 1
+    self.save!
+    User.user_marks_idea_as_good_notification user, self
+  end
+
+  def marked_as_good_by? user
+    self.users_marked_the_idea_good.include? user
+  end
+
+  def mark_as_done_by! user
+    self.users_marked_the_idea_done << user
+    self.users_marked_the_idea_done_count += 1
+    self.save!
+    User.user_marks_idea_as_done_notification user, self
+  end
+
+  def marked_as_done_by? user
+    self.users_marked_the_idea_done.include? user
+  end
+
+  def public?
+    return true if self.privacy == Privacy::Values[:public]
+    false
+  end
+
+  def private?
+    return true if self.privacy == Privacy::Values[:private]
+    false
+  end
+end

@@ -1,0 +1,28 @@
+<div class="row mobile table-row show-toolbar">
+  <div class="two phone-one columns">
+    <%= link_to gravatar_for(user, :size => 65), user %>
+  </div>
+  <div class="ten phone-three columns">
+    <div class="table-item">
+      <%= link_to user.display_name, user %>
+    </div>
+    <section>
+      <div class="row">
+        <div class="five phone-two columns">
+          <div class="timestamp">joined <%= time_ago_in_words(user.created_at) %> ago</div>
+        </div>
+        <div class="seven phone-two columns">
+          <div class="toolbar right invisible" id="item_toolbar_37">
+            <a href="/remind-me-too/37/3" data-remote="true">Remind me too</a> ·
+            <span id="good_idea_37">
+                <a href="/good-idea/37" data-method="post" data-remote="true" rel="nofollow">Good idea</a> (0)
+            </span> ·
+            <span id="done_idea_37">
+                <a href="/done-idea/37" data-method="post" data-remote="true" rel="nofollow">I did this</a> (0)
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

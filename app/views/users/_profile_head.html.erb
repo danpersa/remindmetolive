@@ -1,0 +1,8 @@
+<div class="row mobile">
+  <div class="nine columns phone-four">
+    <%= render 'users/profile_avatar' %>
+  </div>
+  <div class="three columns phone-four right">
+    <%= render 'users/follow_form' if signed_in? %>
+  </div>
+</div>

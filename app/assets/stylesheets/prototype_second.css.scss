@@ -1,0 +1,37 @@
+/* for the second example */
+.prototype_second {
+    #exampleHeader { background: #333; width: 100%; }
+    #exampleHeader h4 { color: #fff; padding-top: 5px; }
+    #exampleHeader a { color: #fff; position: relative; }
+
+    @media only screen and (max-width: 767px) {
+      #exampleHeader { margin-top: 0px; }
+    }
+
+    .exampleBody {
+      margin-top: 0px;
+    }
+
+    .comments { background: #eee; padding: 10px; margin-bottom: 20px; }
+
+  body {
+    padding-top: 55px;
+  }
+
+  .topbar {
+  /* background: #333; */
+    height: 46px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    overflow: visible;
+  }
+  .flyout {
+    background: #333; border: 0px;
+  }
+  .has-flyout{
+    border: 0px;
+  }
+}
