@@ -1,5 +1,5 @@
 class UserIdeasController < ApplicationController
-
+  before_filter :authenticate
 
   def create
   	puts params[:user_idea]
@@ -16,5 +16,15 @@ class UserIdeasController < ApplicationController
     @user = current_user
     init_default_sidebar
     render 'pages/home', :layout => 'section_with_default_sidebar'
+  end
+
+  def index
+    @user = current_user
+    @user_ideas = current_user.ideas_ordered_by_reminder_created_at.page(params[:page]).per(10)
+    # we store the location so we can be redirected here after idea delete
+    store_location
+    store_current_page
+    init_default_sidebar
+    render :layout => 'section_with_default_sidebar'
   end
 end

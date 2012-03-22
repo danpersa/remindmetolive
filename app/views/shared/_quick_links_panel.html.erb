@@ -1,7 +1,7 @@
 <div class="quick-links-panel">
   <h5>Quick Links</h5>
   <dl class="nice tabs vertical">
-    <dd><%= link_to "Ideas I want to remember", ideas_user_path(current_user), :class => users_ideas_active_class %></dd>
+    <dd><%= link_to "Ideas I want to remember", user_ideas_path, :class => users_ideas_active_class %></dd>
     <dd><%= link_to "My lists of ideas", idea_lists_path, :class => idea_lists_active_class %></dd>
   </dl>
 </div>

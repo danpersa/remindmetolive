@@ -24,7 +24,7 @@ RemindMeToLive::Application.routes.draw do
   resources :sessions, :only => [:new, :create, :destroy]
   resources :users do
     member do
-      get :following, :followers, :ideas
+      get :following, :followers
     end
     resource :profile, :only => [:edit, :create],
              :path_names => {:edit => ''},
@@ -39,7 +39,8 @@ RemindMeToLive::Application.routes.draw do
     end
   end
 
-  resources :user_ideas, :only => [:show, :create, :update, :destroy]
+  resources :user_ideas, :only => [:index, :show, :create, :update, :destroy],
+            :path => 'ideas-to-remember'
 
   resources :idea_lists, :only => [:index, :show, :new, :create, :edit, :update, :destroy],
             :path => 'idea-lists' do

@@ -141,16 +141,6 @@ class UsersController < ApplicationController
     redirect_to signin_path
   end
 
-  # page displaying the ideas of the current user
-  def ideas
-    @user_ideas = @user.ideas_ordered_by_reminder_created_at
-    # we store the location so we can be redirected here after idea delete
-    store_location
-    store_current_page
-    init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
-  end
-
   private 
 
   def existing_user
