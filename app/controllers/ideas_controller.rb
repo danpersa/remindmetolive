@@ -37,15 +37,14 @@ class IdeasController < ApplicationController
   def show
     # the idea is searched in interceptor
     @user = current_user
-    @remind_me_too_location = REMINDERS_FOR_IDEA_LOCATION
-    @reminders = Reminder.from_idea_by_user(@idea, current_user).page(params[:page]).per(@@items_per_page)
-    redirect_to users_idea_path(@idea) and return if @reminders.empty?
+    @user_idea = @user.user_idea_for_idea @idea
+    init_default_sidebar
+    render :layout => 'section_with_default_sidebar'
   end
 
   def users
     # the idea is searched in interceptor
     @user = current_user
-    @remind_me_too_location = USERS_SHARING_IDEA_LOCATION
     @users = @idea.public_users(current_user).includes(:profile).page(params[:page]).per(@@items_per_page)
   end
 
@@ -80,13 +79,17 @@ class IdeasController < ApplicationController
   private
 
   def own_idea
-    @idea = Idea.find_by_id(params[:id])
-    redirect_to root_path unless not @idea.nil? and current_user?(@idea.user)
+    @idea = Idea.find(params[:id])
+    redirect_to root_path unless not @idea.nil? and current_user?(@idea.owned_by)
+  rescue Mongoid::Errors::DocumentNotFound
+    redirect_to root_path
   end
 
   def own_idea_or_public
-    @idea = Idea.find_by_id(params[:id])
-    redirect_to root_path unless not @idea.nil? and current_user?(@idea.user) || @idea.public?
+    @idea = Idea.find(params[:id])
+    redirect_to root_path unless not @idea.nil? and current_user?(@idea.owned_by) || @idea.public?
+  rescue Mongoid::Errors::DocumentNotFound
+    redirect_to root_path
   end
 
 end

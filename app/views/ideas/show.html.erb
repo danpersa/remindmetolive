@@ -1,0 +1,39 @@
+<div class="row mobile">
+  <div class="twelve columns phone-four">
+    <div class="idea-content">
+      <h4>Remind me to...</h4>
+      <h3><%= @idea.content %></h3>
+  </div>
+  </div>
+</div>
+
+
+<div class="row mobile">
+  <div class="twelve columns phone-four">
+    <div>100 people think that this idea is good</div>
+    <div>112 people already did this</div>
+    <div>12355 people want to remember this idea</div>
+  </div>
+</div>
+
+
+<div class="row mobile">
+  <div class="twelve columns phone-four">
+    <%= link_to 'Users sharing this idea', users_idea_path(@idea) %>
+  </div>
+</div>
+
+
+<div class="row mobile">
+  <div class="twelve columns phone-four">
+    <% if @user_idea.nil? %>
+      <a href="#">Remind me too</a>
+    <% else %>
+      <% if @user_idea.reminder_date.nil? %>
+        <a href="#">Create reminder</a>
+      <% else %>
+        <a href="#">Modify reminder</a>
+      <% end %>
+    <% end %>
+  </div>
+</div>

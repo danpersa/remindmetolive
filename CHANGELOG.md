@@ -1,3 +1,8 @@
+## 0.3.8
+ * added pagination for user ideas
+ * added row toolbar for ideas
+ * added show idea page with tests
+
 ## 0.3.7
  * added user ideas controller and views
  * fixed homepage form

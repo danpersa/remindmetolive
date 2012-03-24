@@ -290,7 +290,7 @@ describe User do
       user_idea = user.create_new_idea!(:content => 'ana are mere', 
                                         :privacy => Privacy::Values[:public])
       @reminder_date = Date.new(2014)
-      user_idea1 = another_user.create_user_idea!(:idea_id => user_idea.idea.id, 
+      user_idea1 = another_user.create_user_idea!(:idea_id => user_idea.idea.id,
                                                   :privacy => Privacy::Values[:public],
                                                   :reminder_date => @reminder_date)
     end
