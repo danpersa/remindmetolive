@@ -95,7 +95,7 @@ class UsersController < ApplicationController
   def following
     # the user is searched in the existing_user before interceptor
     @title = "Following"
-    @users = @user.following # .page(params[:page])
+    @users = @user.following.page(params[:page]).per(10)
     init_default_sidebar
     render :layout => 'section_with_default_sidebar'
   end
@@ -103,7 +103,7 @@ class UsersController < ApplicationController
   def followers
     # the user is searched in the existing_user before interceptor
     @title = "Followers"
-    @users = @user.followers #.page(params[:page])
+    @users = @user.followers.page(params[:page]).per(10)
     init_default_sidebar
     render :layout => 'section_with_default_sidebar'
   end

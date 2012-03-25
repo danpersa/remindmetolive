@@ -12,8 +12,8 @@ describe User do
   end
 
   describe 'following?' do
-    let(:user) do
-      Factory.build(:simple_user)
+    let :user do
+      Factory.build :simple_user
     end
 
     it 'should have a following? method' do
@@ -22,12 +22,12 @@ describe User do
   end
 
   describe 'follow!' do
-    let(:user) do
-      Factory.build(:unique_user)
+    let :user do
+      Factory.build :unique_user
     end
 
-    let(:followed) do
-      Factory.build(:unique_user)
+    let :followed do
+      Factory.build :unique_user
     end
 
     before do
@@ -66,12 +66,12 @@ describe User do
   end
 
   describe 'unfollow!' do
-    let(:user) do
-      Factory.build(:unique_user)
+    let :user do
+      Factory.build :unique_user
     end
 
-    let(:followed) do
-      Factory.build(:unique_user)
+    let :followed do
+      Factory.build :unique_user
     end
 
     before do
@@ -109,22 +109,23 @@ describe User do
     end
 
     it 'should remove the user from the current social event' do
+      pending
     end
 
     it 'should delete the social event if the user is the last user in the event' do
-      
+      pending
     end
   end
 
   describe 'reset password' do
 
-    let(:user) do
-      Factory.create(:activated_user)
+    let :user do
+      Factory.create :activated_user
     end
 
     before do
       mail = mock
-      mail.stub!(:deliver)
+      mail.stub! :deliver
       UserMailer.stub!(:reset_password).and_return(mail)
     end
 
@@ -155,8 +156,8 @@ describe User do
 
   describe 'reset_password_expired?' do
 
-    let(:user) do
-      Factory.create(:activated_user)
+    let :user do
+      Factory.create :activated_user
     end
 
     it 'should be expired if the reset password mail was sent two days ago' do
@@ -172,7 +173,7 @@ describe User do
 
   describe 'password encryption' do
 
-    let(:user) do
+    let :user do
       Factory :simple_user
     end
 
@@ -222,8 +223,8 @@ describe User do
   end
 
   describe 'display name' do
-    before(:each) do
-      @user = Factory.build(:user)
+    before do
+      @user = Factory.build :user
       @profile = @user.profile
     end
 
@@ -237,7 +238,7 @@ describe User do
     end
 
     it 'should return the user name if no profile' do
-      user = Factory.build(:activated_user)
+      user = Factory.build :activated_user
       user.display_name.should == user.username
     end
   end
@@ -295,12 +296,21 @@ describe User do
                                                   :reminder_date => @reminder_date)
     end
 
-    it 'should create a new user idea' do
-      another_user.ideas.should_not be_empty
+    context 'when success' do
+
+      it 'should create a new user idea' do
+        another_user.ideas.should_not be_empty
+      end
+
+      it 'should be the right one' do
+        another_user.ideas.first.reminder_date.should == @reminder_date
+      end
     end
 
-    it 'should be the right one' do
-      another_user.ideas.first.reminder_date.should == @reminder_date
+    context 'when failure' do
+      it 'shouldn\'t create two user ideas for the same user and the same idea' do
+        pending
+      end
     end
   end
 
@@ -320,7 +330,7 @@ describe User do
 
   describe 'ideas ordered by latest reminder creation date' do
     let :user do
-      Factory(:simple_user)
+      Factory :simple_user
     end
 
     it 'should return all the ideas' do
@@ -350,7 +360,7 @@ describe User do
 
   describe 'ideas_from_list_ordered_by_reminder_created_at' do
     let :user do
-      Factory(:simple_user)
+      Factory :simple_user
     end
 
     let :idea_list do
@@ -403,7 +413,7 @@ describe User do
 
   describe 'idea_list_with_id' do
     let :user do
-      Factory(:simple_user)
+      Factory :simple_user
     end
 
     let :idea_list do
@@ -425,7 +435,7 @@ describe User do
 
   describe 'user idea for idea' do
     let :user do
-      Factory(:simple_user)
+      Factory :simple_user
     end
 
     before do
@@ -451,7 +461,7 @@ describe User do
 
   describe 'create idea list' do
     let :user do
-      Factory(:unique_user)
+      Factory :unique_user
     end
 
     describe 'success' do
@@ -490,7 +500,7 @@ describe User do
 
   describe 'remove idea list' do
     let :user do
-      Factory(:unique_user)
+      Factory :unique_user
     end
 
     before do
@@ -554,7 +564,7 @@ describe User do
     end
 
     before do
-      Factory(:unique_user, :email => email)
+      Factory :unique_user, :email => email
     end
 
     it 'should find the user' do

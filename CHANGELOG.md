@@ -1,3 +1,7 @@
+## 0.3.9
+ * tests for deleting user ideas
+ * pagination for following and followed users
+
 ## 0.3.8
  * added pagination for user ideas
  * added row toolbar for ideas
