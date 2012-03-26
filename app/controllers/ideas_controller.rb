@@ -45,7 +45,16 @@ class IdeasController < ApplicationController
   def users
     # the idea is searched in interceptor
     @user = current_user
-    @users = @idea.public_users(current_user).includes(:profile).page(params[:page]).per(@@items_per_page)
+    @public_user_ideas = 
+      @idea.public_user_ideas
+           .page(params[:page])
+           .per(@@items_per_page)
+    @public_user_ideas_of_users_followed_by_current_user = 
+      @idea.public_user_ideas_of_users_followed_by(current_user)
+           .page(params[:page])
+           .per(@@items_per_page)
+     init_default_sidebar
+    render :layout => 'section_with_default_sidebar'
   end
 
   def destroy

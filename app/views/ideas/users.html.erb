@@ -1,3 +1,17 @@
 <%= render 'ideas/idea_head' %>
 
-<%= render :partial => 'users/table', :locals => {:users => @users } %>
+<div class="row mobile">
+  <div class="twelve columns phone-four">
+    <h4>Users followed by you that want to remember this idea</h3>
+  </div>
+</div>
+
+<%= render :partial => 'user_ideas/users_table', :locals => {:user_ideas => @public_user_ideas_of_users_followed_by_current_user } %>
+
+<div class="row mobile">
+  <div class="twelve columns phone-four">
+    <h4>Users that want to remind this idea</h3>
+  </div>
+</div>
+
+<%= render :partial => 'user_ideas/users_table', :locals => {:user_ideas => @public_user_ideas } %>

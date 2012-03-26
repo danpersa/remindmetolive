@@ -1,0 +1,5 @@
+<% user_ideas.each do |user_idea| %>
+  <%= render :partial => 'users/user', :locals => {:user => user_idea.user} %>
+<% end %>
+
+<%= paginate user_ideas, :outer_window => 3 %>

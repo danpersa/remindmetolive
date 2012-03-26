@@ -164,6 +164,21 @@ describe Idea do
         idea.users_marked_the_idea_done.include?(user).should == true
       end
     end
+
+    describe 'user ideas association' do
+      let :idea do
+        Factory :idea
+      end
+
+      it 'should have a user_ideas attribute' do
+        idea.should respond_to(:user_ideas)
+      end
+
+      it 'should have the right associated user_ideas' do
+        user_idea = Factory :user_idea, :idea => idea
+        idea.user_ideas.should include(user_idea)
+      end
+    end
   end
 
   describe 'methods' do
@@ -175,7 +190,7 @@ describe Idea do
       Factory :simple_user
     end
 
-    describe 'mark_as_good_by!' do
+    describe '#mark_as_good_by!' do
       before do
         idea.mark_as_good_by! user
       end
@@ -189,7 +204,7 @@ describe Idea do
       end
     end
 
-    describe 'marked_as_good_by?' do
+    describe '#marked_as_good_by?' do
       before do
         idea.mark_as_good_by! user
       end
@@ -203,7 +218,7 @@ describe Idea do
       end
     end
 
-    describe 'mark_as_done_by' do
+    describe '#mark_as_done_by' do
       before do
         idea.mark_as_done_by! user
       end
@@ -217,7 +232,7 @@ describe Idea do
       end
     end
 
-    describe 'marked_as_done_by?' do
+    describe '#marked_as_done_by?' do
       before do
         idea.mark_as_done_by! user
       end
@@ -231,7 +246,7 @@ describe Idea do
       end
     end
 
-    describe 'public?' do
+    describe '#public?' do
       it 'should return true if the privacy field is public' do
         idea.should be_public
       end
@@ -242,7 +257,7 @@ describe Idea do
       end
     end
 
-    describe 'private?' do
+    describe '#private?' do
       it 'should return true if the privacy field is private' do
         idea.privacy = Privacy::Values[:private]
         idea.should be_private
@@ -254,6 +269,62 @@ describe Idea do
       end
     end
 
+    describe '#public_user_ideas' do
 
+      before do
+        @idea = Factory :idea
+        @public_user_idea = Factory :user_idea, 
+                                    :idea => @idea, 
+                                    :privacy =>  Privacy::Values[:public]
+        @private_user_idea = Factory :user_idea, 
+                                     :idea => @idea, 
+                                     :privacy =>  Privacy::Values[:private]
+      end
+
+      it 'should return the public user ideas' do
+        @idea.public_user_ideas.should include(@public_user_idea)
+      end
+
+      it 'should not return the private user ideas' do
+        @idea.public_user_ideas.should_not include(@private_user_idea)
+      end
+    end
+
+
+    describe '#public_user_ideas_of_users_followed_by' do
+
+      before do
+        @current_user = Factory :unique_user
+        followed_user = Factory :unique_user
+        other_user = Factory :unique_user
+        @current_user.follow! followed_user
+        @current_user = User.find @current_user.id
+        @idea = Factory :idea
+        @public_user_idea_of_followed_user = Factory :user_idea, 
+                                                     :idea => @idea, 
+                                                     :privacy =>  Privacy::Values[:public],
+                                                     :user => followed_user
+        @private_user_idea_of_followed_user = Factory :user_idea, 
+                                                      :idea => @idea, 
+                                                      :privacy =>  Privacy::Values[:private],
+                                                      :user => followed_user
+        @public_user_idea_of_other_user = Factory :user_idea, 
+                                                  :idea => @idea, 
+                                                  :privacy =>  Privacy::Values[:public],
+                                                  :user => other_user
+      end
+
+      it 'should include the public user ideas of the users followed by the current user' do
+        @idea.public_user_ideas_of_users_followed_by(@current_user).should include(@public_user_idea_of_followed_user)
+      end
+
+      it 'should not include the private user ideas of the users followed by the current user' do
+        @idea.public_user_ideas_of_users_followed_by(@current_user).should_not include(@private_user_idea_of_followed_user)
+      end
+
+      it 'should not include the public user ideas of the users not followed by the current user' do
+        @idea.public_user_ideas_of_users_followed_by(@current_user).entries.should_not include(@public_user_idea_of_other_user)
+      end
+    end
   end
 end

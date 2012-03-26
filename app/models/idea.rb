@@ -18,6 +18,7 @@ class Idea
 
   has_and_belongs_to_many     :users_marked_the_idea_good, :class_name => 'User', :inverse_of => nil
   has_and_belongs_to_many     :users_marked_the_idea_done, :class_name => 'User', :inverse_of => nil
+  has_many                    :user_ideas  
 
   # we don't need this because the ideas can be in idea lists from different users
   # and for now, we don't want to filter by user
@@ -59,5 +60,13 @@ class Idea
   def private?
     return true if self.privacy == Privacy::Values[:private]
     false
+  end
+
+  def public_user_ideas
+    self.user_ideas.where(:privacy => Privacy::Values[:public])
+  end
+
+  def public_user_ideas_of_users_followed_by user
+    self.user_ideas.where(:user_id.in => user.following_ids, :privacy => Privacy::Values[:public])
   end
 end

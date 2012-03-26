@@ -6,7 +6,7 @@ class UserIdea
   field :reminder_date,            :type => Date
 
   belongs_to :user, inverse_of: :ideas
-  belongs_to :idea
+  belongs_to :idea, inverse_of: :user_ideas
 
   validates_presence_of       :privacy
   validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]
@@ -30,7 +30,8 @@ class UserIdea
   end  
 
   # sample params
-  # {"idea"=>{"content"=>"learn to play"}, "reminder_date"=>"10/10/2012", "privacy"=>"0"}
+  # {"idea"=>{"content"=>"learn to play"},
+  #  "reminder_date"=>"10/10/2012", "privacy"=>"0"}
   def self.new_with_idea params, user
     @user_idea = UserIdea.new(params)
     @user_idea.user = user
