@@ -36,6 +36,7 @@ RemindMeToLive::Application.routes.draw do
     member do
       # the list of users that shares the idea
       get :users
+      get :followed_users, :path => 'followed-users'
     end
   end
 
