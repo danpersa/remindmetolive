@@ -3,6 +3,56 @@ require 'spec_helper'
 describe UserIdeasController do
   render_views
 
+  describe 'access control' do
+
+    describe 'authentication' do
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          post :index
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          post :create
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          get :update, :id => 1
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          delete :destroy, :id => 1
+        end
+      end
+    end
+    
+    describe '#shared_by_logged_user' do
+      
+      before(:each) do
+        @user = Factory :unique_user
+        other_user = Factory :unique_user
+        test_sign_in @user
+        @user_idea = Factory :user_idea, :user => other_user
+        @own_user_idea = Factory :user_idea, :user => @user
+      end
+      
+      it 'should deny access if user does not own the user idea' do
+        delete :destroy, :id => @user_idea.id
+        response.should redirect_to(root_path)
+      end
+
+      it 'should not deny access if user does own the user idea' do
+        delete :destroy, :id => @own_user_idea.id
+        response.should_not redirect_to(root_path)
+      end
+    end
+  end
+
   describe 'POST create' do
 
     before do
@@ -81,9 +131,10 @@ describe UserIdeasController do
         context 'when the idea is private' do
 
           before do
-            @idea = Factory :idea, :created_by => @user,
+            @idea = Factory :simple_idea, :created_by => @user,
                                    :owned_by => @user,
                                    :privacy => Privacy::Values[:private]
+            @user_idea = Factory :user_idea
           end
 
           it 'should destroy the idea' do

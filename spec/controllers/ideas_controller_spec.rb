@@ -4,20 +4,7 @@ describe IdeasController do
   render_views
 
   describe 'access control' do
-
     describe 'authentication' do
-      it_should_behave_like 'deny access unless signed in' do
-        let(:request_action) do
-          post :create
-        end
-      end
-      
-      it_should_behave_like 'deny access unless signed in' do
-        let(:request_action) do
-          delete :destroy, :id => 1
-        end
-      end
-      
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
           get :show, :id => 1
@@ -34,21 +21,6 @@ describe IdeasController do
         let(:request_action) do
           get :followed_users, :id => 1
         end
-      end
-    end
-    
-    describe 'own idea' do
-      
-      before(:each) do
-        @user = Factory :unique_user
-        wrong_user = Factory :unique_user, :email => Factory.next(:email)
-        test_sign_in wrong_user
-        @idea = Factory :idea, :created_by => @user, :owned_by => @user
-      end
-      
-      it 'should deny access if user does not own the idea' do
-        delete :destroy, :id => @idea
-        response.should redirect_to(root_path)
       end
     end
   end
