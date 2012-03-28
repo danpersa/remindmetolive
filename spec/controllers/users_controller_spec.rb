@@ -35,19 +35,17 @@ describe UsersController do
       it 'should have an element for each user' do
         visit users_path
         @users[0..2].each do |user|
-          page.should have_selector('a', :text => user.name)
+          page.should have_selector('a', :text => user.display_name)
         end
       end
 
       it 'should paginate users' do
-        30.times do
+        11.times do
           @users << Factory(:unique_user)
         end
         visit users_path
-        page.should have_selector('div.pagination')
-        page.should have_selector('li.disabled', :text => 'Previous')
+        page.should have_selector('ul.pagination')
         page.should have_link('2')
-        page.should have_link('Next')
       end
     end
   end
@@ -55,7 +53,7 @@ describe UsersController do
   describe 'GET new' do
     
     it_should_behave_like 'successful get request' do
-      let(:action) do
+      let :action do
         visit new_user_path
         @title = @base_title + ' | Sign up'
       end
@@ -65,64 +63,34 @@ describe UsersController do
   describe 'GET show' do
 
     before(:each) do
-      @user = Factory(:unique_user)
+      @user = test_web_sign_in(Factory(:unique_user))
       @privacy = Privacy::Values[:public]
     end
     
     it_should_behave_like 'successful get request' do
-      let(:action) do
-        visit user_path(@user)
+      let :action do
+        visit user_path @user
         @title = @base_title + ' | ' + @user.name
       end
     end
 
-    it 'should find the right user' do
-      get :show, :id => @user
-      assigns(:user).should == @user
-    end
-
-    it 'should include the user\'s name' do
+    it 'should include the user\'s display name' do
       visit user_path(@user)
-      page.should have_selector('h1', :text => @user.name)
+      page.should have_selector 'div.profile-avatar-name>a',
+                                :text => @user.display_name
     end
 
     it 'should have a profile image' do
       visit user_path(@user)
-      page.should have_selector('h1>span>img')
+      page.should have_selector('div>img.gravatar')
+    end
+
+    it 'should show the social events' do
+      pending
     end
     
-    it 'should show the user\'s reminders' do
-      idea1 = Factory(:idea, :user => @user, :content => 'Foo bar')
-      idea2 = Factory(:idea, :user => @user, :content => 'Baz quux')
-      
-      reminder1 = Factory(:reminder, :user => @user, :idea => idea1,
-                                     :created_at => 1.day.ago, :privacy => @privacy)
-      reminder2 = Factory(:reminder, :user => @user, :idea => idea2,
-                                     :created_at => 2.day.ago, :privacy => @privacy)
-      
-      visit user_path(@user)
-      page.should have_selector('div', :text => idea1.content)
-      page.should have_selector('div', :text => idea2.content)
-    end
-    
-    it 'should not show private reminders' do
-      @private_privacy = Privacy::Values[:private]
-      idea1 = Factory(:idea, :user => @user, :content => 'Foo bar')
-      idea2 = Factory(:idea, :user => @user, :content => 'Baz quux')
-      
-      public_reminder = Factory(:reminder, :user => @user, :idea => idea1,
-                                           :created_at => 1.day.ago, :privacy => @privacy)
-      private_reminder = Factory(:reminder, :user => @user, :idea => idea2,
-                                            :created_at => 2.day.ago,
-                                            :privacy => @private_privacy)
-      
-      visit user_path(@user)
-      page.should have_selector('div', :text => idea1.content)
-      page.should_not have_selector('div', :text => idea2.content)
-    end
-    
-    it 'should paginate' do
-        32.times do
+    it 'should paginate the social events' do
+        11.times do
           idea = Factory(:idea, :user => @user, :content => 'Baz quux')
           Factory(:reminder, :user => @user, :idea => idea, :created_at => 2.day.ago, :privacy => @privacy)
         end
@@ -132,8 +100,14 @@ describe UsersController do
         page.should have_link('2')
         page.should have_link('Next')
     end
+
+    context 'for users that are not logged' do
+      it 'should block access'  do
+        pending
+      end
+    end
     
-    describe 'for logged users' do
+    context 'for logged users' do
       before(:each) do
         @private_privacy = Privacy::Values[:private]
         @idea1 = Factory(:idea, :user => @user, :content => 'Foo bar')
@@ -143,16 +117,25 @@ describe UsersController do
         @private_reminder = Factory(:reminder, :user => @user, :idea => @idea2,
                                                :created_at => 2.day.ago, :privacy => @private_privacy)
       end
+
+
+      it 'should show the user\'s public social events' do
+        idea1 = Factory(:idea, :user => @user, :content => 'Foo bar')
+        idea2 = Factory(:idea, :user => @user, :content => 'Baz quux')
+        visit user_path(@user)
+        page.should have_selector('div', :text => idea1.content)
+        page.should have_selector('div', :text => idea2.content)
+      end
       
       
-      it 'should show own private posts' do
+      it 'should show own private social events' do
         test_web_sign_in(@user)
         visit user_path(@user)
         page.should have_selector('div', :text => @idea1.content)
         page.should have_selector('div', :text => @idea2.content)
       end
       
-      it 'should not show other user\'s private posts' do
+      it 'should not show other user\'s private social events' do
         other_user = Factory(:unique_user)
         test_web_sign_in(other_user)
         visit user_path(@user)
@@ -436,12 +419,12 @@ describe UsersController do
       
       it 'should show user following' do
         visit user_path(@user) + '/following'
-        page.should have_link(@other_user.name)
+        page.should have_link(@other_user.display_name)
       end
       
       it 'should show user followers' do
         visit user_path(@other_user) + '/following'
-        page.should have_link(@user.name)
+        page.should have_link(@user.display_name)
       end
     end
   end
@@ -456,13 +439,13 @@ describe UsersController do
       it 'should redirect to profile if correct activation code' do
         test_sign_in(@user)
         get :activate, :activation_code => @user.activation_code
-        response.should redirect_to(users_path + '/#{@user.id}')
+        response.should redirect_to(users_path + "/#{@user.id}")
       end
       
       it 'should redirect to profile if incorrect activation code or empty' do
         test_sign_in(@user)
         get :activate, :activation_code => 123
-        response.should redirect_to(users_path + '/#{@user.id}')
+        response.should redirect_to(users_path + "/#{@user.id}")
       end
     end
 

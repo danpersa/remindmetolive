@@ -1,4 +1,6 @@
 class UserIdeasController < ApplicationController
+  layout 'section_with_default_sidebar'
+
   before_filter :authenticate
   before_filter :shared_by_logged_user, :only => [:destroy]
 
@@ -9,7 +11,6 @@ class UserIdeasController < ApplicationController
     store_location
     store_current_page
     init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
   end
 
   def create
@@ -25,7 +26,7 @@ class UserIdeasController < ApplicationController
     init_feeds_table1
     @user = current_user
     init_default_sidebar
-    render 'pages/home', :layout => 'section_with_default_sidebar'
+    render 'pages/home'
   end
 
   def update

@@ -1,20 +1,22 @@
 class UsersController < ApplicationController
-
   include RecaptchaHelper
 
-  before_filter :authenticate, :except => [:show, :new, :create, :activate, :reset_password, :change_reseted_password]
+  layout 'section_with_default_sidebar'
+
+  before_filter :authenticate, :except => [:new, :create, :activate, :reset_password, :change_reseted_password]
   before_filter :activate_user, :except => [:show, :new, :create, :activate, :reset_password, :change_reseted_password]
   before_filter :existing_user, :only => [:show, :edit, :update, :destroy, :following, :followers, :ideas, :follow, :unfollow]
   before_filter :correct_user, :only => [:edit, :update, :ideas]
   before_filter :admin_or_correct_user, :only => :destroy
-  before_filter :not_authenticate, :only => [:change_reseted_password]
+  before_filter :not_authenticate, :only => [:change_reseted_password, :create, :new]
 
   @@items_per_page = 10
 
   def index
     @user = current_user
     @title = "All users"
-    @users = User.page(params[:page])
+    @users = User.page(params[:page]).per(@@items_per_page)
+    init_default_sidebar
   end
 
   def show
@@ -28,7 +30,6 @@ class UsersController < ApplicationController
     store_current_page
     @title = @user.display_name
     init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
   end
 
   def new
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
       # we trigger the validation manually
       @auth_form_model.valid?
       @auth_form_model.errors[:recaptcha] = 'The CAPTCHA solution was incorrect. Please re-try'
-      render :layout => 'one_section_narrow', :template => 'users/new'
+      render :template => 'users/new', :layout => 'one_section_narrow'
       return
     end
 
@@ -97,7 +98,6 @@ class UsersController < ApplicationController
     @title = "Following"
     @users = @user.following.page(params[:page]).per(10)
     init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
   end
 
   def followers
@@ -105,7 +105,6 @@ class UsersController < ApplicationController
     @title = "Followers"
     @users = @user.followers.page(params[:page]).per(10)
     init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
   end
 
   def follow
