@@ -44,7 +44,7 @@ class UserIdeasController < ApplicationController
     idea = @user_idea.idea
     @user_idea.destroy
     if idea.private?
-      idea.destroy      
+      idea.destroy
     end
     respond_to do |format|
       flash[:success] = 'Successfully deleted shared idea!'

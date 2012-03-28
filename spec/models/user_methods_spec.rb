@@ -268,7 +268,6 @@ describe User do
                                         :privacy => Privacy::Values[:public],
                                         :reminder_date => 2.days.ago)
       user_idea.should_not be_valid
-      user_idea.idea.should be_valid
       Idea.all.should be_empty
     end
 

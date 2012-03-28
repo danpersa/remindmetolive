@@ -58,6 +58,37 @@ describe UserIdeasController do
     end
   end
 
+  describe 'GET index' do
+    before do
+      user = Factory(:unique_user)
+      @user_ideas = []
+      11.times do |index|
+        idea = Factory(:idea, :content => 'Baz quux ' + index.to_s,
+                              :created_by => user,
+                              :owned_by => user,
+                              :privacy => Privacy::Values[:public])
+        @user_ideas << Factory(:user_idea, :idea => idea,
+                                          :user => user,
+                                          :privacy => Privacy::Values[:public])
+      end
+      test_web_sign_in(user)
+      visit user_ideas_path
+    end
+
+    it 'should show the public user ideas entries' do
+      index = 0
+      @user_ideas.each do |user_idea|
+        page.should have_selector('strong', :text => user_idea.idea.content) if index < 10
+        index += 1
+      end
+    end
+    
+    it 'should paginate the ideas' do
+      page.should have_selector('ul.pagination')
+      page.should have_link('2')
+    end
+  end
+
   describe 'POST create' do
 
     before do
