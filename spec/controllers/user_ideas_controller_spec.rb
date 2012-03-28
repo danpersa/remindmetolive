@@ -34,21 +34,26 @@ describe UserIdeasController do
     describe '#shared_by_logged_user' do
       
       before(:each) do
-        @user = Factory :unique_user
+        @user = test_sign_in Factory :unique_user
         other_user = Factory :unique_user
-        test_sign_in @user
-        @user_idea = Factory :user_idea, :user => other_user
-        @own_user_idea = Factory :user_idea, :user => @user
+        @idea = Factory :simple_idea, :created_by => @user,
+                                      :owned_by => @user,
+                                      :privacy => Privacy::Values[:public]
+        @user_idea = Factory :user_idea, :idea => @idea,
+                                         :user => other_user
+        @own_user_idea = Factory :user_idea, :idea => @idea,
+                                             :user => @user
       end
       
       it 'should deny access if user does not own the user idea' do
         delete :destroy, :id => @user_idea.id
         response.should redirect_to(root_path)
+        flash[:success].should_not == 'Successfully deleted shared idea!'
       end
 
       it 'should not deny access if user does own the user idea' do
         delete :destroy, :id => @own_user_idea.id
-        response.should_not redirect_to(root_path)
+        flash[:success].should == 'Successfully deleted shared idea!'
       end
     end
   end
@@ -120,21 +125,20 @@ describe UserIdeasController do
   end
 
   describe 'DELETE destroy' do
+    before do
+      @user = test_sign_in Factory(:unique_user)
+    end
 
     describe 'success' do
-
-      before do
-        @user = test_sign_in Factory(:unique_user)
-      end
 
       context 'the idea corresponding to the user idea is owned by the user' do
         context 'when the idea is private' do
 
           before do
-            @idea = Factory :simple_idea, :created_by => @user,
+            idea = Factory :simple_idea, :created_by => @user,
                                    :owned_by => @user,
                                    :privacy => Privacy::Values[:private]
-            @user_idea = Factory :user_idea
+            @user_idea = Factory :user_idea, :idea => idea, :user => @user
           end
 
           it 'should destroy the idea' do
@@ -149,45 +153,48 @@ describe UserIdeasController do
             end.should change(UserIdea, :count).by(-1)
           end
         end
-        
-        context 'when the idea is public and shared with other users' do
+
+        context 'when the idea is public' do
           before do
-            @idea = Factory :idea, :created_by => @user,
-                                   :owned_by => @user,
-                                   :privacy => Privacy::Values[:public]
-            other_user = Factory :unique_user
+            @idea = Factory :simple_idea, :created_by => @user,
+                                          :owned_by => @user,
+                                          :privacy => Privacy::Values[:public]
+            @user_idea = Factory :user_idea, :idea => @idea,
+                                             :user => @user
           end
 
-          it 'should not destroy idea' do
-            lambda do 
-              delete :destroy, :id => @user_idea.id
-            end.should_not change(Idea, :count).by(-1)
+          context 'when the idea is shared with other users' do
+            before do
+              other_user = Factory :unique_user
+              other_user_idea = Factory :user_idea, :idea => @idea,
+                                                    :user => other_user
+            end
+
+            it 'should not destroy idea' do
+              lambda do 
+                delete :destroy, :id => @user_idea.id
+              end.should_not change(Idea, :count).by(-1)
+            end
+
+            it 'should destroy the user idea' do
+              lambda do 
+                delete :destroy, :id => @user_idea.id
+              end.should change(UserIdea, :count).by(-1)
+            end
           end
 
-          it 'should destroy the user idea' do
-            lambda do 
-              delete :destroy, :id => @user_idea.id
-            end.should change(UserIdea, :count).by(-1)
-          end
-        end
+          context 'when the idea is not shared with other users' do
+            it 'should not destroy the idea' do
+              lambda do 
+                delete :destroy, :id => @user_idea.id
+              end.should_not change(Idea, :count).by(-1)
+            end
 
-        context 'when the idea is public not shared with other users' do
-          before do
-            @idea = Factory :idea, :created_by => @user,
-                                   :owned_by => @user,
-                                   :privacy => Privacy::Values[:public]
-          end
-
-          it 'should destroy the idea' do
-            lambda do 
-              delete :destroy, :id => @user_idea.id
-            end.should change(Idea, :count).by(-1)
-          end
-
-          it 'should destroy the user idea' do
-            lambda do 
-              delete :destroy, :id => @user_idea.id
-            end.should change(UserIdea, :count).by(-1)
+            it 'should destroy the user idea' do
+              lambda do 
+                delete :destroy, :id => @user_idea.id
+              end.should change(UserIdea, :count).by(-1)
+            end
           end
         end
       end
@@ -199,6 +206,8 @@ describe UserIdeasController do
           @idea = Factory :idea, :created_by => other_user,
                                  :owned_by => other_user,
                                  :privacy => Privacy::Values[:public]
+          @user_idea = Factory :user_idea, :idea => @idea,
+                                           :user => @user          
         end
 
         it 'should not destroy idea' do
@@ -224,7 +233,9 @@ describe UserIdeasController do
       end
 
       it 'should deny access if the user does not own the user idea' do
-        pending
+        test_sign_in Factory(:user)
+        delete :destroy, :id => @user.id
+        response.should redirect_to(root_path)
       end
     end
   end

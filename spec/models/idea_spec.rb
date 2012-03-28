@@ -290,7 +290,6 @@ describe Idea do
       end
     end
 
-
     describe '#public_user_ideas_of_users_followed_by' do
 
       before do
@@ -300,16 +299,16 @@ describe Idea do
         @current_user.follow! followed_user
         @current_user = User.find @current_user.id
         @idea = Factory :idea
-        @public_user_idea_of_followed_user = Factory :user_idea, 
-                                                     :idea => @idea, 
+        @public_user_idea_of_followed_user = Factory :user_idea,
+                                                     :idea => @idea,
                                                      :privacy =>  Privacy::Values[:public],
                                                      :user => followed_user
-        @private_user_idea_of_followed_user = Factory :user_idea, 
-                                                      :idea => @idea, 
+        @private_user_idea_of_followed_user = Factory :user_idea,
+                                                      :idea => @idea,
                                                       :privacy =>  Privacy::Values[:private],
                                                       :user => followed_user
-        @public_user_idea_of_other_user = Factory :user_idea, 
-                                                  :idea => @idea, 
+        @public_user_idea_of_other_user = Factory :user_idea,
+                                                  :idea => @idea,
                                                   :privacy =>  Privacy::Values[:public],
                                                   :user => other_user
       end
@@ -324,6 +323,36 @@ describe Idea do
 
       it 'should not include the public user ideas of the users not followed by the current user' do
         @idea.public_user_ideas_of_users_followed_by(@current_user).entries.should_not include(@public_user_idea_of_other_user)
+      end
+    end
+
+    describe '#shared_by_many_users' do
+      before do
+        current_user = Factory :unique_user
+        @idea = Factory :idea, :created_by => current_user,
+                        :owned_by => current_user
+        user_idea = Factory :user_idea,
+                            :idea => @idea,
+                            :privacy =>  Privacy::Values[:public],
+                            :user => current_user
+      end
+
+      context 'shared only by the owner' do
+        it 'should be false' do
+          @idea.shared_by_many_users?.should_not be_true
+        end
+      end
+
+      context 'there are two users sharing the idea' do
+        before do
+          second_user_idea = Factory :user_idea,
+                                     :idea => @idea,
+                                     :privacy =>  Privacy::Values[:public]
+        end
+
+        it 'should be true' do
+          @idea.shared_by_many_users?.should be_true
+        end
       end
     end
   end

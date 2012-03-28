@@ -69,4 +69,9 @@ class Idea
   def public_user_ideas_of_users_followed_by user
     self.user_ideas.where(:user_id.in => user.following_ids, :privacy => Privacy::Values[:public])
   end
+
+  def shared_by_many_users?
+    return false unless self.user_ideas.count > 1
+    true
+  end
 end

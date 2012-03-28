@@ -1,38 +1,10 @@
 class IdeasController < ApplicationController
   before_filter :authenticate, :only => [:show, :users, :followed_users]
-  #before_filter :own_idea, :only => :destroy
   before_filter :own_idea_or_public, :only => [:show, :users, :followed_users]
   before_filter :store_location, :only => [:show, :users, :followed_users]
   before_filter :store_current_page, :only => [:show, :users, :followed_users]
 
   @@items_per_page = 10
-
-  # def create
-  #   logger.info params
-  #   @user_idea = current_user.create_new_idea!(params[:idea])
-  #   @idea = @user_idea.idea
-  #   if @idea.valid? and @user_idea.valid?
-  #     flash[:success] = "Idea created!"
-  #     redirect_to root_path
-  #     return
-  #   end
-
-  #   init_feeds_table1
-  #   @user = current_user
-  #   init_default_sidebar
-  #   render 'pages/home', :layout => 'section_with_default_sidebar'
-  # end
-
-  # def update
-  #   @idea = Idea.find(params[:id])
-  #   @idea.idea_list_tokens = params[:idea][:idea_list_tokens]
-  #   if @idea.save!
-  #     flash[:success] = "Successfully updated idea!"
-  #     redirect_to @idea
-  #   else
-  #     render :action => 'show'
-  #   end
-  # end
 
   def show
     init_head
