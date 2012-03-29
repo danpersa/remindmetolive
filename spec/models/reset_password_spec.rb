@@ -38,7 +38,7 @@ describe ResetPassword do
   end
 
   it 'should be valid' do
-    Factory(:unique_user, :email => @attr[:email])
+    FactoryGirl.create(:unique_user, :email => @attr[:email])
     valid_reset = ResetPassword.new(@attr)
     valid_reset.should be_valid
   end

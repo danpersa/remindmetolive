@@ -4,7 +4,7 @@ describe SocialEvent do
 
   describe 'creation' do
     it 'should create a new instance given valid attributes' do
-      social_event = Factory.build :social_event
+      social_event = FactoryGirl.build :social_event
       social_event.save.should == true
     end
   end
@@ -20,7 +20,7 @@ describe SocialEvent do
       end
 
       it 'should reject values other than nil, public or private' do
-        social_event = Factory.build :social_event, :privacy => 3
+        social_event = FactoryGirl.build :social_event, :privacy => 3
         social_event.should_not be_valid
         social_event.errors[:privacy].include?("is not included in the list").should == true
       end
@@ -30,11 +30,11 @@ describe SocialEvent do
   describe 'associations' do
     describe 'created by association' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :social_event do
-        Factory :social_event, :created_by => user
+        FactoryGirl.create :social_event, :created_by => user
       end
 
       it 'should have a created by association' do
@@ -51,14 +51,14 @@ describe SocialEvent do
 
     describe 'self.of_user' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       before do
-        @other_social_event = Factory :social_event
-        @social_event1 = Factory :social_event, :created_by => user, :updated_at => 2.days.ago
-        @social_event2 = Factory :social_event, :created_by => user, :updated_at => 1.days.ago
-        @social_event3 = Factory :social_event, :created_by => user, :updated_at => 3.days.ago
+        @other_social_event = FactoryGirl.create :social_event
+        @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
+        @social_event2 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago
+        @social_event3 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
         @social_events = SocialEvent.of_user(user)
       end
 
@@ -77,15 +77,15 @@ describe SocialEvent do
 
     describe 'public_of_user' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       before do
-        @other_social_event = Factory :social_event
-        @private_social_event = Factory :social_event, :created_by => user, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
-        @social_event1 = Factory :social_event, :created_by => user, :updated_at => 3.days.ago
-        @social_event2 = Factory :social_event, :created_by => user, :updated_at => 2.days.ago
-        @social_event3 = Factory :social_event, :created_by => user, :updated_at => 4.days.ago
+        @other_social_event = FactoryGirl.create :social_event
+        @private_social_event = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
+        @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
+        @social_event2 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
+        @social_event3 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 4.days.ago
         @social_events = SocialEvent.public_of_user(user)
       end
 
@@ -108,21 +108,21 @@ describe SocialEvent do
 
     describe 'public_of_users_followed_by' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       before do
         # we have some users, followed by the user
-        user1 = Factory :unique_user
-        user2 = Factory :unique_user
-        user3 = Factory :unique_user
+        user1 = FactoryGirl.create :unique_user
+        user2 = FactoryGirl.create :unique_user
+        user3 = FactoryGirl.create :unique_user
         user.follow! user1
         user.follow! user2
-        @private_social_event = Factory :social_event, :created_by => user1, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
-        @social_event0 = Factory :social_event, :created_by => user2, :updated_at => 4.days.ago
-        @social_event1 = Factory :social_event, :created_by => user1, :updated_at => 3.days.ago
-        @social_event2 = Factory :social_event, :created_by => user2, :updated_at => 2.days.ago
-        @social_event3 = Factory :social_event, :created_by => user3, :updated_at => 4.days.ago
+        @private_social_event = FactoryGirl.create :social_event, :created_by => user1, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
+        @social_event0 = FactoryGirl.create :social_event, :created_by => user2, :updated_at => 4.days.ago
+        @social_event1 = FactoryGirl.create :social_event, :created_by => user1, :updated_at => 3.days.ago
+        @social_event2 = FactoryGirl.create :social_event, :created_by => user2, :updated_at => 2.days.ago
+        @social_event3 = FactoryGirl.create :social_event, :created_by => user3, :updated_at => 4.days.ago
         @social_events = SocialEvent.public_of_users_followed_by(user)
       end
 
@@ -145,23 +145,23 @@ describe SocialEvent do
 
     describe 'own_or_public_of_users_followed_by' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       before do
         # we have some users, followed by the user
-        user1 = Factory :unique_user
-        user2 = Factory :unique_user
-        user3 = Factory :unique_user
+        user1 = FactoryGirl.create :unique_user
+        user2 = FactoryGirl.create :unique_user
+        user3 = FactoryGirl.create :unique_user
         user.follow! user1
         user.follow! user2
-        @private_social_event = Factory :social_event, :created_by => user1, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
-        @own_social_event0 = Factory :social_event, :created_by => user, :updated_at => 1.days.ago
-        @own_social_event1 = Factory :social_event, :created_by => user, :updated_at => 5.days.ago
-        @social_event0 = Factory :social_event, :created_by => user2, :updated_at => 4.days.ago
-        @social_event1 = Factory :social_event, :created_by => user1, :updated_at => 3.days.ago
-        @social_event2 = Factory :social_event, :created_by => user2, :updated_at => 2.days.ago
-        @social_event3 = Factory :social_event, :created_by => user3, :updated_at => 4.days.ago
+        @private_social_event = FactoryGirl.create :social_event, :created_by => user1, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
+        @own_social_event0 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago
+        @own_social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 5.days.ago
+        @social_event0 = FactoryGirl.create :social_event, :created_by => user2, :updated_at => 4.days.ago
+        @social_event1 = FactoryGirl.create :social_event, :created_by => user1, :updated_at => 3.days.ago
+        @social_event2 = FactoryGirl.create :social_event, :created_by => user2, :updated_at => 2.days.ago
+        @social_event3 = FactoryGirl.create :social_event, :created_by => user3, :updated_at => 4.days.ago
         @social_events = SocialEvent.own_or_public_of_users_followed_by(user)
       end
 

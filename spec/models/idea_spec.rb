@@ -8,7 +8,7 @@ describe Idea do
 
   describe 'creation' do
     it 'should create a new instance given valid attributes' do
-      idea = Factory.build :simple_idea
+      idea = FactoryGirl.build :simple_idea
       idea.save.should == true
     end
   end
@@ -81,14 +81,14 @@ describe Idea do
 
       describe 'when validating presence' do
         it 'should require a privacy' do
-          idea = Factory.build :simple_idea, :privacy => nil
+          idea = FactoryGirl.build :simple_idea, :privacy => nil
           idea.should_not be_valid
           idea.errors[:privacy].include?("can't be blank").should == true
         end
       end
 
       it 'should reject values other than public or private' do
-        idea = Factory.build :simple_idea, :privacy => 3
+        idea = FactoryGirl.build :simple_idea, :privacy => 3
         idea.should_not be_valid
         idea.errors[:privacy].include?("is not included in the list").should == true
       end
@@ -99,11 +99,11 @@ describe Idea do
 
     describe 'created by association' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :idea do
-        Factory :simple_idea, :created_by => user, :owned_by => user
+        FactoryGirl.create :simple_idea, :created_by => user, :owned_by => user
       end
 
       it 'should have a created by association' do
@@ -117,11 +117,11 @@ describe Idea do
 
     describe 'owned by association' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :idea do
-        Factory :simple_idea, :created_by => user, :owned_by => user
+        FactoryGirl.create :simple_idea, :created_by => user, :owned_by => user
       end
 
       it 'should have an owned by association' do
@@ -135,7 +135,7 @@ describe Idea do
 
     describe 'users that marked the idea as good association' do
       let :idea do
-        Factory :simple_idea
+        FactoryGirl.create :simple_idea
       end
 
       it 'should have a users_marked_the_idea_good attribute' do
@@ -143,7 +143,7 @@ describe Idea do
       end
 
       it 'should have the right associated users' do
-        user = Factory :simple_user
+        user = FactoryGirl.create :simple_user
         idea.users_marked_the_idea_good.push user
         idea.users_marked_the_idea_good.include?(user).should == true
       end
@@ -151,7 +151,7 @@ describe Idea do
 
     describe 'users that marked the idea as done association' do
       let :idea do
-        Factory :simple_idea
+        FactoryGirl.create :simple_idea
       end
 
       it 'should have a users_marked_the_idea_done attribute' do
@@ -159,7 +159,7 @@ describe Idea do
       end
 
       it 'should have the right associated users' do
-        user = Factory :simple_user
+        user = FactoryGirl.create :simple_user
         idea.users_marked_the_idea_done.push user
         idea.users_marked_the_idea_done.include?(user).should == true
       end
@@ -167,7 +167,7 @@ describe Idea do
 
     describe 'user ideas association' do
       let :idea do
-        Factory :idea
+        FactoryGirl.create :idea
       end
 
       it 'should have a user_ideas attribute' do
@@ -175,7 +175,7 @@ describe Idea do
       end
 
       it 'should have the right associated user_ideas' do
-        user_idea = Factory :user_idea, :idea => idea
+        user_idea = FactoryGirl.create :user_idea, :idea => idea
         idea.user_ideas.should include(user_idea)
       end
     end
@@ -183,11 +183,11 @@ describe Idea do
 
   describe 'methods' do
     let :idea do
-      Factory :simple_idea
+      FactoryGirl.create :simple_idea
     end
 
     let :user do
-      Factory :simple_user
+      FactoryGirl.create :simple_user
     end
 
     describe '#mark_as_good_by!' do
@@ -214,7 +214,7 @@ describe Idea do
       end
 
       it 'should not be true if the user didn\'t mark the idea' do
-        idea.marked_as_good_by?(Factory.build :user).should_not == true
+        idea.marked_as_good_by?(FactoryGirl.build :user).should_not == true
       end
     end
 
@@ -242,7 +242,7 @@ describe Idea do
       end
 
       it 'should not be true if the user didn\'t mark the idea' do
-        idea.marked_as_done_by?(Factory.build :user).should_not == true
+        idea.marked_as_done_by?(FactoryGirl.build :user).should_not == true
       end
     end
 
@@ -272,11 +272,11 @@ describe Idea do
     describe '#public_user_ideas' do
 
       before do
-        @idea = Factory :idea
-        @public_user_idea = Factory :user_idea, 
+        @idea = FactoryGirl.create :idea
+        @public_user_idea = FactoryGirl.create :user_idea, 
                                     :idea => @idea, 
                                     :privacy =>  Privacy::Values[:public]
-        @private_user_idea = Factory :user_idea, 
+        @private_user_idea = FactoryGirl.create :user_idea, 
                                      :idea => @idea, 
                                      :privacy =>  Privacy::Values[:private]
       end
@@ -293,21 +293,21 @@ describe Idea do
     describe '#public_user_ideas_of_users_followed_by' do
 
       before do
-        @current_user = Factory :unique_user
-        followed_user = Factory :unique_user
-        other_user = Factory :unique_user
+        @current_user = FactoryGirl.create :unique_user
+        followed_user = FactoryGirl.create :unique_user
+        other_user = FactoryGirl.create :unique_user
         @current_user.follow! followed_user
         @current_user = User.find @current_user.id
-        @idea = Factory :idea
-        @public_user_idea_of_followed_user = Factory :user_idea,
+        @idea = FactoryGirl.create :idea
+        @public_user_idea_of_followed_user = FactoryGirl.create :user_idea,
                                                      :idea => @idea,
                                                      :privacy =>  Privacy::Values[:public],
                                                      :user => followed_user
-        @private_user_idea_of_followed_user = Factory :user_idea,
+        @private_user_idea_of_followed_user = FactoryGirl.create :user_idea,
                                                       :idea => @idea,
                                                       :privacy =>  Privacy::Values[:private],
                                                       :user => followed_user
-        @public_user_idea_of_other_user = Factory :user_idea,
+        @public_user_idea_of_other_user = FactoryGirl.create :user_idea,
                                                   :idea => @idea,
                                                   :privacy =>  Privacy::Values[:public],
                                                   :user => other_user
@@ -328,10 +328,10 @@ describe Idea do
 
     describe '#shared_by_many_users' do
       before do
-        current_user = Factory :unique_user
-        @idea = Factory :idea, :created_by => current_user,
+        current_user = FactoryGirl.create :unique_user
+        @idea = FactoryGirl.create :idea, :created_by => current_user,
                         :owned_by => current_user
-        user_idea = Factory :user_idea,
+        user_idea = FactoryGirl.create :user_idea,
                             :idea => @idea,
                             :privacy =>  Privacy::Values[:public],
                             :user => current_user
@@ -345,7 +345,7 @@ describe Idea do
 
       context 'there are two users sharing the idea' do
         before do
-          second_user_idea = Factory :user_idea,
+          second_user_idea = FactoryGirl.create :user_idea,
                                      :idea => @idea,
                                      :privacy =>  Privacy::Values[:public]
         end

@@ -6,7 +6,7 @@ describe ChangePasswordsController do
   describe 'GET new' do
     before(:each) do
       @base_title = 'Remind me to live'
-      @user = Factory(:activated_user)
+      @user = FactoryGirl.create(:activated_user)
     end
     
     describe 'success' do
@@ -38,7 +38,7 @@ describe ChangePasswordsController do
   
   describe 'POST create' do
     before(:each) do
-      @user = Factory(:activated_user)
+      @user = FactoryGirl.create(:activated_user)
       @attr = {
       :password => 'password',
       :password_confirmation => 'password',

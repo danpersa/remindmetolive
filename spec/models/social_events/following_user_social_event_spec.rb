@@ -6,19 +6,19 @@ describe FollowingUserSocialEvent do
     describe 'all following social events created by an user today, with a specified following user' do
 
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :followed do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :another_user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       before do
-        @following_user_social_event = Factory :following_user_social_event, 
+        @following_user_social_event = FactoryGirl.create :following_user_social_event, 
                                                :created_by => user,
                                                :users => [followed, another_user]
         @result = FollowingUserSocialEvent.created_by_user_today_with_following user, followed
@@ -35,19 +35,19 @@ describe FollowingUserSocialEvent do
 
     describe 'all following social events created by an user, created today' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :followed do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :another_user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       before do
-        @following_user_social_event = Factory :following_user_social_event, 
+        @following_user_social_event = FactoryGirl.create :following_user_social_event, 
                                                :created_by => user,
                                                :users => [followed, another_user]
         @result = FollowingUserSocialEvent.created_by_user_today user
@@ -64,15 +64,15 @@ describe FollowingUserSocialEvent do
 
     describe 'create a new following user social event' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :followed do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :another_user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       before do
@@ -129,15 +129,15 @@ describe FollowingUserSocialEvent do
 
     describe 'remove user from following social event' do
       let :user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :followed do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       let :another_user do
-        Factory :unique_user
+        FactoryGirl.create :unique_user
       end
 
       it 'should do nothing if the following event does not contain the parameter user' do
@@ -192,8 +192,8 @@ describe FollowingUserSocialEvent do
         before do
           following_event = FollowingUserSocialEvent.create! user, followed
           FollowingUserSocialEvent.create! user, another_user
-          FollowingUserSocialEvent.create! user, Factory.create(:unique_user)
-            FollowingUserSocialEvent.create! user, Factory.create(:unique_user)
+          FollowingUserSocialEvent.create! user, FactoryGirl.create(:unique_user)
+            FollowingUserSocialEvent.create! user, FactoryGirl.create(:unique_user)
           @following_event = FollowingUserSocialEvent.find(following_event.id)
           @following_event.remove_user followed
           @following_event = FollowingUserSocialEvent.find(following_event.id)

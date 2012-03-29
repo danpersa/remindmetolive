@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ChangePassword do
   before(:each) do
-    @user = Factory(:activated_user)
+    @user = FactoryGirl.create(:activated_user)
     @attr = {
       :password => 'password',
       :password_confirmation => 'password',

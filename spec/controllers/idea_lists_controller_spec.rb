@@ -48,11 +48,11 @@ describe IdeaListsController do
 
     describe 'own idea list' do
       before(:each) do
-        @user = Factory :unique_user
-        wrong_user = Factory :unique_user, :email => Factory.next(:email)
+        @user = FactoryGirl.create :unique_user
+        wrong_user = FactoryGirl.create :unique_user, :email => FactoryGirl.generate(:email)
         test_sign_in wrong_user
-        @idea_list = Factory.create :idea_list, :user => @user
-        @idea = Factory :idea
+        @idea_list = FactoryGirl.create :idea_list, :user => @user
+        @idea = FactoryGirl.create :idea
       end
 
       it 'should deny access if user does not own the idea list' do
@@ -83,11 +83,11 @@ describe IdeaListsController do
 
     describe 'own idea or public' do
       before(:each) do
-        @user = Factory :unique_user
-        wrong_user = Factory :unique_user, :email => Factory.next(:email)
+        @user = FactoryGirl.create :unique_user
+        wrong_user = FactoryGirl.create :unique_user, :email => FactoryGirl.generate(:email)
         test_sign_in wrong_user
-        @idea_list = Factory :idea_list, :user => wrong_user
-        @idea = Factory :idea, :created_by => @user, :privacy => Privacy::Values[:private]
+        @idea_list = FactoryGirl.create :idea_list, :user => wrong_user
+        @idea = FactoryGirl.create :idea, :created_by => @user, :privacy => Privacy::Values[:private]
       end
 
       it 'should deny access if user does not own the idea list' do
@@ -99,7 +99,7 @@ describe IdeaListsController do
     describe 'unexisting idea list' do
 
       before(:each) do
-        @user = test_sign_in(Factory :user)
+        @user = test_sign_in(FactoryGirl.create :user)
       end
 
       it 'should deny access if the idea list does not exist' do
@@ -123,9 +123,9 @@ describe IdeaListsController do
 
     describe 'success' do
       before(:each) do
-        @user = Factory :unique_user
-        @idea = Factory :idea, :created_by => @user, :owned_by => @user
-        @idea_list = Factory :idea_list, :user => @user
+        @user = FactoryGirl.create :unique_user
+        @idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
+        @idea_list = FactoryGirl.create :idea_list, :user => @user
         @idea_list.add_idea_as @idea, Privacy::Values[:public]
         test_web_sign_in @user
       end
@@ -164,9 +164,9 @@ describe IdeaListsController do
 
     describe 'success' do
       before(:each) do
-        @user = Factory :unique_user
-        @idea = Factory :idea, :created_by => @user, :owned_by => @user
-        @idea_list = Factory :idea_list, :user => @user
+        @user = FactoryGirl.create :unique_user
+        @idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
+        @idea_list = FactoryGirl.create :idea_list, :user => @user
         @idea_list.add_idea_as @idea, Privacy::Values[:public]
         test_web_sign_in @user
         visit idea_list_path(@idea_list)
@@ -202,7 +202,7 @@ describe IdeaListsController do
 
     it_should_behave_like 'successful get request' do
       let(:action) do
-        @user = test_web_sign_in(Factory :unique_user)
+        @user = test_web_sign_in(FactoryGirl.create :unique_user)
         visit new_idea_list_path
         @title = @base_title + ' | Create idea list'
       end
@@ -212,7 +212,7 @@ describe IdeaListsController do
   describe 'POST create' do
 
     before(:each) do
-      @user = Factory :user
+      @user = FactoryGirl.create :user
       test_sign_in(@user)
     end
 
@@ -266,7 +266,7 @@ describe IdeaListsController do
   describe 'GET edit' do
 
     before(:each) do
-      @user = Factory :user
+      @user = FactoryGirl.create :user
       test_web_sign_in(@user)
       @idea_list = @user.idea_lists.create!({:name => 'name'})
     end
@@ -282,7 +282,7 @@ describe IdeaListsController do
   describe 'PUT update' do
 
     before(:each) do
-      @user = test_sign_in(Factory(:user))
+      @user = test_sign_in(FactoryGirl.create(:user))
       @idea_list = @user.idea_lists.create!({:name => 'name'})
     end
 
@@ -336,9 +336,9 @@ describe IdeaListsController do
     describe 'success' do
 
       before(:each) do
-        @user = test_sign_in(Factory :unique_user)
-        @idea = Factory :idea, :created_by => @user, :owned_by => @user
-        @idea_list = Factory :idea_list, :user => @user
+        @user = test_sign_in(FactoryGirl.create :unique_user)
+        @idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
+        @idea_list = FactoryGirl.create :idea_list, :user => @user
         @idea_list.add_idea_as @idea, Privacy::Values[:public]
       end
 
@@ -353,9 +353,9 @@ describe IdeaListsController do
   describe 'POST add_idea' do
 
     before(:each) do
-      @user = test_sign_in Factory(:user)
-      @idea = Factory :idea, :created_by => @user, :owned_by => @user
-      @idea_list = Factory :idea_list, :user => @user
+      @user = test_sign_in FactoryGirl.create(:user)
+      @idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
+      @idea_list = FactoryGirl.create :idea_list, :user => @user
     end
 
     describe 'success' do

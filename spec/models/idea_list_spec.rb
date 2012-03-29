@@ -3,7 +3,7 @@ require 'spec_helper'
 describe IdeaList do
 
   let :user do
-    Factory.build :pending_user
+    FactoryGirl.build :pending_user
   end
 
   before do
@@ -53,7 +53,7 @@ describe IdeaList do
 
         it 'should allow other user to use the same name' do
           user.idea_lists.create!(@attr)
-          other_user = Factory(:user, :email => Factory.next(:email))
+          other_user = FactoryGirl.create(:user, :email => FactoryGirl.generate(:email))
           other_user.idea_lists.build(@attr).should be_valid
         end
       end
@@ -73,8 +73,8 @@ describe IdeaList do
     end
 
     before do
-      @idea1 = Factory(:idea, :created_by => idea_list.user, :owned_by => idea_list.user)
-      @idea2 = Factory(:idea, :created_by => idea_list.user, :owned_by => idea_list.user)
+      @idea1 = FactoryGirl.create(:idea, :created_by => idea_list.user, :owned_by => idea_list.user)
+      @idea2 = FactoryGirl.create(:idea, :created_by => idea_list.user, :owned_by => idea_list.user)
       idea_list.ideas.push @idea1
       idea_list.ideas.push @idea2
     end
@@ -108,7 +108,7 @@ describe IdeaList do
   describe 'methods' do
     describe 'add idea as' do
       before do
-        @user = Factory(:unique_user)
+        @user = FactoryGirl.create(:unique_user)
         @idea_list = @user.idea_lists.create(@attr)
       end
 
@@ -131,7 +131,7 @@ describe IdeaList do
       describe 'the user doesn\'t have the idea in his user ideas' do
 
         before do
-          @another_user = Factory(:unique_user)
+          @another_user = FactoryGirl.create(:unique_user)
           user_idea = @another_user.create_new_idea!(:content => 'ana are mere', :privacy => Privacy::Values[:public])
           @idea_list.add_idea_as user_idea.idea, Privacy::Values[:public]
         end
@@ -153,7 +153,7 @@ describe IdeaList do
 
     describe 'remove idea' do
       before do
-        @user = Factory(:unique_user)
+        @user = FactoryGirl.create(:unique_user)
         @idea_list = @user.idea_lists.create(@attr)
         @user.create_new_idea!(:content => 'ana are mere', :privacy => Privacy::Values[:public])
         idea = Idea.first

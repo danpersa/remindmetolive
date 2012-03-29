@@ -13,7 +13,7 @@ describe User do
 
   describe 'following?' do
     let :user do
-      Factory.build :simple_user
+      FactoryGirl.build :simple_user
     end
 
     it 'should have a following? method' do
@@ -23,11 +23,11 @@ describe User do
 
   describe 'follow!' do
     let :user do
-      Factory.build :unique_user
+      FactoryGirl.build :unique_user
     end
 
     let :followed do
-      Factory.build :unique_user
+      FactoryGirl.build :unique_user
     end
 
     before do
@@ -67,11 +67,11 @@ describe User do
 
   describe 'unfollow!' do
     let :user do
-      Factory.build :unique_user
+      FactoryGirl.build :unique_user
     end
 
     let :followed do
-      Factory.build :unique_user
+      FactoryGirl.build :unique_user
     end
 
     before do
@@ -120,7 +120,7 @@ describe User do
   describe 'reset password' do
 
     let :user do
-      Factory.create :activated_user
+      FactoryGirl.create :activated_user
     end
 
     before do
@@ -157,7 +157,7 @@ describe User do
   describe 'reset_password_expired?' do
 
     let :user do
-      Factory.create :activated_user
+      FactoryGirl.create :activated_user
     end
 
     it 'should be expired if the reset password mail was sent two days ago' do
@@ -174,7 +174,7 @@ describe User do
   describe 'password encryption' do
 
     let :user do
-      Factory :simple_user
+      FactoryGirl.create :simple_user
     end
 
     it 'should have an encrypted password attribute' do
@@ -204,7 +204,7 @@ describe User do
       end
 
       it 'should return nil if user is blocked' do
-        blocked_user = Factory.build(:activated_user, :email => 'blocked@yahoo.com', :state => 'blocked')
+        blocked_user = FactoryGirl.build(:activated_user, :email => 'blocked@yahoo.com', :state => 'blocked')
         blocked_user = User.authenticate(blocked_user.email, blocked_user.password)
         blocked_user.should be_nil
       end
@@ -215,7 +215,7 @@ describe User do
       end
 
       it 'should return the user on email/password match' do
-        user = Factory :activated_user
+        user = FactoryGirl.create :activated_user
         matching_user = User.authenticate(user.email, user.password)
         matching_user.should == user
       end
@@ -224,7 +224,7 @@ describe User do
 
   describe 'display name' do
     before do
-      @user = Factory.build :user
+      @user = FactoryGirl.build :user
       @profile = @user.profile
     end
 
@@ -238,14 +238,14 @@ describe User do
     end
 
     it 'should return the user name if no profile' do
-      user = Factory.build :activated_user
+      user = FactoryGirl.build :activated_user
       user.display_name.should == user.username
     end
   end
 
   describe 'create new idea' do
     let :user do
-      Factory :user, :ideas => []
+      FactoryGirl.create :user, :ideas => []
     end
 
     it 'should create a new idea' do
@@ -279,11 +279,11 @@ describe User do
 
   describe 'create new user idea' do
     let :user do
-      Factory :unique_user, :ideas => []
+      FactoryGirl.create :unique_user, :ideas => []
     end
 
     let :another_user do
-      Factory :unique_user, :ideas => []
+      FactoryGirl.create :unique_user, :ideas => []
     end
 
     before do 
@@ -315,7 +315,7 @@ describe User do
 
   describe 'set reminder to idea' do
     before do
-      @user = Factory :user, :ideas => []
+      @user = FactoryGirl.create :user, :ideas => []
     end
 
     it 'should create a new reminder' do
@@ -329,7 +329,7 @@ describe User do
 
   describe 'ideas ordered by latest reminder creation date' do
     let :user do
-      Factory :simple_user
+      FactoryGirl.create :simple_user
     end
 
     it 'should return all the ideas' do
@@ -359,7 +359,7 @@ describe User do
 
   describe 'ideas_from_list_ordered_by_reminder_created_at' do
     let :user do
-      Factory :simple_user
+      FactoryGirl.create :simple_user
     end
 
     let :idea_list do
@@ -412,11 +412,11 @@ describe User do
 
   describe 'idea_list_with_id' do
     let :user do
-      Factory :simple_user
+      FactoryGirl.create :simple_user
     end
 
     let :idea_list do
-      Factory :idea_list, :user => user, :name => 'idea_list'
+      FactoryGirl.create :idea_list, :user => user, :name => 'idea_list'
     end
 
     it 'should not be nil' do
@@ -434,7 +434,7 @@ describe User do
 
   describe 'user idea for idea' do
     let :user do
-      Factory :simple_user
+      FactoryGirl.create :simple_user
     end
 
     before do
@@ -442,7 +442,7 @@ describe User do
       @user_idea = user.create_new_idea!(:content => 'ana are mere',
                                                :privacy => Privacy::Values[:public],
                                                :reminder_date => @reminder_date)
-      @other_idea = Factory :idea
+      @other_idea = FactoryGirl.create :idea
     end
 
     it 'should not be nil' do
@@ -460,7 +460,7 @@ describe User do
 
   describe 'create idea list' do
     let :user do
-      Factory :unique_user
+      FactoryGirl.create :unique_user
     end
 
     describe 'success' do
@@ -499,7 +499,7 @@ describe User do
 
   describe 'remove idea list' do
     let :user do
-      Factory :unique_user
+      FactoryGirl.create :unique_user
     end
 
     before do
@@ -524,7 +524,7 @@ describe User do
     describe 'failure' do
 
       let :other_idea_list do
-        Factory :idea_list
+        FactoryGirl.create :idea_list
       end
 
       it 'should return false' do
@@ -549,7 +549,7 @@ describe User do
     end
 
     before do
-      Factory(:unique_user, :password_reset_code => password_reset_code)
+      FactoryGirl.create(:unique_user, :password_reset_code => password_reset_code)
     end
 
     it 'should find the user' do
@@ -563,7 +563,7 @@ describe User do
     end
 
     before do
-      Factory :unique_user, :email => email
+      FactoryGirl.create :unique_user, :email => email
     end
 
     it 'should find the user' do
@@ -574,9 +574,9 @@ describe User do
 
   describe 'has idea' do
     before do
-      @user = Factory :user, :ideas => []
+      @user = FactoryGirl.create :user, :ideas => []
       @user_idea = @user.create_new_idea!(:content => 'ana are mere', :privacy => Privacy::Values[:public])
-      @other_idea = Factory :idea
+      @other_idea = FactoryGirl.create :idea
     end
 
     it 'should have the correct idea' do
@@ -590,9 +590,9 @@ describe User do
 
   describe 'has user idea' do
     before do
-      @user = Factory :user, :ideas => []
+      @user = FactoryGirl.create :user, :ideas => []
       @user_idea = @user.create_new_idea!(:content => 'ana are mere', :privacy => Privacy::Values[:public])
-      @other_user_idea = Factory :user_idea
+      @other_user_idea = FactoryGirl.create :user_idea
     end
 
     it 'should have the correct idea' do

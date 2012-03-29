@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UserMailer do
   let :user do
-    Factory.build :pending_user
+    FactoryGirl.build :pending_user
   end
 
   describe 'send registration confirmation' do

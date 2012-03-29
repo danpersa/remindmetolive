@@ -19,9 +19,9 @@ describe UsersController do
     describe 'for signed-in users' do
 
       before(:each) do
-        @user = test_web_sign_in(Factory(:unique_user))
-        second = Factory(:unique_user)
-        third  = Factory(:unique_user)
+        @user = test_web_sign_in(FactoryGirl.create(:unique_user))
+        second = FactoryGirl.create(:unique_user)
+        third  = FactoryGirl.create(:unique_user)
         @users = [@user, second, third]
       end
       
@@ -41,7 +41,7 @@ describe UsersController do
 
       it 'should paginate users' do
         11.times do
-          @users << Factory(:unique_user)
+          @users << FactoryGirl.create(:unique_user)
         end
         visit users_path
         page.should have_selector('ul.pagination')
@@ -63,8 +63,7 @@ describe UsersController do
   describe 'GET show' do
 
     before(:each) do
-      @user = test_web_sign_in(Factory(:unique_user))
-      @privacy = Privacy::Values[:public]
+      @user = test_web_sign_in(FactoryGirl.create(:unique_user))
     end
     
     it_should_behave_like 'successful get request' do
@@ -85,62 +84,79 @@ describe UsersController do
       page.should have_selector('div>img.gravatar')
     end
 
-    it 'should show the social events' do
-      pending
-    end
-    
-    it 'should paginate the social events' do
-        11.times do
-          idea = Factory(:idea, :user => @user, :content => 'Baz quux')
-          Factory(:reminder, :user => @user, :idea => idea, :created_at => 2.day.ago, :privacy => @privacy)
+    describe 'social events table' do
+      before do
+        @social_events = []
+        11.times do |index|
+          idea = FactoryGirl.create :idea, :created_by => @user,
+                                :owned_by => @user,
+                                :content => 'Baz quux' + index.to_s
+          @social_events << FactoryGirl.create(:create_idea_social_event, :created_by => @user,
+                                             :idea => idea)
         end
         visit user_path(@user)
-        page.should have_selector('div.pagination')
-        page.should have_selector('li.disabled', :text => 'Previous')
-        page.should have_link('2')
-        page.should have_link('Next')
-    end
+      end
 
-    context 'for users that are not logged' do
-      it 'should block access'  do
-        pending
+      it 'should show the social events' do
+        index = 0
+        @social_events.each do |social_event|
+          page.should have_selector('strong', :text => social_event.idea.content) if index < 10
+          index += 1
+        end
+      end
+      
+      it 'should paginate the social events' do
+          page.should have_selector('ul.pagination')
+          page.should have_link('2')
       end
     end
     
-    context 'for logged users' do
+    context 'social events privacies' do
       before(:each) do
         @private_privacy = Privacy::Values[:private]
-        @idea1 = Factory(:idea, :user => @user, :content => 'Foo bar')
-        @idea2 = Factory(:idea, :user => @user, :content => 'Baz quux')
-        @public_reminder = Factory(:reminder, :user => @user, :idea => @idea1,
-                                              :created_at => 1.day.ago, :privacy => @privacy)
-        @private_reminder = Factory(:reminder, :user => @user, :idea => @idea2,
-                                               :created_at => 2.day.ago, :privacy => @private_privacy)
+        @public_idea = FactoryGirl.create :idea, :created_by => @user,
+                                :owned_by => @user,
+                                :content => 'Foo bar',
+                                :privacy => Privacy::Values[:public]
+        @public_social_event = FactoryGirl.create(:create_idea_social_event, :created_by => @user,
+                                                                  :idea => @public_idea)
+        @private_idea = FactoryGirl.create :idea, :created_by => @user,
+                                :owned_by => @user,
+                                :content => 'Baz quux',
+                                :privacy => Privacy::Values[:private]
+        @private_social_event = FactoryGirl.create :create_idea_social_event, :created_by => @user,
+                                                                   :idea => @private_idea,
+                                                                   :privacy => Privacy::Values[:private]
       end
 
+      context 'own profile' do
+        before do
+          visit user_path(@user)
+        end
 
-      it 'should show the user\'s public social events' do
-        idea1 = Factory(:idea, :user => @user, :content => 'Foo bar')
-        idea2 = Factory(:idea, :user => @user, :content => 'Baz quux')
-        visit user_path(@user)
-        page.should have_selector('div', :text => idea1.content)
-        page.should have_selector('div', :text => idea2.content)
+        it 'should show own private social events' do
+          page.should have_selector('strong', :text => @private_idea.content)
+        end
+
+        it 'should show own public social events' do
+          page.should have_selector('strong', :text => @public_idea.content)
+        end
       end
-      
-      
-      it 'should show own private social events' do
-        test_web_sign_in(@user)
-        visit user_path(@user)
-        page.should have_selector('div', :text => @idea1.content)
-        page.should have_selector('div', :text => @idea2.content)
-      end
-      
-      it 'should not show other user\'s private social events' do
-        other_user = Factory(:unique_user)
-        test_web_sign_in(other_user)
-        visit user_path(@user)
-        page.should have_selector('div', :text => @idea1.content)
-        page.should_not have_selector('div', :text => @idea2.content)
+
+      context 'other user\'s profile' do
+        before do
+          other_user = FactoryGirl.create(:unique_user)
+          test_web_sign_in(other_user)
+          visit user_path(@user)
+        end
+
+        it 'should show the user\'s public social events' do
+          page.should have_selector('strong', :text => @public_idea.content)
+        end
+
+        it 'should not show other user\'s private social events' do
+          page.should_not have_selector('strong', :text => @private_idea.content)
+        end
       end
     end
   end
@@ -227,9 +243,9 @@ describe UsersController do
       end
 
       it 'should deny access if wrong user' do
-        @user = Factory(:unique_user)
+        @user = FactoryGirl.create(:unique_user)
         test_sign_in(@user)
-        wrong_user = Factory(:unique_user)
+        wrong_user = FactoryGirl.create(:unique_user)
         get :edit, :id => wrong_user
         response.should redirect_to(root_path)
       end
@@ -237,7 +253,7 @@ describe UsersController do
 
     describe 'success' do
       before(:each) do
-        user = Factory(:unique_user)
+        user = FactoryGirl.create(:unique_user)
         test_web_sign_in(user)
         visit edit_user_path(user)
       end
@@ -257,7 +273,7 @@ describe UsersController do
   describe 'PUT update' do
 
     before(:each) do
-      @user = Factory(:activated_user)
+      @user = FactoryGirl.create(:activated_user)
       test_sign_in(@user)
     end
 
@@ -308,7 +324,7 @@ describe UsersController do
   describe 'authentication of edit/update pages' do
 
     before(:each) do
-      @user = Factory(:unique_user)
+      @user = FactoryGirl.create(:unique_user)
     end
 
     describe 'for non-signed-in users' do
@@ -329,7 +345,7 @@ describe UsersController do
     describe 'for signed-in users' do
 
       before(:each) do
-        wrong_user = Factory(:unique_user)
+        wrong_user = FactoryGirl.create(:unique_user)
         test_sign_in(wrong_user)
       end
 
@@ -348,8 +364,8 @@ describe UsersController do
   describe 'DELETE destroy' do
 
     before(:each) do
-      @user = Factory(:unique_user)
-      @community_user = Factory(:community_user)
+      @user = FactoryGirl.create(:unique_user)
+      @community_user = FactoryGirl.create(:community_user)
     end
 
     describe 'as a non-signed-in user' do
@@ -362,7 +378,7 @@ describe UsersController do
     describe 'as a non-admin user' do
       it 'should protect the page if the user tries to delete other user\'s account' do
         test_sign_in(@user)
-        other_user = Factory(:unique_user)
+        other_user = FactoryGirl.create(:unique_user)
         delete :destroy, :id => other_user
         response.should redirect_to(root_path)
       end
@@ -377,7 +393,7 @@ describe UsersController do
     describe 'as an admin user' do
 
       before(:each) do
-        admin = Factory(:user, :email => 'admin@example.com', :admin => true)
+        admin = FactoryGirl.create(:user, :email => 'admin@example.com', :admin => true)
         test_sign_in(admin)
       end
 
@@ -412,8 +428,8 @@ describe UsersController do
     
     describe 'when signed in' do
       before(:each) do
-        @user = test_web_sign_in(Factory(:unique_user))
-        @other_user = Factory(:unique_user)
+        @user = test_web_sign_in(FactoryGirl.create(:unique_user))
+        @other_user = FactoryGirl.create(:unique_user)
         @user.follow!(@other_user)
       end
       
@@ -432,7 +448,7 @@ describe UsersController do
   describe 'GET activate' do
     
     before(:each) do
-      @user = Factory(:unique_user)
+      @user = FactoryGirl.create(:unique_user)
     end
     
     describe 'when signed in' do

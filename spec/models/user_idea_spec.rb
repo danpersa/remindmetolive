@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UserIdea do
 
   let :user do
-    Factory :simple_user
+    FactoryGirl.create :simple_user
   end
 
   let :attr do
@@ -20,7 +20,7 @@ describe UserIdea do
     describe 'privacy field' do
 
       it 'should exist' do
-        user_idea = Factory.build :user_idea
+        user_idea = FactoryGirl.build :user_idea
         user_idea.should respond_to :privacy
       end
 
@@ -42,19 +42,19 @@ describe UserIdea do
     describe 'reminder_date field' do
 
       it 'should exist' do
-        user_idea = Factory.build :simple_user_idea
+        user_idea = FactoryGirl.build :simple_user_idea
         user_idea.should respond_to :reminder_date
       end
 
       it 'should not be in the past' do
-        user_idea = Factory.build :simple_user_idea, :reminder_date => 2.days.ago
+        user_idea = FactoryGirl.build :simple_user_idea, :reminder_date => 2.days.ago
         user_idea.should_not be_valid
       end
     end
 
     describe 'it should have a reminder_created_at field' do
       it 'should exist' do
-        user_idea = Factory.build :simple_user_idea
+        user_idea = FactoryGirl.build :simple_user_idea
         user_idea.should respond_to :reminder_created_at
       end
 
@@ -85,12 +85,12 @@ describe UserIdea do
     describe 'set_reminder method' do
 
       it 'should have an set_reminder method' do
-        user_idea = Factory.build :simple_user_idea
+        user_idea = FactoryGirl.build :simple_user_idea
         user_idea.should respond_to :set_reminder
       end
 
       it 'should initilize the reminder_created_at attribute' do
-        user_idea = Factory.build :simple_user_idea
+        user_idea = FactoryGirl.build :simple_user_idea
         reminder_date = Date.new
         user_idea.set_reminder reminder_date
         user_idea.reminder_created_at.should_not be_nil

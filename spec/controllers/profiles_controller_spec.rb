@@ -11,14 +11,14 @@ describe ProfilesController do
     describe 'authentication' do
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
-          user = Factory(:activated_user)
+          user = FactoryGirl.create(:activated_user)
           get :edit, :user_id => user.id
         end
       end
   
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
-          user = Factory(:activated_user)
+          user = FactoryGirl.create(:activated_user)
           post :create, :user_id => user.id
         end
       end
@@ -26,8 +26,8 @@ describe ProfilesController do
     
     describe 'the requested user is not the logged user' do
       before(:each) do
-        @user = test_sign_in(Factory(:unique_user))
-        @another_user = Factory(:unique_user, :email => 'other@yahoo.com')
+        @user = test_sign_in(FactoryGirl.create(:unique_user))
+        @another_user = FactoryGirl.create(:unique_user, :email => 'other@yahoo.com')
       end
     
       it 'should not allow access for edit' do
@@ -43,7 +43,7 @@ describe ProfilesController do
     
     describe 'the user does not exist' do
       before(:each) do
-        @user = test_sign_in(Factory(:unique_user))
+        @user = test_sign_in(FactoryGirl.create(:unique_user))
       end
       
       it 'should not edit' do
@@ -62,7 +62,7 @@ describe ProfilesController do
   describe 'GET edit' do
 
     before(:each) do
-      @user = test_web_sign_in(Factory(:unique_user))
+      @user = test_web_sign_in(FactoryGirl.create(:unique_user))
     end
     
     it_should_behave_like 'successful get request' do
@@ -76,7 +76,7 @@ describe ProfilesController do
   describe 'POST create' do
 
     before(:each) do
-      @user = test_sign_in(Factory(:unique_user, :profile => nil))
+      @user = test_sign_in(FactoryGirl.create(:unique_user, :profile => nil))
       @attr = {:email => '', :name => '',
                  :location => '', :website => ''}
     end

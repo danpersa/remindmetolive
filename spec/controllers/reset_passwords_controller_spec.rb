@@ -22,7 +22,7 @@ describe ResetPasswordsController do
     end
     
     it 'should not allow access to already logged users' do
-      @user = test_sign_in(Factory(:user))
+      @user = test_sign_in(FactoryGirl.create(:user))
       get :new
       response.should redirect_to(root_path)
       flash[:notice].should =~ /You must not be signed in in order to do this action!/i
@@ -34,7 +34,7 @@ describe ResetPasswordsController do
     before(:each) do
       @attr = { :name => 'New User', :email => 'user@example.com',
                   :password => 'foobar', :password_confirmation => 'foobar' }
-      @user = Factory(:activated_user)
+      @user = FactoryGirl.create(:activated_user)
       ActionMailer::Base.deliveries = []
     end
     
@@ -70,7 +70,7 @@ describe ResetPasswordsController do
     describe 'fail' do
       
       it 'should not allow access to already logged users' do
-        @user = test_sign_in(Factory(:user))
+        @user = test_sign_in(FactoryGirl.create(:user))
         post :create, :reset_password => {:email => @user.email}
         response.should redirect_to(root_path)
         flash[:notice].should =~ /You must not be signed in in order to do this action!/i

@@ -163,7 +163,7 @@ module ApplicationHelper
   end
 
   def init_feeds_table1
-    @social_events = SocialEvent.own_or_public_of_users_followed_by(current_user).without(:users).limit @@items_per_page
+    @social_events = SocialEvent.own_or_public_of_users_followed_by(current_user).without(:users).page(@page).per(@@items_per_page)
   end
 
   def init_default_sidebar

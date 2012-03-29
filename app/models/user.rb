@@ -28,9 +28,9 @@ class User < EdgeAuth::Identity
   attr_accessor   :password, :updating_password
   attr_accessible :username, :email, :password, :password_confirmation, :activation_code
 
-  validates_presence_of       :username, on: :create
+  validates_presence_of       :username
   validates_length_of         :username, minimum: 5, maximum: 25, on: :create
-  validates_uniqueness_of     :username, on: :create
+  validates_uniqueness_of     :username
 
 
   # should only be called with pagination

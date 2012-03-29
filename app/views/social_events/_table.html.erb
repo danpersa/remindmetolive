@@ -5,3 +5,5 @@
     <%= render :partial => 'social_events/following_user_social_event', :locals => {:following_user_social_event => social_event} %>
   <% end %>
 <% end %>
+
+<%= paginate social_events, :outer_window => 3 %>

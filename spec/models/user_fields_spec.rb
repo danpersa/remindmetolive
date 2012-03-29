@@ -13,7 +13,7 @@ describe User do
 
   describe 'creation' do
     let(:user) do
-      Factory.build(:simple_user)
+      FactoryGirl.build(:simple_user)
     end
 
     it 'should create a new instance given valid attributes' do
@@ -27,7 +27,7 @@ describe User do
       context 'when validating name presence' do
 
         let(:user) do
-          Factory.build(:simple_user, username: nil)
+          FactoryGirl.build(:simple_user, username: nil)
         end
 
         before do
@@ -41,11 +41,11 @@ describe User do
 
       context 'when validating username uniqueness' do
         let(:user) do
-          Factory.build(:simple_user)
+          FactoryGirl.build(:simple_user)
         end
 
         before do
-          Factory(:simple_user)
+          FactoryGirl.create(:simple_user)
           user.valid?
         end
 
@@ -57,7 +57,7 @@ describe User do
       describe 'when validating length' do
         context 'too short' do
           let(:user) do
-            Factory.build(:simple_user, username: 'shor')
+            FactoryGirl.build(:simple_user, username: 'shor')
           end
 
           before do
@@ -71,7 +71,7 @@ describe User do
 
         context 'too long' do
           let(:user) do
-            Factory.build(:simple_user, username: 'a' * 51)
+            FactoryGirl.build(:simple_user, username: 'a' * 51)
           end
 
           before do
@@ -89,15 +89,15 @@ describe User do
       it 'should reject invalid email addresses' do
         addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
         addresses.each do |address|
-          invalid_email_user = Factory.build(:simple_user, :email => address)
+          invalid_email_user = FactoryGirl.build(:simple_user, :email => address)
           invalid_email_user.should_not be_valid
         end
       end
 
       it 'should reject email addresses identical up to case' do
-        user = Factory(:simple_user)
+        user = FactoryGirl.create(:simple_user)
         upcased_email = user.email.upcase
-        user_with_duplicate_email = Factory.build(:user, :email => upcased_email)
+        user_with_duplicate_email = FactoryGirl.build(:user, :email => upcased_email)
         user_with_duplicate_email.should_not be_valid
       end
 
@@ -105,7 +105,7 @@ describe User do
 
         context 'too long' do
           let(:user) do
-            Factory.build(:simple_user, email: 'a' * 256 + '@yahoo.com')
+            FactoryGirl.build(:simple_user, email: 'a' * 256 + '@yahoo.com')
           end
 
           before do
@@ -120,7 +120,7 @@ describe User do
 
       context 'when validating email presence' do
         let(:user) do
-          Factory.build(:simple_user, email: nil)
+          FactoryGirl.build(:simple_user, email: nil)
         end
 
         before do
@@ -134,11 +134,11 @@ describe User do
 
       context 'when validating email uniqueness' do
         let(:user) do
-          Factory.build(:simple_user)
+          FactoryGirl.build(:simple_user)
         end
 
         before do
-          Factory(:simple_user)
+          FactoryGirl.create(:simple_user)
           user.valid?
         end
 
@@ -152,7 +152,7 @@ describe User do
 
       context 'when validating inclusion' do
         let(:user) do
-          Factory.build(:simple_user, state: 'other')
+          FactoryGirl.build(:simple_user, state: 'other')
         end
 
         before do
@@ -195,7 +195,7 @@ describe User do
 
       describe 'block user' do
         let(:user) do
-          Factory.build(:simple_user)
+          FactoryGirl.build(:simple_user)
         end
 
         it 'should be in the blocked state' do
@@ -208,7 +208,7 @@ describe User do
     describe 'password field' do
       context 'when validating password confirmation' do
         let(:user) do
-          Factory.build(:simple_user, password_confirmation: 'invalid')
+          FactoryGirl.build(:simple_user, password_confirmation: 'invalid')
         end
 
         before do
@@ -222,14 +222,14 @@ describe User do
 
       it_should_behave_like 'password validation' do
         let(:action) do
-          @valid_object = Factory.build(:simple_user)
+          @valid_object = FactoryGirl.build(:simple_user)
         end
       end
 
       describe 'password encryption' do
 
         let(:user) do
-          Factory.create(:simple_user)
+          FactoryGirl.create(:simple_user)
         end
 
         it 'should have an encrypted password attribute' do
@@ -259,7 +259,7 @@ describe User do
           end
 
           it 'should return nil if user is blocked' do
-            blocked_user = Factory(:activated_user, :email => 'blocked@yahoo.com')
+            blocked_user = FactoryGirl.create(:activated_user, :email => 'blocked@yahoo.com')
             blocked_user.block!
             blocked_user = User.authenticate(blocked_user.email, blocked_user.password)
             blocked_user.should be_nil
@@ -282,7 +282,7 @@ describe User do
   describe 'admin attribute' do
 
     let(:user) do
-      Factory.build(:simple_user)
+      FactoryGirl.build(:simple_user)
     end
 
     it 'should respond to admin' do
@@ -301,7 +301,7 @@ describe User do
 
   describe 'idea_lists_count field' do
     let(:user) do
-      Factory.build(:simple_user)
+      FactoryGirl.build(:simple_user)
     end
 
     it 'should exist' do

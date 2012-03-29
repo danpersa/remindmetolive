@@ -1,7 +1,12 @@
-Factory.sequence(:username)    {|n| "username#{n}" }
-Factory.sequence(:email)       {|n| "person#{n}@example.com" }
-
 FactoryGirl.define do
+
+  sequence :username do |n|
+    "username#{n}"
+  end
+
+  sequence :email do |n|
+    "person#{n}@example.com"
+  end
 
   factory :user do |user|
     user.username              'Michael Hartl'
@@ -10,16 +15,16 @@ FactoryGirl.define do
     user.password_confirmation 'foobar'
     user.activation_code       '1234567890'
     user.state                 'pending'
-    user.profile { Factory.build(:profile) }
-    user.ideas { [Factory.build(:user_idea), Factory.build(:second_user_idea)] }
+    user.profile { FactoryGirl.build(:profile) }
+    user.ideas { [FactoryGirl.build(:user_idea), FactoryGirl.build(:second_user_idea)] }
     user.followers {
-      [Factory.build(:unique_user), Factory.build(:unique_user)]
+      [FactoryGirl.build(:unique_user), FactoryGirl.build(:unique_user)]
     }
     user.following {
-      [Factory.build(:unique_user), Factory.build(:unique_user)]
+      [FactoryGirl.build(:unique_user), FactoryGirl.build(:unique_user)]
     }
     user.idea_lists {
-      [Factory.build(:idea_list), Factory.build(:idea_list)]
+      [FactoryGirl.build(:idea_list), FactoryGirl.build(:idea_list)]
     }
   end
 
@@ -35,15 +40,15 @@ FactoryGirl.define do
 
   factory :unique_user, :class => User do |user|
 
-    user.username               { Factory.next :username }
-    user.email                  { Factory.next :email }
+    user.username               { FactoryGirl.generate :username }
+    user.email                  { FactoryGirl.generate :email }
 
     user.password              'foobar'
     user.password_confirmation 'foobar'
     user.activation_code       '1234567890'
     user.state                 'pending'
-    user.profile { Factory.build(:profile) }
-    #user.ideas { [Factory.build(:user_idea), Factory.build(:second_user_idea)] }
+    user.profile { FactoryGirl.build(:profile) }
+    #user.ideas { [FactoryGirl.build(:user_idea), FactoryGirl.build(:second_user_idea)] }
   end
 
   factory :activated_user, :class => User  do |user|

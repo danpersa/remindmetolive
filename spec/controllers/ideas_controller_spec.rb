@@ -53,19 +53,19 @@ describe IdeasController do
     describe 'success' do
 
       before(:each) do
-        @user = Factory :unique_user
-        @user1 = Factory :unique_user
-        @user2 = Factory :unique_user
-        @idea = Factory :idea
-        public_user_idea1 = Factory :user_idea, 
+        @user = FactoryGirl.create :unique_user
+        @user1 = FactoryGirl.create :unique_user
+        @user2 = FactoryGirl.create :unique_user
+        @idea = FactoryGirl.create :idea
+        public_user_idea1 = FactoryGirl.create :user_idea, 
                                      :idea => @idea, 
                                      :privacy =>  Privacy::Values[:public],
                                      :user => @user1
-        public_user_idea2 = Factory :user_idea, 
+        public_user_idea2 = FactoryGirl.create :user_idea, 
                                      :idea => @idea, 
                                      :privacy =>  Privacy::Values[:public], 
                                      :user => @user2
-        private_user_idea = Factory :user_idea, 
+        private_user_idea = FactoryGirl.create :user_idea, 
                                      :idea => @idea, 
                                      :privacy =>  Privacy::Values[:private]
       end
@@ -97,19 +97,19 @@ describe IdeasController do
     describe 'success' do
 
       before(:each) do
-        @user = Factory :unique_user
-        @user1 = Factory :unique_user
-        @user2 = Factory :unique_user
-        @idea = Factory :idea
-        public_user_idea1 = Factory :user_idea, 
+        @user = FactoryGirl.create :unique_user
+        @user1 = FactoryGirl.create :unique_user
+        @user2 = FactoryGirl.create :unique_user
+        @idea = FactoryGirl.create :idea
+        public_user_idea1 = FactoryGirl.create :user_idea, 
                                      :idea => @idea, 
                                      :privacy =>  Privacy::Values[:public],
                                      :user => @user1
-        public_user_idea2 = Factory :user_idea, 
+        public_user_idea2 = FactoryGirl.create :user_idea, 
                                      :idea => @idea, 
                                      :privacy =>  Privacy::Values[:public], 
                                      :user => @user2
-        private_user_idea = Factory :user_idea, 
+        private_user_idea = FactoryGirl.create :user_idea, 
                                      :idea => @idea, 
                                      :privacy =>  Privacy::Values[:private]
       end
@@ -126,30 +126,30 @@ describe IdeasController do
     describe 'success' do
 
       before(:each) do
-        @user = Factory :unique_user
-        @followed_user1 = Factory :unique_user
-        @followed_user2 = Factory :unique_user
-        followed_user3 = Factory :unique_user
-        other_user = Factory :unique_user
+        @user = FactoryGirl.create :unique_user
+        @followed_user1 = FactoryGirl.create :unique_user
+        @followed_user2 = FactoryGirl.create :unique_user
+        followed_user3 = FactoryGirl.create :unique_user
+        other_user = FactoryGirl.create :unique_user
         @user.follow! @followed_user1
         @user.follow! @followed_user2
         @user.follow! followed_user3
         @user = User.find @user.id
         @user.password = 'foobar'
-        @idea = Factory :idea
-        public_user_idea_of_followed_user1 = Factory :user_idea, 
+        @idea = FactoryGirl.create :idea
+        public_user_idea_of_followed_user1 = FactoryGirl.create :user_idea, 
                                                      :idea => @idea, 
                                                      :privacy =>  Privacy::Values[:public],
                                                      :user => @followed_user1
-        public_user_idea_of_followed_user2 = Factory :user_idea, 
+        public_user_idea_of_followed_user2 = FactoryGirl.create :user_idea, 
                                                      :idea => @idea, 
                                                      :privacy =>  Privacy::Values[:public],
                                                      :user => @followed_user2
-        private_user_idea_of_followed_user3 = Factory :user_idea,
+        private_user_idea_of_followed_user3 = FactoryGirl.create :user_idea,
                                                       :idea => @idea, 
                                                       :privacy =>  Privacy::Values[:private],
                                                       :user => followed_user3
-        public_user_idea_of_other_user = Factory :user_idea, 
+        public_user_idea_of_other_user = FactoryGirl.create :user_idea, 
                                                  :idea => @idea, 
                                                  :privacy =>  Privacy::Values[:public],
                                                  :user => other_user

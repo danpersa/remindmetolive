@@ -10,11 +10,11 @@ describe User do
 
   describe 'following association' do
     let :user do
-      Factory.build :simple_user
+      FactoryGirl.build :simple_user
     end
 
     let :other_user do
-      Factory.build :simple_user
+      FactoryGirl.build :simple_user
     end
 
     it 'should have a following association' do
@@ -29,11 +29,11 @@ describe User do
 
   describe 'followers association' do
     let :user do
-      Factory.build :simple_user
+      FactoryGirl.build :simple_user
     end
 
     let :other_user do
-      Factory.build :simple_user
+      FactoryGirl.build :simple_user
     end
 
     it 'should have a followers association' do

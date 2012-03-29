@@ -7,7 +7,7 @@ describe ChangeResetedPasswordsController do
 
     before(:each) do
       @base_title = "Remind me to live"
-      @user = Factory(:activated_user)
+      @user = FactoryGirl.create(:activated_user)
     end
 
     describe "success" do
@@ -66,7 +66,7 @@ describe ChangeResetedPasswordsController do
     
     describe "it should reject users that are not activated" do
       let(:action) do
-          user = Factory(:user)
+          user = FactoryGirl.create(:user)
           user.reset_password
           get :edit, :id => user.password_reset_code
           @notification = :notice
@@ -81,7 +81,7 @@ describe ChangeResetedPasswordsController do
   describe "POST 'create'" do
 
     before(:each) do
-      @user = Factory(:activated_user)
+      @user = FactoryGirl.create(:activated_user)
       @user.reset_password
       @attr = { :password_reset_code => @user.password_reset_code, 
                 :password => "password",

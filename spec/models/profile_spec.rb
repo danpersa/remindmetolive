@@ -4,11 +4,11 @@ describe Profile do
   describe "creation" do
 
     let(:profile) do
-      Factory.build(:profile)
+      FactoryGirl.build(:profile)
     end
 
     let(:user) do
-      Factory.build(:simple_user)
+      FactoryGirl.build(:simple_user)
     end
 
     it "should create a new instance given valid attributes" do
@@ -25,7 +25,7 @@ describe Profile do
       end
 
       let(:user) do
-        Factory(:simple_user)
+        FactoryGirl.create(:simple_user)
       end
 
       it "should not be rejected" do
@@ -39,7 +39,7 @@ describe Profile do
     describe "name field" do
       context "too long" do
         let(:profile) do
-          Factory.build :profile, :name => 'a' * 51
+          FactoryGirl.build :profile, :name => 'a' * 51
         end
 
         it "should be shorter than 50 characters" do
@@ -52,7 +52,7 @@ describe Profile do
     describe "email field" do
       context "too long" do
         let(:profile) do
-          Factory.build :profile, :email => 'a' * 255 + '@yahoo.com'
+          FactoryGirl.build :profile, :email => 'a' * 255 + '@yahoo.com'
         end
 
         it "should be shorter than 255 characters" do
@@ -65,7 +65,7 @@ describe Profile do
         it "should be rejected" do
           addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
           addresses.each do |address|
-            invalid_email_profile = Factory.build(:profile, :email => address)
+            invalid_email_profile = FactoryGirl.build(:profile, :email => address)
             invalid_email_profile.should_not be_valid
           end
         end
@@ -74,7 +74,7 @@ describe Profile do
       describe "location field" do
         context "too long" do
           let(:profile) do
-            Factory.build :profile, :location => 'a' * 101
+            FactoryGirl.build :profile, :location => 'a' * 101
           end
 
           it "should be shorter than 100 characters" do
@@ -87,7 +87,7 @@ describe Profile do
       describe "website field" do
         context "too long" do
           let(:profile) do
-            Factory.build :profile, :website => 'a' * 101
+            FactoryGirl.build :profile, :website => 'a' * 101
           end
 
           it "should be shorter than 100 characters" do
@@ -101,8 +101,8 @@ describe Profile do
 
   describe "user association" do
     before do
-      @user = Factory(:simple_user)
-      @profile = Factory.build(:profile)
+      @user = FactoryGirl.create(:simple_user)
+      @profile = FactoryGirl.build(:profile)
       @profile.user = @user
     end
 
@@ -120,18 +120,18 @@ describe Profile do
 
   describe "empty method" do
     it "should have an empty method" do
-      profile = Factory.build(:profile)
+      profile = FactoryGirl.build(:profile)
       profile.should respond_to('empty_profile?')
     end
 
     it "should be empty" do
-      profile = Factory.build(:profile, :email => "", :name => "",
+      profile = FactoryGirl.build(:profile, :email => "", :name => "",
         :location => "", :website => "")
       profile.should be_empty_profile
     end
 
     it "should not be empty" do
-      profile = Factory.build(:profile)
+      profile = FactoryGirl.build(:profile)
       profile.should_not be_empty_profile
     end
   end

@@ -34,14 +34,14 @@ describe UserIdeasController do
     describe '#shared_by_logged_user' do
       
       before(:each) do
-        @user = test_sign_in Factory :unique_user
-        other_user = Factory :unique_user
-        @idea = Factory :simple_idea, :created_by => @user,
+        @user = test_sign_in FactoryGirl.create :unique_user
+        other_user = FactoryGirl.create :unique_user
+        @idea = FactoryGirl.create :simple_idea, :created_by => @user,
                                       :owned_by => @user,
                                       :privacy => Privacy::Values[:public]
-        @user_idea = Factory :user_idea, :idea => @idea,
+        @user_idea = FactoryGirl.create :user_idea, :idea => @idea,
                                          :user => other_user
-        @own_user_idea = Factory :user_idea, :idea => @idea,
+        @own_user_idea = FactoryGirl.create :user_idea, :idea => @idea,
                                              :user => @user
       end
       
@@ -60,14 +60,14 @@ describe UserIdeasController do
 
   describe 'GET index' do
     before do
-      user = Factory(:unique_user)
+      user = FactoryGirl.create(:unique_user)
       @user_ideas = []
       11.times do |index|
-        idea = Factory(:idea, :content => 'Baz quux ' + index.to_s,
+        idea = FactoryGirl.create(:idea, :content => 'Baz quux ' + index.to_s,
                               :created_by => user,
                               :owned_by => user,
                               :privacy => Privacy::Values[:public])
-        @user_ideas << Factory(:user_idea, :idea => idea,
+        @user_ideas << FactoryGirl.create(:user_idea, :idea => idea,
                                           :user => user,
                                           :privacy => Privacy::Values[:public])
       end
@@ -92,7 +92,7 @@ describe UserIdeasController do
   describe 'POST create' do
 
     before do
-      @user = test_sign_in(Factory(:user))
+      @user = test_sign_in(FactoryGirl.create(:user))
     end
 
     context 'when success' do
@@ -157,7 +157,7 @@ describe UserIdeasController do
 
   describe 'DELETE destroy' do
     before do
-      @user = test_sign_in Factory(:unique_user)
+      @user = test_sign_in FactoryGirl.create(:unique_user)
     end
 
     describe 'success' do
@@ -166,10 +166,10 @@ describe UserIdeasController do
         context 'when the idea is private' do
 
           before do
-            idea = Factory :simple_idea, :created_by => @user,
+            idea = FactoryGirl.create :simple_idea, :created_by => @user,
                                    :owned_by => @user,
                                    :privacy => Privacy::Values[:private]
-            @user_idea = Factory :user_idea, :idea => idea, :user => @user
+            @user_idea = FactoryGirl.create :user_idea, :idea => idea, :user => @user
           end
 
           it 'should destroy the idea' do
@@ -187,17 +187,17 @@ describe UserIdeasController do
 
         context 'when the idea is public' do
           before do
-            @idea = Factory :simple_idea, :created_by => @user,
+            @idea = FactoryGirl.create :simple_idea, :created_by => @user,
                                           :owned_by => @user,
                                           :privacy => Privacy::Values[:public]
-            @user_idea = Factory :user_idea, :idea => @idea,
+            @user_idea = FactoryGirl.create :user_idea, :idea => @idea,
                                              :user => @user
           end
 
           context 'when the idea is shared with other users' do
             before do
-              other_user = Factory :unique_user
-              other_user_idea = Factory :user_idea, :idea => @idea,
+              other_user = FactoryGirl.create :unique_user
+              other_user_idea = FactoryGirl.create :user_idea, :idea => @idea,
                                                     :user => other_user
             end
 
@@ -233,11 +233,11 @@ describe UserIdeasController do
       context 'when the idea corresponding to the user idea is owned by some other user' do
 
         before do
-          other_user = Factory :unique_user
-          @idea = Factory :idea, :created_by => other_user,
+          other_user = FactoryGirl.create :unique_user
+          @idea = FactoryGirl.create :idea, :created_by => other_user,
                                  :owned_by => other_user,
                                  :privacy => Privacy::Values[:public]
-          @user_idea = Factory :user_idea, :idea => @idea,
+          @user_idea = FactoryGirl.create :user_idea, :idea => @idea,
                                            :user => @user          
         end
 
@@ -258,13 +258,13 @@ describe UserIdeasController do
     describe 'failure' do
 
       it 'should deny access if the user idea does not exist' do
-        test_sign_in Factory(:user)
+        test_sign_in FactoryGirl.create(:user)
         delete :destroy, :id => @user.id
         response.should redirect_to(root_path)
       end
 
       it 'should deny access if the user does not own the user idea' do
-        test_sign_in Factory(:user)
+        test_sign_in FactoryGirl.create(:user)
         delete :destroy, :id => @user.id
         response.should redirect_to(root_path)
       end

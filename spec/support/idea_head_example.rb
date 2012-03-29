@@ -3,8 +3,8 @@ shared_examples_for 'idea head' do
 
     before(:each) do
       @public_privacy = Privacy::Values[:public]
-      @user = Factory :user
-      @idea = Factory :idea, :owned_by => @user
+      @user = FactoryGirl.create :user
+      @idea = FactoryGirl.create :idea, :owned_by => @user
     end
 
     describe 'should allow access' do
@@ -16,7 +16,7 @@ shared_examples_for 'idea head' do
       end
 
       it 'to another user\'s public idea for which you have reminders' do
-        another_user = Factory :unique_user
+        another_user = FactoryGirl.create :unique_user
         test_sign_in another_user
         get requested_page, :id => @idea
         response.should be_successful
@@ -74,10 +74,10 @@ shared_examples_for 'idea head' do
   context 'when fail' do
 
     before(:each) do
-      @user = Factory :user
-      wrong_user = Factory :unique_user
+      @user = FactoryGirl.create :user
+      wrong_user = FactoryGirl.create :unique_user
       test_sign_in wrong_user
-      @idea = Factory :idea, :owned_by => @user,
+      @idea = FactoryGirl.create :idea, :owned_by => @user,
                       :privacy => Privacy::Values[:private]
     end
 

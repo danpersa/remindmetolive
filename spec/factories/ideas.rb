@@ -1,26 +1,28 @@
-Factory.sequence(:idea_content)    {|n| "ana are mere #{n}" }
-
 FactoryGirl.define do
+  sequence :idea_content do |n|
+    "ana are mere #{n}"
+  end
+
   factory :idea do |idea|
-    idea.content    { Factory.next :idea_content }
+    idea.content    { FactoryGirl.generate :idea_content }
     idea.privacy    { Privacy::Values[:public] }
-    idea.created_by { Factory.build :unique_user }
-    idea.owned_by   { Factory.build :unique_user }
+    idea.created_by { FactoryGirl.build :unique_user }
+    idea.owned_by   { FactoryGirl.build :unique_user }
     idea.users_marked_the_idea_good_count 1
     idea.users_marked_the_idea_done_count 1
     idea.users_marked_the_idea_good {
-      [Factory.build(:unique_user), Factory.build(:unique_user)]
+      [FactoryGirl.build(:unique_user), FactoryGirl.build(:unique_user)]
     }
     idea.users_marked_the_idea_done {
-      [Factory.build(:unique_user), Factory.build(:unique_user)]
+      [FactoryGirl.build(:unique_user), FactoryGirl.build(:unique_user)]
     }
   end
 
   factory :simple_idea, :class => Idea do |idea|
-    idea.content    { Factory.next :idea_content }
+    idea.content    { FactoryGirl.generate :idea_content }
     idea.privacy    { Privacy::Values[:public] }
-    idea.created_by { Factory.build :unique_user }
-    idea.owned_by   { Factory.build :unique_user }
+    idea.created_by { FactoryGirl.build :unique_user }
+    idea.owned_by   { FactoryGirl.build :unique_user }
     idea.users_marked_the_idea_good_count 0
     idea.users_marked_the_idea_done_count 0
   end

@@ -3,6 +3,7 @@ if RemindMeToLive::Application.config.enable_social_event_notifications
   # idea related notifications
   ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:idea][:created] do |name, start, finish, id, payload|
     #Rails.logger.debug "The User : #{payload[:created_by].display_name} has created an idea with the content: #{payload[:idea].content}"
+    #puts "The User : #{payload[:created_by].display_name} has created an idea with the content: #{payload[:idea].content}"
     CreateIdeaSocialEvent.create! :created_by => payload[:created_by], :idea => payload[:idea]
   end
 
