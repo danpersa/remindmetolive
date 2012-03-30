@@ -4,8 +4,7 @@ require 'user_observer'
 describe UserObserver do
 
   before do
-    Mongoid.observers = UserObserver
-    Mongoid.instantiate_observers
+    RemindMeToLive::Application.config.disable_registration_confirmation_mail = false
     @attr = {
       :username => 'ExampleUser',
       :email => 'user@example.com',
@@ -13,10 +12,6 @@ describe UserObserver do
       :password_confirmation => 'foobar'
     }
     ActionMailer::Base.deliveries = []
-  end
-
-  after do
-    User.observers.disable(:all)
   end
 
   it 'should send a mail when the user is created' do
@@ -27,5 +22,9 @@ describe UserObserver do
   it 'should not send a mail if validation fails' do
     User.create(@attr.merge :password_confirmation => 'foo')
     ActionMailer::Base.deliveries.should be_empty
+  end
+
+  after do
+    RemindMeToLive::Application.config.disable_registration_confirmation_mail = false
   end
 end

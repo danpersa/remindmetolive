@@ -8,13 +8,61 @@ describe UsersController do
     @base_title = 'Remind me to live'
   end
 
-  describe 'GET index' do
+  describe 'access control' do
 
-    it_should_behave_like 'deny access unless signed in' do
-      let(:request_action) do
-        get :index
+    describe 'authentication' do
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          post :index
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          get :show, :id => 1
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          post :update, :id => 1
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          delete :destroy, :id => 1
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          post :follow, :id => 1
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          delete :unfollow, :id => 1
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          get :following
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          get :followers
+        end
       end
     end
+  end
+
+
+  describe 'GET index' do
 
     describe 'for signed-in users' do
 
@@ -69,7 +117,7 @@ describe UsersController do
     it_should_behave_like 'successful get request' do
       let :action do
         visit user_path @user
-        @title = @base_title + ' | ' + @user.name
+        @title = @base_title + ' | ' + @user.display_name
       end
     end
 
@@ -166,7 +214,7 @@ describe UsersController do
     describe 'failure' do
 
       before(:each) do
-        @attr = { :name => '', :email => '', :password => '',
+        @attr = { :username => '', :email => '', :password => '',
                   :password_confirmation => '' }
       end
 
@@ -188,7 +236,7 @@ describe UsersController do
       end
       
       it 'should validate the password' do
-        @attr = { :name => 'New Name', :email => 'user@example.org',
+        @attr = { :username => 'New Name', :email => 'user@example.org',
                   :password => 'barbaz', :password_confirmation => 'barbaz1' }
         post :create, :user => @attr
         response.should render_template :new
@@ -198,7 +246,7 @@ describe UsersController do
     describe 'success' do
 
       before(:each) do
-        @attr = { :name => 'New User', :email => 'user@example.com',
+        @attr = { :username => 'New User', :email => 'user@example.com',
                   :password => 'foobar', :password_confirmation => 'foobar' }
       end
 
@@ -222,13 +270,23 @@ describe UsersController do
         post :create, :user => @attr
         controller.should_not be_signed_in
       end
-      
-      it 'should send registration confirmation any mail' do
-        ActionMailer::Base.deliveries = []
-        post :create, :user => @attr
-        ActionMailer::Base.deliveries.should_not be_empty
-        email = ActionMailer::Base.deliveries.last
-        email.to.should == [@attr[:email]]
+
+      describe 'mail sending after registration' do
+        before do
+          RemindMeToLive::Application.config.disable_registration_confirmation_mail = false
+          ActionMailer::Base.deliveries = []
+        end
+
+        it 'should send registration confirmation any mail' do
+          post :create, :user => @attr
+          ActionMailer::Base.deliveries.should_not be_empty
+          email = ActionMailer::Base.deliveries.last
+          email.to.should == [@attr[:email]]
+        end
+
+        after do
+          RemindMeToLive::Application.config.disable_registration_confirmation_mail = true
+        end
       end
     end
   end
@@ -280,26 +338,37 @@ describe UsersController do
     describe 'failure' do
 
       before(:each) do
-        @attr = { :email => '', :name => '' }
+        @attr = { :email => '', :username => '' }
       end
 
-      it 'should render the edit page' do
-        put :update, :id => @user, :user => @attr
-        response.should render_template :edit
+      context 'when blank username' do
+
+        it 'should render the edit page' do
+          put :update, :id => @user.id, :user => @attr.merge(:email => 'danix@yahoo.com')
+          response.should render_template :edit
+        end
       end
+
+      context 'when blank email' do
+        it 'should render the edit page' do
+          put :update, :id => @user.id, :user => @attr.merge(:username => 'danix')
+          response.should render_template :edit
+        end
+      end      
+
     end
 
     describe 'success' do
 
       before(:each) do
-        @attr = { :name => 'New Name', :email => 'user@example.org',
+        @attr = { :username => 'New Name', :email => 'user@example.org',
                   :password => 'barbaz', :password_confirmation => 'barbaz' }
       end
 
       it 'should change the user\'s attributes' do
         put :update, :id => @user, :user => @attr
         @user.reload
-        @user.name.should  == @attr[:name]
+        @user.username.should  == @attr[:username]
         @user.email.should == @attr[:email]
       end
       
@@ -365,27 +434,19 @@ describe UsersController do
 
     before(:each) do
       @user = FactoryGirl.create(:unique_user)
-      @community_user = FactoryGirl.create(:community_user)
-    end
-
-    describe 'as a non-signed-in user' do
-      it 'should deny access' do
-        delete :destroy, :id => @user
-        response.should redirect_to(signin_path)
-      end
     end
 
     describe 'as a non-admin user' do
       it 'should protect the page if the user tries to delete other user\'s account' do
         test_sign_in(@user)
         other_user = FactoryGirl.create(:unique_user)
-        delete :destroy, :id => other_user
+        delete :destroy, :id => other_user.id
         response.should redirect_to(root_path)
       end
       
       it 'should allow access if the user tries to delete his own account' do
         test_sign_in(@user)
-        delete :destroy, :id => @user
+        delete :destroy, :id => @user.id
         response.should redirect_to(root_path)
       end
     end

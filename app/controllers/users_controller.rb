@@ -57,7 +57,7 @@ class UsersController < ApplicationController
       redirect_to signin_path
     else
       @title = "Sign up"
-      render :new
+      render :template => 'users/new', :layout => 'one_section_narrow'
     end
   end
 
@@ -74,6 +74,7 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       @title = "Edit user"
+      init_default_sidebar
       render :edit
     end
   end

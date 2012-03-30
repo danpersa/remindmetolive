@@ -4,11 +4,8 @@ module RecaptchaHelper
 
   
   #try and verify the captcha response. Then give out a message to flash
-  def verify_recaptcha(remote_ip, params)
-    
-    unless RemindMeToLive::Application.config.recaptcha[:enable]
-      return true
-    end
+  def verify_recaptcha(remote_ip, params)    
+    return true unless RemindMeToLive::Application.config.recaptcha[:enable]
 
     responce = Net::HTTP.post_form(URI.parse(RemindMeToLive::Application.config.recaptcha[:api_server_url]),
       { :privatekey => RemindMeToLive::Application.config.recaptcha[:private_key],

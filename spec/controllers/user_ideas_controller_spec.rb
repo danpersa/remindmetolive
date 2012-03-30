@@ -20,7 +20,7 @@ describe UserIdeasController do
 
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
-          get :update, :id => 1
+          post :update, :id => 1
         end
       end
 

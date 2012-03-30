@@ -43,5 +43,9 @@ RemindMeToLive::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 
+  # Observers
+  config.mongoid.observers = :user_observer
+  config.disable_registration_confirmation_mail = true
+
   config.enable_social_event_notifications = false
 end
