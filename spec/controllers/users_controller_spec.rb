@@ -135,7 +135,7 @@ describe UsersController do
     describe 'social events table' do
       before do
         @social_events = []
-        11.times do |index|
+        number_of_events.times do |index|
           idea = FactoryGirl.create :idea, :created_by => @user,
                                 :owned_by => @user,
                                 :content => 'Baz quux' + index.to_s
@@ -145,17 +145,27 @@ describe UsersController do
         visit user_path(@user)
       end
 
-      it 'should show the social events' do
-        index = 0
-        @social_events.each do |social_event|
-          page.should have_selector('strong', :text => social_event.idea.content) if index < 10
-          index += 1
+      context 'without pagination' do
+
+        let(:number_of_events) { 3 }
+
+        it 'should show the social events' do
+          index = 0
+          @social_events.each do |social_event|
+            page.should have_selector('strong', :text => social_event.idea.content) if index < 10
+            index += 1
+          end
         end
       end
       
-      it 'should paginate the social events' do
-          page.should have_selector('ul.pagination')
-          page.should have_link('2')
+      context 'with pagination' do
+
+        let(:number_of_events) { 11 }
+
+        it 'should paginate the social events' do
+            page.should have_selector('ul.pagination')
+            page.should have_link('2')
+        end
       end
     end
     
