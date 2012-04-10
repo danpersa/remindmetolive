@@ -1,6 +1,6 @@
 class IdeasController < ApplicationController
-  before_filter :authenticate, :only => [:show, :users, :followed_users]
-  before_filter :own_idea_or_public, :only => [:show, :users, :followed_users]
+  before_filter :authenticate
+  before_filter :own_idea_or_public, :only => [:show, :users, :followed_users, :remind_me_too]
   before_filter :store_location, :only => [:show, :users, :followed_users]
   before_filter :store_current_page, :only => [:show, :users, :followed_users]
 
@@ -33,20 +33,6 @@ class IdeasController < ApplicationController
   end
 
   private
-
-  def own_idea
-    @idea = Idea.find(params[:id])
-    redirect_to root_path unless not @idea.nil? and current_user?(@idea.owned_by)
-  rescue Mongoid::Errors::DocumentNotFound
-    redirect_to root_path
-  end
-
-  def own_idea_or_public
-    @idea = Idea.find(params[:id])
-    redirect_to root_path unless not @idea.nil? and current_user?(@idea.owned_by) || @idea.public?
-  rescue Mongoid::Errors::DocumentNotFound
-    redirect_to root_path
-  end
 
   def init_head
     @user = current_user

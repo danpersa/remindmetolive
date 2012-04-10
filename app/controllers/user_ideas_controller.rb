@@ -13,6 +13,27 @@ class UserIdeasController < ApplicationController
     init_default_sidebar
   end
 
+  def new_for_existing_idea
+    @user_idea = UserIdea.new
+    @dialog_content = 'user_ideas/form_with_idea'
+    #if @idea.shared_by? current_user
+      #logger.info  "idea is shared"
+      #@title = "Create new reminder"
+    #else
+      logger.info  "idea is not shared"
+      @title = "Remind me too"
+    #end  
+    @submit_button_name = "Create reminder"
+    respond_with_remote_form 'ideas/remind_me_too'
+  end
+
+
+  def new_for_existing_idea_from_location
+    location = params[:location]
+    init_reminders_form_url(location)
+    remind_me_too
+  end
+
   def create
     @user_idea = UserIdea.new_with_idea params[:user_idea], current_user
     @idea = @user_idea.idea

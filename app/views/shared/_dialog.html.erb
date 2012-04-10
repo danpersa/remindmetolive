@@ -1,4 +1,4 @@
 var dialog_selector = "#dialog";
 $(dialog_selector).attr("title", "<%= escape_javascript(@title) %>");
-$(dialog_selector + "-div").html("<%= escape_javascript(render(:partial => "form"))%>");
+$(dialog_selector + "-div").html("<%= escape_javascript(render(@dialog_content.nil? ? "form" : @dialog_content))%>");
 $(dialog_selector).reveal();
