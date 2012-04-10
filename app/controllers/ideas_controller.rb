@@ -1,6 +1,6 @@
 class IdeasController < ApplicationController
   before_filter :authenticate
-  before_filter :own_idea_or_public, :only => [:show, :users, :followed_users, :remind_me_too]
+  before_filter :own_idea_or_public, :only => [:show, :users, :followed_users]
   before_filter :store_location, :only => [:show, :users, :followed_users]
   before_filter :store_current_page, :only => [:show, :users, :followed_users]
 

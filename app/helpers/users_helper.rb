@@ -1,4 +1,8 @@
 module UsersHelper
+
+  @@items_per_page = 10
+
+  
   def gravatar_for(user, options = { :size => 150 })
     gravatar_image_tag(user.email.downcase, :alt => user.display_name,
                                             :class => 'gravatar',
@@ -34,5 +38,13 @@ module UsersHelper
 
   def users_edit_class
     return 'active' if "#{params[:controller].parameterize}_#{params[:action].parameterize}" == 'users_edit'
+  end
+
+  def init_social_events_for_user
+    if current_user.id == @user.id
+      @social_events = CreateIdeaSocialEvent.of_user(@user).page(params[:page]).per(@@items_per_page)
+    else
+      @social_events = CreateIdeaSocialEvent.public_of_user(@user).page(params[:page]).per(@@items_per_page)
+    end
   end
 end

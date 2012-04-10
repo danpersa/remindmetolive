@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   include RecaptchaHelper
+  include UsersHelper
 
   layout 'section_with_default_sidebar'
 
@@ -20,11 +21,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    if current_user.id == @user.id
-      @social_events = CreateIdeaSocialEvent.of_user(@user).page(params[:page]).per(@@items_per_page)
-    else
-      @social_events = CreateIdeaSocialEvent.public_of_user(@user).page(params[:page]).per(@@items_per_page)
-    end
+    init_social_events_for_user
     # we store the location so we can be redirected here after reminder delete
     store_location
     store_current_page

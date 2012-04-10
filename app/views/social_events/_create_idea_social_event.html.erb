@@ -14,7 +14,7 @@
         <div class="nine phone-two columns">
           <div class="toolbar right invisible" id="item_toolbar_37">
             <% unless current_user.has_idea? create_idea_social_event.idea %>
-              <%= link_to 'Remind me too', remind_me_too_path(create_idea_social_event.idea.id), :remote => true %> ·
+              <%= link_to 'Remind me too', new_for_existing_idea_path(create_idea_social_event.idea.id), :remote => true %> ·
             <% end %>
             <span id="good_idea_37">
                 <a href="/good-idea/37" data-method="post" data-remote="true" rel="nofollow">Good idea</a> (0)

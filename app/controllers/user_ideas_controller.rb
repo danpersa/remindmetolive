@@ -1,8 +1,13 @@
 class UserIdeasController < ApplicationController
+  include UsersHelper
+
   layout 'section_with_default_sidebar'
 
   before_filter :authenticate
   before_filter :shared_by_logged_user, :only => [:destroy]
+  before_filter :own_idea_or_public, :only => [:new_for_existing_idea]
+
+  respond_to :html, :js
 
   def index
     @user = current_user
@@ -24,30 +29,51 @@ class UserIdeasController < ApplicationController
       @title = "Remind me too"
     #end  
     @submit_button_name = "Create reminder"
-    respond_with_remote_form 'ideas/remind_me_too'
+    respond_with_remote_form 'user_ideas/new_for_existing_idea'
   end
 
 
   def new_for_existing_idea_from_location
     location = params[:location]
     init_reminders_form_url(location)
-    remind_me_too
+    new_for_existing_idea
   end
 
   def create
     @user_idea = UserIdea.new_with_idea params[:user_idea], current_user
     @idea = @user_idea.idea
-    if @user_idea.valid_with_idea?
-      @user_idea.save_with_idea!
-      flash[:success] = "Idea created!"
-      redirect_to root_path
-      return
+    unless @idea.id.nil?
+      @idea = Idea.find(@idea.id) 
+      @user_idea.idea = @idea
     end
+    @user = @idea.owned_by
 
-    init_feeds_table1
-    @user = current_user
-    init_default_sidebar
-    render 'pages/home'
+    respond_to do |format|
+      if @user_idea.valid_with_idea?
+        @user_idea.save_with_idea!
+        flash[:success] = "Idea created!"
+        format.html {
+          redirect_back_or root_path
+        }
+        format.js {
+          init_social_events_for_user
+          @update_table_partial = 'social_events/table_update'
+          respond_with_remote_form
+          respond_with(@user_idea, :layout => !request.xhr?)
+        }
+      else
+        format.html {
+          init_feeds_table1
+          @user = current_user
+          init_default_sidebar
+          render 'pages/home'
+        }
+        format.js {
+          respond_with_remote_form
+          respond_with(@user_idea, :layout => !request.xhr?)
+        }
+      end
+    end
   end
 
   def update
