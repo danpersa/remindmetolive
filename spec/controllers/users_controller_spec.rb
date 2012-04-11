@@ -137,10 +137,11 @@ describe UsersController do
         @social_events = []
         number_of_events.times do |index|
           idea = FactoryGirl.create :idea, :created_by => @user,
-                                :owned_by => @user,
-                                :content => 'Baz quux' + index.to_s
-          @social_events << FactoryGirl.create(:create_idea_social_event, :created_by => @user,
-                                             :idea => idea)
+                                    :owned_by => @user,
+                                    :content => 'Baz quux' + index.to_s
+          @social_events << FactoryGirl.create(:create_idea_social_event,
+                                               :created_by => @user,
+                                               :idea => idea)
         end
         visit user_path(@user)
       end
@@ -160,7 +161,7 @@ describe UsersController do
       
       context 'with pagination' do
 
-        let(:number_of_events) { 11 }
+        let(:number_of_events) { RemindMeToLive::Application.config.items_per_page + 1 }
 
         it 'should paginate the social events' do
             page.should have_selector('ul.pagination')

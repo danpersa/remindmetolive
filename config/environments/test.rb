@@ -31,7 +31,7 @@ RemindMeToLive::Application.configure do
   config.action_mailer.delivery_method = :test
 
   #used for pagination
-  config.items_per_page                  = 5
+  config.items_per_page = 5
 
   config.recaptcha[:enable] = false
 

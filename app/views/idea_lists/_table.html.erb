@@ -1,3 +1,5 @@
 <% idea_lists.each do |idea_list| %>
   <%= render :partial => 'idea_lists/idea_list', :locals => {:idea_list => idea_list} %>
 <% end %>
+
+<%= paginate idea_lists, :outer_window => 3 %>

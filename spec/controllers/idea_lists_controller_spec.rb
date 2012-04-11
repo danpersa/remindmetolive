@@ -121,11 +121,14 @@ describe IdeaListsController do
 
   describe 'GET index' do
 
+    before do
+      @user = FactoryGirl.create :unique_user
+      @idea_list = FactoryGirl.create :idea_list, :user => @user
+    end
+
     describe 'success' do
-      before(:each) do
-        @user = FactoryGirl.create :unique_user
+      before do
         @idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
-        @idea_list = FactoryGirl.create :idea_list, :user => @user
         @idea_list.add_idea_as @idea, Privacy::Values[:public]
         test_web_sign_in @user
       end
@@ -154,8 +157,18 @@ describe IdeaListsController do
     end
 
     describe 'pagination' do
+
+      before do
+        (RemindMeToLive::Application.config.items_per_page + 1).times do |index|
+          FactoryGirl.create :idea_list, :user => @user
+        end
+        test_web_sign_in @user
+        visit idea_lists_path
+      end
+
       it 'should display the page numbers' do
-        pending 'PAGINATION'
+        page.should have_selector('ul.pagination')
+        page.should have_link('2')
       end
     end
   end

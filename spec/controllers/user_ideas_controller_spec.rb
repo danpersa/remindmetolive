@@ -62,7 +62,7 @@ describe UserIdeasController do
     before do
       user = FactoryGirl.create(:unique_user)
       @user_ideas = []
-      11.times do |index|
+      (RemindMeToLive::Application.config.items_per_page + 1).times do |index|
         idea = FactoryGirl.create(:idea, :content => 'Baz quux ' + index.to_s,
                               :created_by => user,
                               :owned_by => user,
