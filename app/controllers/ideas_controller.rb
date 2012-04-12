@@ -4,8 +4,6 @@ class IdeasController < ApplicationController
   before_filter :store_location, :only => [:show, :users, :followed_users]
   before_filter :store_current_page, :only => [:show, :users, :followed_users]
 
-  @@items_per_page = 10
-
   def show
     init_head
     init_default_sidebar
@@ -17,7 +15,7 @@ class IdeasController < ApplicationController
     @public_user_ideas = 
       @idea.public_user_ideas
            .page(params[:page])
-           .per(@@items_per_page)
+           .per(RemindMeToLive::Application.config.items_per_page)
     init_default_sidebar
     render :layout => 'section_with_default_sidebar'
   end
@@ -27,7 +25,7 @@ class IdeasController < ApplicationController
     @public_user_ideas_of_users_followed_by_current_user = 
       @idea.public_user_ideas_of_users_followed_by(current_user)
            .page(params[:page])
-           .per(@@items_per_page)
+           .per(RemindMeToLive::Application.config.items_per_page)
     init_default_sidebar
     render :layout => 'section_with_default_sidebar'
   end

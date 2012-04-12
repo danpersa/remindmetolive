@@ -78,7 +78,7 @@ describe UserIdeasController do
     it 'should show the public user ideas entries' do
       index = 0
       @user_ideas.each do |user_idea|
-        page.should have_selector('strong', :text => user_idea.idea.content) if index < 10
+        page.should have_selector('strong', :text => user_idea.idea.content) if index < RemindMeToLive::Application.config.items_per_page
         index += 1
       end
     end

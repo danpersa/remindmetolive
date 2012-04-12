@@ -1,7 +1,5 @@
 module ApplicationHelper
 
-  @@items_per_page = 100
-
   # return a title on a per-page basis
   def title
     base_title = "Remind me to live"
@@ -163,7 +161,9 @@ module ApplicationHelper
   end
 
   def init_feeds_table1
-    @social_events = SocialEvent.own_or_public_of_users_followed_by(current_user).without(:users).page(@page).per(@@items_per_page)
+    @social_events = SocialEvent.own_or_public_of_users_followed_by(current_user)
+                                .without(:users)
+                                .page(@page).per(RemindMeToLive::Application.config.items_per_page)
   end
 
   def init_default_sidebar
@@ -173,7 +173,9 @@ module ApplicationHelper
   end
 
   def init_reminders_table_of user
-    @reminders = user.reminders_for_logged_user(current_user).includes(:privacy).page(@page).per(@@items_per_page)
+    @reminders = user.reminders_for_logged_user(current_user)
+                     .includes(:privacy).page(@page)
+                     .per(RemindMeToLive::Application.config.items_per_page)
   end
 
   def display_all_error_messages(object, method)

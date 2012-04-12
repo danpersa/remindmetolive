@@ -11,7 +11,9 @@ class UserIdeasController < ApplicationController
 
   def index
     @user = current_user
-    @user_ideas = current_user.ideas_ordered_by_reminder_created_at.page(params[:page]).per(10)
+    @user_ideas = current_user.ideas_ordered_by_reminder_created_at
+                              .page(params[:page])
+                              .per(RemindMeToLive::Application.config.items_per_page)
     # we store the location so we can be redirected here after idea delete
     store_location
     store_current_page

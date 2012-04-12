@@ -11,12 +11,10 @@ class UsersController < ApplicationController
   before_filter :admin_or_correct_user, :only => :destroy
   before_filter :not_authenticate, :only => [:change_reseted_password, :create, :new]
 
-  @@items_per_page = 10
-
   def index
     @user = current_user
     @title = "All users"
-    @users = User.page(params[:page]).per(@@items_per_page)
+    @users = User.page(params[:page]).per(RemindMeToLive::Application.config.items_per_page)
     init_default_sidebar
   end
 
