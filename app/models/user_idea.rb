@@ -41,6 +41,10 @@ class UserIdea
     @user_idea
   end
 
+  def self.find_by_id id
+    self.first conditions: {_id: id}
+  end
+
   private
   def reminder_date_cannot_be_in_the_past
     errors.add(:reminder_date, "can't be in the past") if

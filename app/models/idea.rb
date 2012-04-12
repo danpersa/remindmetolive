@@ -74,4 +74,8 @@ class Idea
     return false unless self.user_ideas.count > 1
     true
   end
+
+  def self.find_by_id id
+    self.first conditions: {_id: id}
+  end
 end

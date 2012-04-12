@@ -41,11 +41,15 @@ class UserIdeasController < ApplicationController
 
   def create
     @user_idea = UserIdea.new_with_idea params[:user_idea], current_user
-    @idea = @user_idea.idea
-    unless @idea.id.nil?
-      @idea = Idea.find(@idea.id) 
+    @idea = Idea.find_by_id(@user_idea.idea.id) 
+    unless @idea.nil?
       @user_idea.idea = @idea
+    else
+      @idea = @user_idea.idea
+      @idea.created_by = current_user
+      @idea.owned_by = current_user
     end
+
     @user = @idea.owned_by
 
     respond_to do |format|
