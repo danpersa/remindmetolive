@@ -61,12 +61,6 @@ class UserIdeasController < ApplicationController
         format.html {
           redirect_back_or root_path
         }
-        format.js {
-          init_social_events_for_user
-          @update_table_partial = 'social_events/table_update'
-          respond_with_remote_form
-          respond_with(@user_idea, :layout => !request.xhr?)
-        }
       else
         format.html {
           init_feeds_table1
@@ -74,11 +68,11 @@ class UserIdeasController < ApplicationController
           init_default_sidebar
           render 'pages/home'
         }
-        format.js {
+      end
+      format.js {
           respond_with_remote_form
           respond_with(@user_idea, :layout => !request.xhr?)
         }
-      end
     end
   end
 

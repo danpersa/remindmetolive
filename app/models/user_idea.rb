@@ -10,9 +10,11 @@ class UserIdea
 
   validates_presence_of       :privacy
   validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]
-  validate                    :reminder_date_cannot_be_in_the_past
 
   validates_presence_of       :user
+  validates_presence_of       :idea
+  validate                    :reminder_date_cannot_be_in_the_past
+  validate                    :one_user_idea_per_idea_per_user
 
   def set_reminder reminder_date
     self.reminder_created_at = Time.now
@@ -49,5 +51,11 @@ class UserIdea
   def reminder_date_cannot_be_in_the_past
     errors.add(:reminder_date, "can't be in the past") if
       reminder_date != nil and reminder_date < Date.today
+  end
+
+  def one_user_idea_per_idea_per_user
+    errors.add(:idea, "can't create two user ideas for the same idea") if
+      not self.idea.nil? and UserIdea.not_in(_id: [self.id])
+              .where(idea_id: self.idea.id, user_id: self.user.id).count > 0
   end
 end

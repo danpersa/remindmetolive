@@ -60,16 +60,16 @@ describe UserIdeasController do
 
   describe 'GET index' do
     before do
-      user = FactoryGirl.create(:unique_user)
+      user = FactoryGirl.create :unique_user
       @user_ideas = []
       (RemindMeToLive::Application.config.items_per_page + 1).times do |index|
-        idea = FactoryGirl.create(:idea, :content => 'Baz quux ' + index.to_s,
-                              :created_by => user,
-                              :owned_by => user,
-                              :privacy => Privacy::Values[:public])
-        @user_ideas << FactoryGirl.create(:user_idea, :idea => idea,
-                                          :user => user,
-                                          :privacy => Privacy::Values[:public])
+        idea = FactoryGirl.create :idea, :content => 'Baz quux ' + index.to_s,
+                                         :created_by => user,
+                                         :owned_by => user,
+                                         :privacy => Privacy::Values[:public]
+        user_idea = user.create_user_idea! :idea_id => idea.id,
+                                           :privacy => Privacy::Values[:public]
+        @user_ideas << user_idea
       end
       test_web_sign_in(user)
       visit user_ideas_path
@@ -78,7 +78,8 @@ describe UserIdeasController do
     it 'should show the public user ideas entries' do
       index = 0
       @user_ideas.each do |user_idea|
-        page.should have_selector('strong', :text => user_idea.idea.content) if index < RemindMeToLive::Application.config.items_per_page
+        page.should have_selector('strong', :text => user_idea.idea.content) if
+              index < RemindMeToLive::Application.config.items_per_page
         index += 1
       end
     end
@@ -92,7 +93,7 @@ describe UserIdeasController do
   describe 'POST create' do
 
     before do
-      @user = test_sign_in(FactoryGirl.create(:user))
+      @user = test_sign_in(FactoryGirl.create(:unique_user))
     end
 
     context 'when success' do
@@ -258,13 +259,13 @@ describe UserIdeasController do
     describe 'failure' do
 
       it 'should deny access if the user idea does not exist' do
-        test_sign_in FactoryGirl.create(:user)
+        test_sign_in FactoryGirl.create(:unique_user)
         delete :destroy, :id => @user.id
         response.should redirect_to(root_path)
       end
 
       it 'should deny access if the user does not own the user idea' do
-        test_sign_in FactoryGirl.create(:user)
+        test_sign_in FactoryGirl.create(:unique_user)
         delete :destroy, :id => @user.id
         response.should redirect_to(root_path)
       end

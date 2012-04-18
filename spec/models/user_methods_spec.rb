@@ -289,10 +289,11 @@ describe User do
     before do 
       user_idea = user.create_new_idea!(:content => 'ana are mere', 
                                         :privacy => Privacy::Values[:public])
+      @idea = user_idea.idea
       @reminder_date = Date.new(2014)
-      user_idea1 = another_user.create_user_idea!(:idea_id => user_idea.idea.id,
+      user_idea1 = another_user.create_user_idea! :idea_id => @idea.id,
                                                   :privacy => Privacy::Values[:public],
-                                                  :reminder_date => @reminder_date)
+                                                  :reminder_date => @reminder_date
     end
 
     context 'when success' do
@@ -308,7 +309,9 @@ describe User do
 
     context 'when failure' do
       it 'shouldn\'t create two user ideas for the same user and the same idea' do
-        pending
+        another_user.create_user_idea! :idea_id => @idea.id,
+                                       :privacy => Privacy::Values[:public]
+        @idea.user_ideas.where(:user_id => another_user.id).count.should == 1
       end
     end
   end

@@ -92,3 +92,13 @@ function initToolbars() {
     $(this).find("div.toolbar").addClass('invisible');
   });
 }
+
+function updateCurrentPage() {
+  var currentUrl = $("meta[name=current-url]").attr("content"); 
+  $.get(currentUrl,
+        function(data) {
+          script = $(data).text();
+          eval(script);
+        },
+        'script');
+}

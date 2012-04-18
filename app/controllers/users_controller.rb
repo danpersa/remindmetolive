@@ -11,6 +11,8 @@ class UsersController < ApplicationController
   before_filter :admin_or_correct_user, :only => :destroy
   before_filter :not_authenticate, :only => [:change_reseted_password, :create, :new]
 
+  respond_to :html, :js
+
   def index
     @user = current_user
     @title = "All users"
@@ -20,11 +22,18 @@ class UsersController < ApplicationController
 
   def show
     init_social_events_for_user
-    # we store the location so we can be redirected here after reminder delete
-    store_location
-    store_current_page
-    @title = @user.display_name
-    init_default_sidebar
+    respond_to do |format|
+      format.html {
+        # we store the location so we can be redirected here after reminder delete
+        store_location
+        store_current_page
+        @title = @user.display_name
+        init_default_sidebar
+      }
+      format.js {
+        render :partial => 'social_events/table_update'
+      }
+    end
   end
 
   def new
@@ -92,14 +101,18 @@ class UsersController < ApplicationController
   def following
     # the user is searched in the existing_user before interceptor
     @title = "Following"
-    @users = @user.following.page(params[:page]).per(10)
+    @users = @user.following
+                  .page(params[:page])
+                  .per(RemindMeToLive::Application.config.items_per_page)
     init_default_sidebar
   end
 
   def followers
     # the user is searched in the existing_user before interceptor
     @title = "Followers"
-    @users = @user.followers.page(params[:page]).per(10)
+    @users = @user.followers
+                  .page(params[:page])
+                  .per(RemindMeToLive::Application.config.items_per_page)
     init_default_sidebar
   end
 

@@ -294,35 +294,40 @@ describe Idea do
 
       before do
         @current_user = FactoryGirl.create :unique_user
-        followed_user = FactoryGirl.create :unique_user
+        followed_user1 = FactoryGirl.create :unique_user
+        followed_user2 = FactoryGirl.create :unique_user
         other_user = FactoryGirl.create :unique_user
-        @current_user.follow! followed_user
+        @current_user.follow! followed_user1
+        @current_user.follow! followed_user2
         @current_user = User.find @current_user.id
         @idea = FactoryGirl.create :idea
         @public_user_idea_of_followed_user = FactoryGirl.create :user_idea,
-                                                     :idea => @idea,
-                                                     :privacy =>  Privacy::Values[:public],
-                                                     :user => followed_user
+                                                                :idea => @idea,
+                                                                :privacy =>  Privacy::Values[:public],
+                                                                :user => followed_user1
         @private_user_idea_of_followed_user = FactoryGirl.create :user_idea,
-                                                      :idea => @idea,
-                                                      :privacy =>  Privacy::Values[:private],
-                                                      :user => followed_user
+                                                                 :idea => @idea,
+                                                                 :privacy =>  Privacy::Values[:private],
+                                                                 :user => followed_user2
         @public_user_idea_of_other_user = FactoryGirl.create :user_idea,
-                                                  :idea => @idea,
-                                                  :privacy =>  Privacy::Values[:public],
-                                                  :user => other_user
+                                                             :idea => @idea,
+                                                             :privacy =>  Privacy::Values[:public],
+                                                             :user => other_user
       end
 
       it 'should include the public user ideas of the users followed by the current user' do
-        @idea.public_user_ideas_of_users_followed_by(@current_user).should include(@public_user_idea_of_followed_user)
+        @idea.public_user_ideas_of_users_followed_by(@current_user)
+             .should include(@public_user_idea_of_followed_user)
       end
 
       it 'should not include the private user ideas of the users followed by the current user' do
-        @idea.public_user_ideas_of_users_followed_by(@current_user).should_not include(@private_user_idea_of_followed_user)
+        @idea.public_user_ideas_of_users_followed_by(@current_user)
+             .should_not include(@private_user_idea_of_followed_user)
       end
 
       it 'should not include the public user ideas of the users not followed by the current user' do
-        @idea.public_user_ideas_of_users_followed_by(@current_user).entries.should_not include(@public_user_idea_of_other_user)
+        @idea.public_user_ideas_of_users_followed_by(@current_user).entries
+             .should_not include(@public_user_idea_of_other_user)
       end
     end
 

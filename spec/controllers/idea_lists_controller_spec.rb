@@ -175,14 +175,12 @@ describe IdeaListsController do
 
   describe 'GET show' do
 
-    describe 'success' do
+    describe 'success' do     
       before(:each) do
         @user = FactoryGirl.create :unique_user
-        @idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
         @idea_list = FactoryGirl.create :idea_list, :user => @user
+        @idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
         @idea_list.add_idea_as @idea, Privacy::Values[:public]
-        test_web_sign_in @user
-        visit idea_list_path(@idea_list)
       end
 
       it_should_behave_like 'successful get request' do
@@ -191,24 +189,44 @@ describe IdeaListsController do
         end
       end
 
-      it 'has an element containing the user\'s display name' do
-        page.should have_selector('a', :text => @user.display_name)
+      context 'page with one idea' do
+
+        before do
+          test_web_sign_in @user
+          visit idea_list_path(@idea_list)
+        end
+
+        it 'has an element containing the user\'s display name' do
+          page.should have_selector('a', :text => @user.display_name)
+        end
+
+        it 'has an element containing the name of the list' do
+          page.should have_selector('h5', :text => @idea_list.name)
+        end
+
+        it 'has an element containing the user\'s ideas' do
+          page.should have_selector('div', :text => @idea.content)
+        end
       end
 
-      it 'has an element containing the name of the list' do
-        page.should have_selector('h5', :text => @idea_list.name)
-      end
+      context 'idea list with more ideas' do
+        before do
+          (RemindMeToLive::Application.config.items_per_page).times do
+            idea = FactoryGirl.create :idea, :created_by => @user, :owned_by => @user
+            @idea_list.add_idea_as idea, Privacy::Values[:public]
+          end
+          test_web_sign_in @user
+          visit idea_list_path(@idea_list)
+        end
 
-      it 'has an element containing the user\'s ideas' do
-        page.should have_selector('div', :text => @idea.content)
+        describe 'pagination' do
+          it 'should display the page numbers' do
+            page.should have_selector('ul.pagination')
+            page.should have_link('2')
+          end
+        end
       end
-    end
-
-    describe 'pagination' do
-      it 'should display the page numbers' do
-        pending 'PAGINATION'
-      end
-    end
+    end    
   end
 
   describe 'GET new' do

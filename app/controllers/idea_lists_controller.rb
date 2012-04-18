@@ -31,7 +31,8 @@ class IdeaListsController < ApplicationController
   def show
     @user = current_user
     @user_ideas = current_user.ideas_from_list_ordered_by_reminder_created_at(@idea_list)
-                              .page(params[:page]).per(10)
+                              .page(params[:page])
+                              .per(RemindMeToLive::Application.config.items_per_page)
     @action = "show"
     @title = "Show idea list"
     # we store the location so we can be redirected here after idea delete

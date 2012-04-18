@@ -6,8 +6,14 @@ describe UserIdea do
     FactoryGirl.create :simple_user
   end
 
+  let :idea do
+    FactoryGirl.create :idea
+  end
+
   let :attr do
-    { :privacy => Privacy::Values[:public] }
+    { :privacy => Privacy::Values[:public],
+      :idea_id => idea.id
+    }
   end
 
   describe 'creation' do
@@ -49,6 +55,7 @@ describe UserIdea do
       it 'should not be in the past' do
         user_idea = FactoryGirl.build :simple_user_idea, :reminder_date => 2.days.ago
         user_idea.should_not be_valid
+        user_idea.errors[:reminder_date].include?("can't be in the past").should == true
       end
     end
 
@@ -77,6 +84,22 @@ describe UserIdea do
 
       it 'should be the correct user' do
         user_idea.user.should == user
+      end
+    end
+
+    describe 'idea association' do
+      it 'should have an idea association' do
+        user_idea.should respond_to :idea
+      end
+
+      it 'should be the correct idea' do
+        user_idea.idea.should == idea
+      end
+
+      it 'should reject user ideas without idea' do
+        user_idea = FactoryGirl.build :user_idea, :idea => nil
+        user_idea.should_not be_valid
+        user_idea.errors[:idea].include?("can't be blank").should == true
       end
     end
   end
