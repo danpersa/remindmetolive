@@ -1,4 +1,6 @@
 class IdeasController < ApplicationController
+  respond_to :html, :js
+
   before_filter :authenticate
   before_filter :own_idea_or_public, :only => [:show, :users, :followed_users]
   before_filter :store_location, :only => [:show, :users, :followed_users]
@@ -6,8 +8,15 @@ class IdeasController < ApplicationController
 
   def show
     init_head
-    init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
+    respond_to do |format|
+      format.html {
+        init_default_sidebar
+        render :layout => 'section_with_default_sidebar'
+      }
+      format.js {
+        render :partial => 'ideas/update_idea_head'
+      }
+    end
   end
 
   def users
@@ -16,8 +25,16 @@ class IdeasController < ApplicationController
       @idea.public_user_ideas
            .page(params[:page])
            .per(RemindMeToLive::Application.config.items_per_page)
-    init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
+
+    respond_to do |format|
+      format.html {
+        init_default_sidebar
+        render :layout => 'section_with_default_sidebar'
+      }
+      format.js {
+        render :partial => 'ideas/update_users_table'
+      }
+    end
   end
 
   def followed_users
@@ -26,8 +43,16 @@ class IdeasController < ApplicationController
       @idea.public_user_ideas_of_users_followed_by(current_user)
            .page(params[:page])
            .per(RemindMeToLive::Application.config.items_per_page)
-    init_default_sidebar
-    render :layout => 'section_with_default_sidebar'
+
+    respond_to do |format|
+      format.html {
+        init_default_sidebar
+        render :layout => 'section_with_default_sidebar'
+      }
+      format.js {
+        render :partial => 'ideas/update_followed_users_table'
+      }
+    end
   end
 
   private

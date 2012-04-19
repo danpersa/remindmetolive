@@ -62,7 +62,7 @@ describe UserIdeasController do
     before do
       user = FactoryGirl.create :unique_user
       @user_ideas = []
-      (RemindMeToLive::Application.config.items_per_page + 1).times do |index|
+      number_of_ideas.times do |index|
         idea = FactoryGirl.create :idea, :content => 'Baz quux ' + index.to_s,
                                          :created_by => user,
                                          :owned_by => user,
@@ -75,18 +75,30 @@ describe UserIdeasController do
       visit user_ideas_path
     end
 
-    it 'should show the public user ideas entries' do
-      index = 0
-      @user_ideas.each do |user_idea|
-        page.should have_selector('strong', :text => user_idea.idea.content) if
-              index < RemindMeToLive::Application.config.items_per_page
-        index += 1
+    context "withou pagination" do
+      let :number_of_ideas do
+        RemindMeToLive::Application.config.items_per_page - 1
+      end
+
+      it 'should show the public user ideas entries' do
+        index = 0
+        @user_ideas.each do |user_idea|
+          page.should have_selector('strong', :text => user_idea.idea.content) if
+                index < RemindMeToLive::Application.config.items_per_page
+          index += 1
+        end
       end
     end
     
-    it 'should paginate the ideas' do
-      page.should have_selector('ul.pagination')
-      page.should have_link('2')
+    context 'with pagination' do
+      let :number_of_ideas do
+        RemindMeToLive::Application.config.items_per_page + 1
+      end
+
+      it 'should paginate the ideas' do
+        page.should have_selector('ul.pagination')
+        page.should have_link('2')
+      end
     end
   end
 

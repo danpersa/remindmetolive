@@ -1,18 +1,25 @@
 class PagesController < ApplicationController
-  layout 'one_section_narrow'
-
   include ApplicationHelper
+
+  layout 'one_section_narrow'
+  respond_to :html, :js
 
   def home
     @title = 'Home'
     if signed_in?
-      store_current_page
-      store_location
-      @user_idea = UserIdea.new
-      # @remind_me_too_location = HOME_PAGE_LOCATION
-      init_feeds_table1
-      init_default_sidebar
-      render :layout => 'section_with_default_sidebar'
+      init_feeds_table
+      respond_to do |format|
+        format.html {
+          store_current_page
+          store_location
+          @user_idea = UserIdea.new
+          init_default_sidebar
+          render :layout => 'section_with_default_sidebar'
+        }
+        format.js {
+          render :partial => 'social_events/table_update'
+        }
+      end
     end
   end
 

@@ -160,10 +160,10 @@ module ApplicationHelper
     return path_hash
   end
 
-  def init_feeds_table1
+  def init_feeds_table
     @social_events = SocialEvent.own_or_public_of_users_followed_by(current_user)
                                 .without(:users)
-                                .page(@page).per(RemindMeToLive::Application.config.items_per_page)
+                                .page(params[:page]).per(RemindMeToLive::Application.config.items_per_page)
   end
 
   def init_default_sidebar
@@ -174,7 +174,7 @@ module ApplicationHelper
 
   def init_reminders_table_of user
     @reminders = user.reminders_for_logged_user(current_user)
-                     .includes(:privacy).page(@page)
+                     .includes(:privacy).page(params[:page])
                      .per(RemindMeToLive::Application.config.items_per_page)
   end
 

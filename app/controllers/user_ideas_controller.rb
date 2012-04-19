@@ -63,7 +63,7 @@ class UserIdeasController < ApplicationController
         }
       else
         format.html {
-          init_feeds_table1
+          init_feeds_table
           @user = current_user
           init_default_sidebar
           render 'pages/home'
