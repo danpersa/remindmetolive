@@ -37,6 +37,13 @@ class Idea
     User.user_marks_idea_as_good_notification user, self
   end
 
+  def unmark_as_good_by! user
+    self.users_marked_the_idea_good.delete user
+    self.users_marked_the_idea_good_count -= 1
+    self.save!
+    User.user_unmarks_idea_as_good_notification user, self
+  end
+
   def marked_as_good_by? user
     self.users_marked_the_idea_good.include? user
   end
@@ -46,6 +53,13 @@ class Idea
     self.users_marked_the_idea_done_count += 1
     self.save!
     User.user_marks_idea_as_done_notification user, self
+  end
+
+  def unmark_as_done_by! user
+    self.users_marked_the_idea_done.delete user
+    self.users_marked_the_idea_done_count -= 1
+    self.save!
+    User.user_unmarks_idea_as_done_notification user, self
   end
 
   def marked_as_done_by? user

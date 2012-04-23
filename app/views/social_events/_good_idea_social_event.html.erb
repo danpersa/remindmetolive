@@ -1,0 +1,10 @@
+<div class="row mobile table-row show-toolbar">
+  <div class="two phone-one columns">
+    <%= link_to gravatar_for(good_idea_social_event.created_by, :size => 65), good_idea_social_event.created_by %>
+  </div>
+  <div class="ten phone-three columns">
+    <div class="feed-item table-item">
+      <strong><a href=""><%= good_idea_social_event.created_by.display_name %></a></strong> marked the "Remind me to <strong><%= good_idea_social_event.idea.content %></strong>" idea as good!
+    </div>
+  </div>
+</div>

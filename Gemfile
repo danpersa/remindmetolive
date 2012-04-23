@@ -35,6 +35,7 @@ group :development, :test do
   gem 'therubyracer'
   gem 'simplecov', :require => false
   gem 'quiet_assets'
+  gem 'thin'
 end
 
 # To use ActiveModel has_secure_password

@@ -11,8 +11,21 @@ if RemindMeToLive::Application.config.enable_social_event_notifications
     DoneIdeaSocialEvent.create! :created_by => payload[:created_by], :idea => payload[:idea]
   end
 
+  ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:idea][:undone] do |name, start, finish, id, payload|
+    DoneIdeaSocialEvent.where(:created_by_id => payload[:created_by].id,
+                              :idea_id => payload[:idea].id)
+                       .destroy_all
+  end
+
   ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:idea][:good] do |name, start, finish, id, payload|
-    GoodIdeaSocialEvent.create! :created_by => payload[:created_by], :idea => payload[:idea]
+    GoodIdeaSocialEvent.create! :created_by => payload[:created_by],
+                                :idea => payload[:idea]
+  end
+
+  ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:idea][:ungood] do |name, start, finish, id, payload|
+    GoodIdeaSocialEvent.where(:created_by_id => payload[:created_by].id,
+                              :idea_id => payload[:idea].id)
+                       .destroy_all
   end
 
   # user related notifications
@@ -21,7 +34,8 @@ if RemindMeToLive::Application.config.enable_social_event_notifications
   end
 
   ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:user][:followed] do |name, start, finish, id, payload|
-    FollowedUserSocialEvent.create! :created_by => payload[:created_by], :user => payload[:followed]
+    FollowedUserSocialEvent.create! :created_by => payload[:created_by],
+                                    :user => payload[:followed]
   end
 
   ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:user][:unfollowed] do |name, start, finish, id, payload|

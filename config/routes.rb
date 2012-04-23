@@ -55,6 +55,25 @@ RemindMeToLive::Application.routes.draw do
     end
   end
 
+  match '/good-ideas/:id',      :to => 'good_ideas#create',
+                                :via => :post,
+                                :as => 'good_idea_create'
+
+  resources :good_ideas,
+            :path => 'good-ideas',
+            :only => [:destroy],
+            :as => 'good_ideas'
+
+  match '/done-ideas/:id',      :to => 'done_ideas#create',
+                                :via => :post,
+                                :as => 'done_idea_create'
+
+  resources :done_ideas,
+            :path => 'done-ideas',
+            :only => [:destroy],
+            :as => 'done_ideas'
+
+
   resources :reset_passwords,
             :path => 'reset-password',
             :only => [:new, :create],

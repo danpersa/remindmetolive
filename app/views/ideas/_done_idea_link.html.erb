@@ -1,6 +1,6 @@
-<% if current_user.marked_as_done?(idea) %>
+<% if idea.marked_as_done_by?(current_user) %>
   <b><%= link_to "I did this!", done_idea_path(:id => idea.id), :method => :delete, :remote => true %></b>
 <% else %>
   <%= link_to "I did this", done_idea_create_path(:id => idea.id), :method => :post, :remote => true %>
 <% end %>
-(<%=  idea.done_ideas.count %>)
+(<%=  idea.users_marked_the_idea_done_count %>)

@@ -62,13 +62,6 @@ shared_examples_for 'idea head' do
         page.should have_link('Remind me too')
       end
     end
-    
-    it 'should have a "users sharing this idea" link' do
-      # we create a reminder for the idea
-      test_web_sign_in @user
-      request_action
-      page.should have_link('Users sharing this idea')
-    end
   end
 
   context 'when fail' do

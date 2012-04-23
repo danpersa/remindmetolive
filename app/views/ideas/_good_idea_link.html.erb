@@ -1,6 +1,6 @@
-<% if current_user.marked_as_good?(idea) %>
+<% if idea.marked_as_good_by?(current_user) %>
   <b><%= link_to "Good idea!", good_idea_path(:id => idea.id), :method => :delete, :remote => true %></b>
 <% else %>
   <%= link_to "Good idea", good_idea_create_path(:id => idea.id), :method => :post, :remote => true %>
 <% end %>
-(<%= idea.good_ideas.count %>)
+(<%= idea.users_marked_the_idea_good_count %>)

@@ -218,7 +218,30 @@ describe Idea do
       end
     end
 
-    describe '#mark_as_done_by' do
+    describe '#unmark_as_good_by!' do
+      let :idea do
+        FactoryGirl.create :simple_idea
+      end
+
+      let :user do
+        FactoryGirl.create :simple_user
+      end
+
+      before do
+        idea.mark_as_good_by! user
+        idea.unmark_as_good_by! user
+      end
+
+      it 'should decrement the users_marked_the_idea_good_count counter' do
+        idea.users_marked_the_idea_good_count.should == 0
+      end
+
+      it 'should remove the user in the users_marked_the_idea_good array' do
+        idea.users_marked_the_idea_good.include?(user).should_not == true
+      end
+    end
+
+    describe '#mark_as_done_by!' do
       before do
         idea.mark_as_done_by! user
       end
@@ -229,6 +252,29 @@ describe Idea do
 
       it 'should add a new user in the users_marked_the_idea_done array' do
         idea.users_marked_the_idea_done.include?(user).should == true
+      end
+    end
+
+    describe '#unmark_as_done_by!' do
+      let :idea do
+        FactoryGirl.create :simple_idea
+      end
+
+      let :user do
+        FactoryGirl.create :simple_user
+      end
+
+      before do
+        idea.mark_as_done_by! user
+        idea.unmark_as_done_by! user
+      end
+
+      it 'should decrement the users_marked_the_idea_done_count counter' do
+        idea.users_marked_the_idea_done_count.should == 0
+      end
+
+      it 'should remove the user in the users_marked_the_idea_done array' do
+        idea.users_marked_the_idea_done.include?(user).should_not == true
       end
     end
 

@@ -17,10 +17,10 @@
               <%= link_to 'Remind me too', new_for_existing_idea_path(create_idea_social_event.idea.id), :remote => true %> ·
             <% end %>
             <span id="good_idea_<%= create_idea_social_event.idea.id %>">
-                <a href="/good-idea/37" data-method="post" data-remote="true" rel="nofollow">Good idea</a> (0)
+              <%= render :partial => 'ideas/good_idea_link', :locals => {:idea => create_idea_social_event.idea} %>
             </span> ·
             <span id="done_idea_<%= create_idea_social_event.idea.id %>">
-                <a href="/done-idea/37" data-method="post" data-remote="true" rel="nofollow">I did this</a> (0)
+                <%= render :partial => 'ideas/done_idea_link', :locals => {:idea => create_idea_social_event.idea} %>
             </span>
           </div>
         </div>
