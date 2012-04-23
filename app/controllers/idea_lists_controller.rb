@@ -140,7 +140,6 @@ class IdeaListsController < ApplicationController
   private
 
   def init_idea_lists_with_pagination
-
     @idea_lists_paginated =  current_user.idea_lists.page(params[:page])
                                           .per(RemindMeToLive::Application.config.items_per_page)
   end
