@@ -83,12 +83,12 @@ describe UsersController do
       it 'should have an element for each user' do
         visit users_path
         @users[0..2].each do |user|
-          page.should have_selector('a', :text => user.display_name)
+          page.should have_link(user.display_name)
         end
       end
 
       it 'should paginate users' do
-        11.times do
+        (RemindMeToLive::Application.config.items_per_page + 1).times do
           @users << FactoryGirl.create(:unique_user)
         end
         visit users_path
@@ -482,37 +482,66 @@ describe UsersController do
     end
   end
 
-  describe 'follow pages' do
-    describe 'when not signed in' do
-      
-      it_should_behave_like 'deny access unless signed in' do
-        let(:request_action) do
-          get :following, :id => 1
-        end
+  describe 'GET following' do
+    before(:each) do
+      @user = test_web_sign_in(FactoryGirl.create(:unique_user))
+      @following_users = []
+      number_of_following.times do |index|
+        other_user = FactoryGirl.create(:unique_user)
+        @user.follow!(other_user)
+        @following_users << other_user
       end
-      
-      it_should_behave_like 'deny access unless signed in' do
-        let(:request_action) do
-          get :followers, :id => 1
+      visit following_user_path(@user)
+    end
+
+    context 'without pagination' do
+      let(:number_of_following) { 3 }
+
+      it 'should have an element for each following user' do
+        @following_users.each do |following_user|
+          page.should have_link(following_user.display_name)
         end
       end
     end
-    
-    describe 'when signed in' do
-      before(:each) do
-        @user = test_web_sign_in(FactoryGirl.create(:unique_user))
-        @other_user = FactoryGirl.create(:unique_user)
-        @user.follow!(@other_user)
+
+    context 'with pagination' do
+      let(:number_of_following) { RemindMeToLive::Application.config.items_per_page + 1 }
+
+      it 'should paginate the users' do
+        page.should have_selector('ul.pagination')
+        page.should have_link('2')
       end
-      
-      it 'should show user following' do
-        visit user_path(@user) + '/following'
-        page.should have_link(@other_user.display_name)
+    end
+  end
+
+  describe 'GET followers' do
+    before(:each) do
+      @user = test_web_sign_in(FactoryGirl.create(:unique_user))
+      @followers = []
+      number_of_followers.times do |index|
+        other_user = FactoryGirl.create(:unique_user)
+        other_user.follow!(@user)
+        @followers << other_user
       end
-      
-      it 'should show user followers' do
-        visit user_path(@other_user) + '/following'
-        page.should have_link(@user.display_name)
+      visit followers_user_path(@user)
+    end
+
+    context 'without pagination' do
+      let(:number_of_followers) { 3 }
+
+      it 'should have an element for each follower' do
+        @followers.each do |follower|
+          page.should have_link(follower.display_name)
+        end
+      end
+    end
+
+    context 'with pagination' do
+      let(:number_of_followers) { RemindMeToLive::Application.config.items_per_page + 1 }
+
+      it 'should paginate the users' do
+        page.should have_selector('ul.pagination')
+        page.should have_link('2')
       end
     end
   end

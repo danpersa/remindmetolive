@@ -47,4 +47,7 @@ RemindMeToLive::Application.configure do
   }
   # uncomment when generating sample data using rake db:populate
   # config.action_mailer.delivery_method = :test
+
+  #used for pagination
+  config.items_per_page = 15
 end
