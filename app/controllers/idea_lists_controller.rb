@@ -24,6 +24,7 @@ class IdeaListsController < ApplicationController
       }
       format.js {
         init_idea_lists_with_pagination
+        render :partial => 'idea_lists/table_update'
       }
     end
   end
