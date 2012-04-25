@@ -31,7 +31,7 @@ class Idea
   validates_length_of         :content, minimum: 3, maximum: 255
 
   def mark_as_good_by! user
-    self.users_marked_the_idea_good << user
+    self.add_to_set :users_marked_the_idea_good_ids, user.id
     self.users_marked_the_idea_good_count += 1
     self.save!
     User.user_marks_idea_as_good_notification user, self
