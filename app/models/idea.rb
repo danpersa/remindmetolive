@@ -49,7 +49,7 @@ class Idea
   end
 
   def mark_as_done_by! user
-    self.users_marked_the_idea_done << user
+    self.add_to_set :users_marked_the_idea_done_ids, user.id
     self.users_marked_the_idea_done_count += 1
     self.save!
     User.user_marks_idea_as_done_notification user, self

@@ -1,14 +1,14 @@
 <div class="toolbar right invisible" id="item_toolbar_37">
   <span>
-  	<%= link_to 'Show', idea_path(idea) %>
+    <%= link_to 'Show', idea_path(idea) %>
   </span> ·
-  <span>
-  <a href="/remind-me-too/37/3" data-remote="true">Remind me too!</a>
+  <% unless current_user.has_idea? idea %>
+    <%= link_to 'Remind me too', new_for_existing_idea_path(idea.id), :remote => true %> ·
+  <% end %>
+  <span id="good_idea_<%= idea.id %>">
+    <%= render :partial => 'ideas/good_idea_link', :locals => {:idea => idea} %>
   </span> ·
-  <span id="good_idea_37">
-      <a href="/good-idea/37" data-method="post" data-remote="true" rel="nofollow">Good idea</a> (0)
-  </span> ·
-  <span id="done_idea_37">
-      <a href="/done-idea/37" data-method="post" data-remote="true" rel="nofollow">I did this</a> (0)
+  <span id="done_idea_<%= idea.id %>">
+      <%= render :partial => 'ideas/done_idea_link', :locals => {:idea => idea} %>
   </span>
 </div>
