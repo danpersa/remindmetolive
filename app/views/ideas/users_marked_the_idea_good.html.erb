@@ -1,0 +1,7 @@
+<div id="head-div">
+  <%= render 'ideas/idea_head' %>
+</div>
+
+<div id="table-div">
+  <%= render :partial => 'users/table', :locals => {:users => @users_marked_the_idea_good } %>
+</div>

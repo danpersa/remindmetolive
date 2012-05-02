@@ -1,5 +1,7 @@
 <dl class="tabs">
   <dd><%= link_to 'Details', idea_path(@idea), :class => details_tab_active_class %></dd>
-  <dd><%= link_to 'Users sharing the idea', users_idea_path(@idea), :class => users_tab_active_class %></dd>
-  <dd><%= link_to 'Users followed by you sharing the idea', followed_users_idea_path(@idea), :class => followed_users_tab_active_class %></dd>
+  <dd><%= link_to 'Who shared this', users_idea_path(@idea), :class => users_tab_active_class %></dd>
+  <dd><%= link_to 'Friends sharing this', followed_users_idea_path(@idea), :class => followed_users_tab_active_class %></dd>
+  <dd><%= link_to 'Who did this', users_marked_the_idea_done_idea_path(@idea), :class => users_marked_the_idea_done_tab_active_class %></dd>
+  <dd><%= link_to 'Who marked it as good', users_marked_the_idea_good_idea_path(@idea), :class => users_marked_the_idea_good_tab_active_class %></dd>
 </dl>

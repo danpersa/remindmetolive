@@ -42,6 +42,8 @@ RemindMeToLive::Application.routes.draw do
       # the list of users that shares the idea
       get :users
       get :followed_users, :path => 'followed-users'
+      get :users_marked_the_idea_good, :path => 'marked-as-good-users'
+      get :users_marked_the_idea_done, :path => 'marked-as-done-users'
     end
   end
 

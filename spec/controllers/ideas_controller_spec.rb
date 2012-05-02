@@ -22,11 +22,22 @@ describe IdeasController do
           get :followed_users, :id => 1
         end
       end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          get :users_marked_the_idea_good, :id => 1
+        end
+      end
+
+      it_should_behave_like 'deny access unless signed in' do
+        let(:request_action) do
+          get :users_marked_the_idea_done, :id => 1
+        end
+      end
     end
   end
-  
-  describe 'GET show' do
 
+  describe 'idea head for each tab' do
     it_should_behave_like 'idea head' do
       let :requested_page do
         :show
@@ -36,10 +47,7 @@ describe IdeasController do
         visit idea_path @idea
       end
     end
-  end  
 
-  describe 'GET users' do
-    
     it_should_behave_like 'idea head' do
       let :requested_page do
         :users
@@ -49,40 +57,7 @@ describe IdeasController do
         visit users_idea_path @idea
       end
     end
-    
-    describe 'success' do
 
-      before(:each) do
-        @user = FactoryGirl.create :unique_user
-        @user1 = FactoryGirl.create :unique_user
-        @user2 = FactoryGirl.create :unique_user
-        @idea = FactoryGirl.create :idea
-        public_user_idea1 = FactoryGirl.create :user_idea, 
-                                     :idea => @idea, 
-                                     :privacy =>  Privacy::Values[:public],
-                                     :user => @user1
-        public_user_idea2 = FactoryGirl.create :user_idea, 
-                                     :idea => @idea, 
-                                     :privacy =>  Privacy::Values[:public], 
-                                     :user => @user2
-        private_user_idea = FactoryGirl.create :user_idea, 
-                                     :idea => @idea, 
-                                     :privacy =>  Privacy::Values[:private]
-      end
-
-      it 'should have an element for each user that shares the idea as public' do
-        test_web_sign_in(@user)
-        visit users_idea_path(@idea)
-        #save_and_open_page
-        [@user1, @user2].each do |user|
-          page.should have_selector('a', :text => user.display_name)
-        end
-      end
-    end
-  end
-
-  describe 'GET followed users' do
-    
     it_should_behave_like 'idea head' do
       let :requested_page do
         :followed_users
@@ -93,8 +68,37 @@ describe IdeasController do
       end
     end
 
+    it_should_behave_like 'idea head' do
+      let :requested_page do
+        :users_marked_the_idea_good
+      end
 
-    describe 'success' do
+      let :request_action do
+        visit users_marked_the_idea_good_idea_path @idea
+      end
+    end
+
+    it_should_behave_like 'idea head' do
+      let :requested_page do
+        :users_marked_the_idea_done
+      end
+
+      let :request_action do
+        visit users_marked_the_idea_done_idea_path @idea
+      end
+    end
+  end
+  
+  describe 'GET show' do
+    it 'should' do
+      pending
+    end
+    
+  end  
+
+  describe 'GET users' do
+
+    context 'success' do
 
       before(:each) do
         @user = FactoryGirl.create :unique_user
@@ -121,9 +125,26 @@ describe IdeasController do
           page.should have_selector('a', :text => user.display_name)
         end
       end
+
+      it 'should paginate' do
+        pending
+      end
     end
 
-    describe 'success' do
+    context 'failure' do
+      it 'should not have an element for users that share the idea as private' do
+        pending
+      end
+
+      it 'should have an element for users that don\'t share the idea' do
+        pending
+      end
+    end
+  end
+
+  describe 'GET followed users' do
+
+    context 'success' do
 
       before(:each) do
         @user = FactoryGirl.create :unique_user
@@ -161,6 +182,126 @@ describe IdeasController do
         [@followed_user1, @followed_user2].each do |user|
           page.should have_selector('a', :text => user.display_name)
         end
+      end
+
+      it 'should paginate' do
+        pending
+      end
+    end
+
+    context 'failure' do
+      it 'should not have an element for users followed by the logged user that share the idea as private' do
+        pending
+      end
+
+      it 'should not have an element for users not followed by the logged user that share the idea as public' do
+        pending
+      end
+
+      it 'should have an element for users that don\'t share the idea' do
+        pending
+      end
+    end
+  end
+
+  describe 'GET users marked the idea good' do
+
+    before do
+      @user = FactoryGirl.create :unique_user
+      @user1 = FactoryGirl.create :unique_user
+      @idea = FactoryGirl.create :idea
+      @users = []
+      number_of_users.times do
+        user = FactoryGirl.create :unique_user
+        @users << user
+        @idea.mark_as_good_by! user
+      end
+      test_web_sign_in(@user)
+      visit users_marked_the_idea_good_idea_path @idea
+    end
+
+    context 'success' do
+
+      context 'without pagination' do
+        let(:number_of_users) { 3 }
+
+        it 'should have an element for each user that marked the idea as good' do
+          @users.each do |user|
+            page.should have_selector('a', :text => user.display_name)
+          end 
+        end
+      end
+
+      context 'with pagination' do
+
+        let(:number_of_users) { RemindMeToLive::Application.config.items_per_page + 1}
+
+        it 'should paginate users' do
+          page.should have_selector('ul.pagination')
+          page.should have_link('2')
+        end
+      end
+    end
+
+    context 'failure' do
+
+      let(:number_of_users) { 3 }
+
+      it 'should not have an element for users that didn\'t mark the idea as good' do
+        [@user, @user1].each do |user|
+          page.should have_selector('a', :text => user.display_name)
+        end 
+      end
+    end
+  end
+
+  describe 'GET users marked the idea done' do
+
+    before do
+      @user = FactoryGirl.create :unique_user
+      @user1 = FactoryGirl.create :unique_user
+      @idea = FactoryGirl.create :idea
+      @users = []
+      number_of_users.times do
+        user = FactoryGirl.create :unique_user
+        @users << user
+        @idea.mark_as_done_by! user
+      end
+      test_web_sign_in(@user)
+      visit users_marked_the_idea_done_idea_path @idea
+    end
+
+    context 'success' do
+
+      context 'without pagination' do
+        let(:number_of_users) { 3 }
+
+        it 'should have an element for each user that marked the idea as done' do
+          @users.each do |user|
+            page.should have_selector('a', :text => user.display_name)
+          end 
+        end
+      end
+
+      context 'with pagination' do
+
+        let(:number_of_users) { RemindMeToLive::Application.config.items_per_page + 1}
+
+        it 'should paginate users' do
+          page.should have_selector('ul.pagination')
+          page.should have_link('2')
+        end
+      end
+    end
+
+    context 'failure' do
+
+      let(:number_of_users) { 3 }
+
+      it 'should not have an element for users that didn\'t mark the idea as done' do
+        [@user, @user1].each do |user|
+          page.should have_selector('a', :text => user.display_name)
+        end 
       end
     end
   end
