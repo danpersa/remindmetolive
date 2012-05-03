@@ -407,4 +407,23 @@ describe Idea do
       end
     end
   end
+
+  describe '#idea_lists_of' do
+
+    it 'should return the correct idea lists' do
+      @user = FactoryGirl.create(:unique_user)
+      @idea_list1 = @user.idea_lists.create({:name => "The Bucket List"})
+      @idea_list2 = @user.idea_lists.create({:name => "The Final List"})
+      idea = @user.create_new_idea!(:content => 'ana are mere', :privacy => Privacy::Values[:public]).idea
+      @idea_list1.add_idea_as idea, Privacy::Values[:public]
+      @idea_list2.add_idea_as idea, Privacy::Values[:public]
+      idea_lists_of_user = idea.idea_lists_of(@user)
+      idea_lists_of_user = idea.idea_lists_of(@user)
+      idea_lists_of_user = idea.idea_lists_of(@user)
+      idea_lists_of_user = idea.idea_lists_of(@user)
+      #idea.idea_lists_of(@user).should_not be_nil
+      #idea.idea_lists_of(@user).size.should == 2
+
+    end
+  end
 end
