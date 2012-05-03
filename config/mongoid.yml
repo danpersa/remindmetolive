@@ -1,11 +1,12 @@
 development:
-  host: localhost
   database: remind_me_to_live_development
   #autocreate_indexes: true
 
-test:
-  host: localhost
+test: &TEST
   database: remind_me_to_live_test
+
+cucumber:
+    <<: *TEST
 
 # set these environment variables on your prod server
 production:

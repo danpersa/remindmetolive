@@ -27,13 +27,21 @@ Spork.each_run do
     # config.mock_with :flexmock
     # config.mock_with :rr
     # config.mock_with :mocha
+    config.mock_with :rspec
 
-    # Clean up all collections before each spec runs.
-    config.before do
-      Mongoid.purge!
+    # keep our mongo DB all shiney and new between tests
+    require 'database_cleaner'
+
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :truncation
+      DatabaseCleaner.orm = "mongoid"
     end
 
-	def test_activate_user(user)
+    config.before(:each) do
+      DatabaseCleaner.clean
+    end
+
+	  def test_activate_user(user)
       if !user.activated?
         user.activate!
       end
@@ -74,6 +82,5 @@ Spork.each_run do
     def puts_backtrace(exception)
       exception.backtrace.join("\n")
     end
-
   end
 end

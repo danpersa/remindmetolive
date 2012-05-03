@@ -36,6 +36,8 @@ group :development, :test do
   gem 'simplecov', :require => false
   gem 'quiet_assets'
   gem 'thin'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
 end
 
 # To use ActiveModel has_secure_password
