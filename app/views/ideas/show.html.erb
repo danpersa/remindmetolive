@@ -6,6 +6,12 @@
   <div class="row mobile">
     <div class="twelve columns phone-four">
       The details of the idea
+      <%#= form_for @idea do |f| %>
+        <%#= f.text_field :idea_list_tokens, "data-pre" => @idea.idea_lists.map(&:attributes).to_json %>
+        <br/>
+        <%#= f.submit "Update lists", :class => "btn primary" %>
+      <%# end %>
+
     </div>
   </div>
 </div>

@@ -19,7 +19,7 @@ class IdeaListsController < ApplicationController
         render :layout => 'section_with_default_sidebar'
       }
       format.json {
-        @idea_lists = IdeaList.where("lower(name) like lower(?)", "%#{params[:q]}%").owned_by(current_user)
+        @idea_lists = current_user.idea_lists.where({:name => /.*#{params[:q]}.*/i })
         render :json => @idea_lists.map(&:attributes)
       }
       format.js {

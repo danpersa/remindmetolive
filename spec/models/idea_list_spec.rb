@@ -7,7 +7,7 @@ describe IdeaList do
   end
 
   before do
-    @attr = { :name => "The Bucket List" }
+    @attr = {:name => "The Bucket List"}
   end
 
   describe 'creation' do
