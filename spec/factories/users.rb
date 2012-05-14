@@ -15,7 +15,6 @@ FactoryGirl.define do
     user.password_confirmation 'foobar'
     user.activation_code       '1234567890'
     user.state                 'pending'
-    user.profile { FactoryGirl.build(:profile) }
     user.ideas { [FactoryGirl.build(:user_idea), FactoryGirl.build(:second_user_idea)] }
     user.followers {
       [FactoryGirl.build(:unique_user), FactoryGirl.build(:unique_user)]

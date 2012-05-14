@@ -1,4 +1,4 @@
-Feature: 1.6 - The user modifies his profile
+Feature: 1.7 - The user modifies his profile
   As an user
   I want to change my profile details
   So that I can use my new email, username or picture

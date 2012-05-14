@@ -118,10 +118,28 @@ class UsersController < ApplicationController
 
   def follow
     current_user.follow! @user
+    respond_to do |format|
+      format.html {
+        init_social_events_for_user
+        init_show_user
+        render :template => 'users/show'
+      }
+      format.js {
+      }
+    end
   end
 
   def unfollow
     current_user.unfollow! @user
+    respond_to do |format|
+      format.html {
+        init_social_events_for_user
+        init_show_user
+        render :template => 'users/show'
+      }
+      format.js {
+      }
+    end
   end
 
   def activate
@@ -162,5 +180,13 @@ class UsersController < ApplicationController
   
   def admin_or_correct_user
     redirect_to(root_path) unless current_user.admin? or current_user?(@user)  
+  end
+
+  def init_show_user
+    # we store the location so we can be redirected here after reminder delete
+    store_location
+    store_current_page
+    @title = @user.display_name
+    init_default_sidebar
   end
 end

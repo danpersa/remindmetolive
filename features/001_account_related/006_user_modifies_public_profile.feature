@@ -1,4 +1,4 @@
-Feature: 1.12 - The user modifies public his profile
+Feature: 1.6 - The user modifies public his profile
   As an user
   I want to set a public profile
   So that other users can see the information I want about me
