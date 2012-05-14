@@ -1,4 +1,4 @@
-Feature: 1.5 - The user signs in
+Feature: 1.3 - The user signs in
   As an user
   I want to sign in the application
   So that I can access my account and use all application features

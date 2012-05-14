@@ -1,5 +1,5 @@
 <%= render :partial => 'users/profile_head' %>
-
+<%= render :partial => 'layouts/flash', :locals => {:flash => flash} %>
 <div id="table-div">
   <%= render :partial => 'social_events/table', :locals => {:social_events => @social_events } %>
 </div>

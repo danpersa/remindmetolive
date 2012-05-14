@@ -3,11 +3,10 @@
 #end
 
 Given /^a logged user with email "([^"]*)"$/ do |email|
-  user = Factory(:user, :email => email)
+  user = FactoryGirl.create(:user, :email => email)
   password = user.password
-  And %{"#{user.email}"'s the account is activated}
-  And %{the default privacies exist}
-  And %{I sign in with "#{email}" and "#{password}"}
+  step %{"#{user.email}"'s the account is activated}
+  step %{I sign in with "#{email}" and "#{password}"}
 end
 
 Given /^recaptcha is disabled$/ do
@@ -49,7 +48,7 @@ Then /^disable recaptcha for other scenarios/ do
   RemindMeToLive::Application.config.recaptcha[:enable] = false  
 end
 
-Then /^"([^"]*)"'s nickname should be "([^"]*)"$/ do |email, nickname|
+Then /^"([^"]*)"'s username should be "([^"]*)"$/ do |email, username|
   user = User.find_by_email(email)
-  user.name.should == nickname
+  user.username.should == username
 end

@@ -3,7 +3,7 @@
     <%= render :partial => 'user_ideas/form' %>
   </div>
 </div>
-
+<%= render :partial => 'layouts/flash', :locals => {:flash => flash} %>
 <div id="table-div">
   <%= render :partial => 'social_events/table', :locals => {:social_events => @social_events } %>
 </div>

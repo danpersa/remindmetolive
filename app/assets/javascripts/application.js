@@ -51,7 +51,6 @@ $( function() {
 
     ta.onblur = function(){
       if (this.value == '') {
-          //this.rows = "2";
           $(this).animate({ height: "30px" }, 500);
       }
     }
