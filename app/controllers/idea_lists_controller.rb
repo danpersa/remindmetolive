@@ -45,7 +45,7 @@ class IdeaListsController < ApplicationController
   def new
     @user = current_user
     @idea_list = IdeaList.new
-    @title = "Create list of ideas"
+    @title = "Create List Of Ideas"
     respond_with_remote_form
   end
 

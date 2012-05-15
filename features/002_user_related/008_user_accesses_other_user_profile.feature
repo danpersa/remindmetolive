@@ -12,7 +12,7 @@ Feature: 2.8 - The user accesses another user's profile page
     And "another@example.com"' shares an idea with a reminder
     When I go to the profile page of "another@example.com"
     Then I should see "another@example.com"'s display name
-    And I should see "ana are mere"
+    And I should see "play the violin"
     And I should see "Remind me too"
 
   Scenario: The user does not see the 'Remind me too' button for the ideas that he already shares
@@ -24,5 +24,5 @@ Feature: 2.8 - The user accesses another user's profile page
     And "another@example.com" shares the same idea
     When I go to the profile page of "another@example.com"
     Then I should see "another@example.com"'s display name
-    And I should see "ana are mere"
+    And I should see "play the violin"
     And I should not see "Remind me too"

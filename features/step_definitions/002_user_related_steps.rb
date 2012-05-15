@@ -1,10 +1,8 @@
 Given /^"([^"]*)"' shares an idea with a reminder$/ do |email|
   user = User.find_by_email(email)
-  idea = FactoryGirl.create(:idea, :created_by => user, :owned_by => user)
-  user_idea = FactoryGirl.create(:user_idea, :idea => idea, :user => user)
-  FactoryGirl.create(:create_idea_social_event,
-                     :created_by => user,
-                     :idea => idea)
+  user.create_new_idea! :content => 'play the violin',
+                          :privacy => Privacy::Values[:public],
+                          :reminder_date => Time.now.next_year
 end
 
 Given /^"([^"]*)" follows "([^"]*)"$/ do |email, followed_email|
