@@ -10,7 +10,8 @@
       <div class="seven phone-two columns">
         <div class="toolbar right invisible" id="item_toolbar_37">
           <%= link_to "Delete", idea_list, :method => :delete,
-                                           :remote => true %> ·
+                                           :remote => true,
+                                           :class => 'delete' %> ·
           <%= link_to "Edit", edit_idea_list_path(idea_list), :remote => true,
                                                               :title => "Edit #{idea_list.name}"%>
         </div>

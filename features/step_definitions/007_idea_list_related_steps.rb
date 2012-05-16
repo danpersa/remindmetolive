@@ -1,13 +1,20 @@
 Given /^"([^"]*)" has (\d+) idea lists?$/ do |email, number_of_idea_lists|
   user = User.find_by_email(email)
   number_of_idea_lists.to_i.times do
-    Factory(:idea_list, :user => user)
+    FactoryGirl.create(:idea_list, :user => user)
   end
 end
 
 When /^I click on delete icon$/ do
   idea_link = page.find(:css, '.ui-icon-close') 
   idea_link.click
+end
+
+When /^I click on one of the delete links$/ do
+  #within(:css, '#table-div') do
+    idea_link = page.find(:css, "delete") 
+    idea_link.click
+  #end
 end
 
 When /^I fill in "([^"]*)" with the idea list name$/ do |field|
