@@ -1,1 +1,1 @@
-$('#done_idea_<%= @idea.id %>').html('<%= escape_javascript(render :partial => 'ideas/done_idea_link', :locals => {:idea => @idea}) %>');
+$('.done_idea_<%= @idea.id %>').html('<%= escape_javascript(render :partial => 'ideas/done_idea_link', :locals => {:idea => @idea}) %>');

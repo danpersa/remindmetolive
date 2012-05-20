@@ -1,9 +1,22 @@
 # idea related notifications
 ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:idea][:created] do |name, start, finish, id, payload|
   if RemindMeToLive::Application.config.enable_social_event_notifications
-    #Rails.logger.debug "The User : #{payload[:created_by].display_name} has created an idea with the content: #{payload[:idea].content}"
+    Rails.logger.debug "The user : #{payload[:created_by].display_name} has created an idea with the content: #{payload[:idea].content}"
     #puts "The User : #{payload[:created_by].display_name} has created an idea with the content: #{payload[:idea].content}"
     CreateIdeaSocialEvent.create! :created_by => payload[:created_by], :idea => payload[:idea]
+  end
+end
+
+ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:idea][:shared] do |name, start, finish, id, payload|
+  if RemindMeToLive::Application.config.enable_social_event_notifications
+    Rails.logger.debug "The user : #{payload[:shared_by].display_name} has shared an idea with the content: #{payload[:idea].content}"
+    ShareIdeaSocialEvent.create! payload[:shared_by], payload[:idea]
+  end
+end
+
+ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:idea][:unshared] do |name, start, finish, id, payload|
+  if RemindMeToLive::Application.config.enable_social_event_notifications
+    #ShareIdeaSocialEvent.create! :created_by => payload[:created_by], :idea => payload[:idea]
   end
 end
 

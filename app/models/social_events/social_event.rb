@@ -2,6 +2,9 @@ class SocialEvent
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  MAX_FIRST_USERS = 3
+  SECONDS_PER_DAY = 86_400
+
   field :privacy,                  :type => Integer, :default => 0
 
   belongs_to :created_by, :class_name => 'User'
@@ -25,10 +28,19 @@ class SocialEvent
   end
 
   def self.of_user user
-    SocialEvent.where(:created_by_id => user.id).desc(:updated_at)
+    SocialEvent.any_of({:created_by_id => user.id}, {:user_ids.in => [user.id]}).desc(:updated_at)
   end
 
   def self.public_of_user user
     self.of_user(user).where(:privacy => Privacy::Values[:public])
   end
+
+  def self.start_of_day day
+    Time.utc(day.year, day.month, day.day)
+  end
+
+  def self.end_of_day day
+    Time.utc(day.year, day.month, day.day) +  1 * SECONDS_PER_DAY # we add one day
+  end
+
 end

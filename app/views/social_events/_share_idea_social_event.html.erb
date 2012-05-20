@@ -1,0 +1,12 @@
+<div class="row mobile table-row show-toolbar">
+  <div class="two phone-one columns">
+    <%= link_to gravatar_for(share_idea_social_event.created_by, :size => 65), share_idea_social_event.created_by %>
+  </div>
+  <div class="ten phone-three columns" style="height: 69px;">
+    <div class="feed-item table-item">
+      <%= display_first_users share_idea_social_event %> shared 
+      <strong><%= link_to share_idea_social_event.created_by.display_name, share_idea_social_event.created_by %></strong>'s idea, "Remind me to <strong><%= share_idea_social_event.idea.content %></strong>"
+    </div>
+    <%= render :partial => 'social_events/idea_toolbar', :locals => { :social_event => share_idea_social_event} %>
+  </div>
+</div>

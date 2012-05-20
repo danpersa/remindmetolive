@@ -5,10 +5,10 @@
   <% unless current_user.has_idea? idea %>
     <%= link_to 'Remind me too', new_for_existing_idea_path(idea.id), :remote => true %> ·
   <% end %>
-  <span id="good_idea_<%= idea.id %>">
+  <span class="good_idea_<%= idea.id %>">
     <%= render :partial => 'ideas/good_idea_link', :locals => {:idea => idea} %>
   </span> ·
-  <span id="done_idea_<%= idea.id %>">
+  <span class="done_idea_<%= idea.id %>">
       <%= render :partial => 'ideas/done_idea_link', :locals => {:idea => idea} %>
   </span>
 </div>

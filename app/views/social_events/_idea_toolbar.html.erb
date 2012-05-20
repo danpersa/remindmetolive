@@ -1,0 +1,10 @@
+<section>
+  <div class="row">
+    <div class="three phone-onw columns">
+      <div class="timestamp"><%= time_ago_in_words(social_event.updated_at) %></div>
+    </div>
+    <div class="nine phone-two columns">
+      <%= render :partial => 'ideas/row_toolbar', :locals => {:idea => social_event.idea} %>
+    </div>
+  </div>
+</section>

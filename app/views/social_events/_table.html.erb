@@ -1,14 +1,22 @@
 <% social_events.each do |social_event| %>
   <% if social_event.instance_of? CreateIdeaSocialEvent %>
-    <%= render :partial => 'social_events/create_idea_social_event', :locals => {:create_idea_social_event => social_event} %>
+    <%= render :partial => 'social_events/create_idea_social_event',
+               :locals => {:create_idea_social_event => social_event} %>
+  <% elsif social_event.instance_of? ShareIdeaSocialEvent %>
+    <%= render :partial => 'social_events/share_idea_social_event',
+               :locals => {:share_idea_social_event => social_event} %>
   <% elsif social_event.instance_of? FollowingUserSocialEvent %>
-    <%= render :partial => 'social_events/following_user_social_event', :locals => {:following_user_social_event => social_event} %>
+    <%= render :partial => 'social_events/following_user_social_event',
+               :locals => {:following_user_social_event => social_event} %>
   <% elsif social_event.instance_of? GoodIdeaSocialEvent %>
-    <%= render :partial => 'social_events/good_idea_social_event', :locals => {:good_idea_social_event => social_event} %>
+    <%= render :partial => 'social_events/good_idea_social_event',
+               :locals => {:good_idea_social_event => social_event} %>
   <% elsif social_event.instance_of? DoneIdeaSocialEvent %>
-    <%= render :partial => 'social_events/done_idea_social_event', :locals => {:done_idea_social_event => social_event} %>
+    <%= render :partial => 'social_events/done_idea_social_event',
+               :locals => {:done_idea_social_event => social_event} %>
   <% else %>
-  	<%= render :partial => 'social_events/other_event', :locals => {:other_event => social_event} %>
+  	<%= render :partial => 'social_events/other_event',
+               :locals => {:other_event => social_event} %>
   <% end %>
 <% end %>
 

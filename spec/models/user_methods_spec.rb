@@ -75,9 +75,13 @@ describe User do
     end
 
     before do
-      RemindMeToLive::Application.config.enable_social_event_notifications = true
+      enable_social_event_notifications
       user.follow!(followed)
       user.unfollow!(followed)
+    end
+
+    after do
+      disable_social_event_notifications
     end
 
     it 'should unfollow a user' do
@@ -225,7 +229,8 @@ describe User do
   describe 'display name' do
     before do
       @user = FactoryGirl.build :user
-      @profile = @user.profile
+      @profile = FactoryGirl.build :profile
+      @user.profile = @profile
     end
 
     it 'should return the profile name' do

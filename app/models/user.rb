@@ -103,6 +103,10 @@ class User < EdgeAuth::Identity
                               :user => self})
     if user_idea.valid?
       user_idea.save!
+      user_idea.reload
+    end
+    if user_idea.privacy == Privacy::Values[:public]
+      User.user_shares_idea_notification self, user_idea.idea
     end
     return user_idea
   end

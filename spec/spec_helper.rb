@@ -78,6 +78,14 @@ Spork.each_run do
         end
       end
     end
+
+    def enable_social_event_notifications
+      RemindMeToLive::Application.config.enable_social_event_notifications = true
+    end
+
+    def disable_social_event_notifications
+      RemindMeToLive::Application.config.enable_social_event_notifications = false
+    end
     
     def puts_backtrace(exception)
       exception.backtrace.join("\n")

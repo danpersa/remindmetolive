@@ -42,20 +42,16 @@ class UserIdeasController < ApplicationController
   end
 
   def create
+    logger.info "Idea create!!!!!!!!!!!!!!!!"
     @user_idea = UserIdea.new_with_idea params[:user_idea], current_user
-    @idea = Idea.find_by_id(@user_idea.idea.id) 
-    unless @idea.nil?
-      @user_idea.idea = @idea
-    else
-      @idea = @user_idea.idea
-      @idea.created_by = current_user
-      @idea.owned_by = current_user
-    end
-
+    @idea = @user_idea.idea
     @user = @idea.owned_by
+
+    logger.info "Respond!!!!!!!!!!!!!!!!"
 
     respond_to do |format|
       if @user_idea.valid_with_idea?
+        logger.info "Valie!!!!!!!!!!!!!!!!"
         @user_idea.save_with_idea!
         flash[:success] = "Idea created!"
         format.html {
@@ -63,6 +59,14 @@ class UserIdeasController < ApplicationController
         }
       else
         format.html {
+          logger.info "Invalid!!!!!!!!!!!!!!!!"
+          @user_idea.errors.each do |error|
+            logger.info error
+          end
+          logger.info 'idea errors'
+          @user_idea.idea.errors.each do |error|
+            logger.info error
+          end
           init_feeds_table
           @user = current_user
           init_default_sidebar

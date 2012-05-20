@@ -6,15 +6,6 @@
     <div class="feed-item table-item">
       <strong><a href=""><%= create_idea_social_event.created_by.display_name %></a></strong> has a new idea, to <strong><%= create_idea_social_event.idea.content %></strong>
     </div>
-    <section>
-      <div class="row">
-        <div class="three phone-onw columns">
-          <div class="timestamp"><%= time_ago_in_words(create_idea_social_event.updated_at) %></div>
-        </div>
-        <div class="nine phone-two columns">
-          <%= render :partial => 'ideas/row_toolbar', :locals => {:idea => create_idea_social_event.idea} %>
-        </div>
-      </div>
-    </section>
+    <%= render :partial => 'social_events/idea_toolbar', :locals => { :social_event => create_idea_social_event} %>
   </div>
 </div>

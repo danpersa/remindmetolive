@@ -3,10 +3,12 @@ class SocialEventNotification
       :idea => {
                 :created        => 'idea.created',
                 :destroyed      => 'idea.destroyed',
+                :shared         => 'idea.shared',
+                :unshared       => 'idea.unshared',
                 :good           => 'idea.good',
-                :ungood       => 'idea.ungood',
+                :ungood         => 'idea.ungood',
                 :done           => 'idea.done',
-                :undone       => 'idea.undone'
+                :undone         => 'idea.undone'
       },
       :user => {
                 :following      => 'user.following',

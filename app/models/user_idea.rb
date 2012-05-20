@@ -26,9 +26,15 @@ class UserIdea
   end
 
   def save_with_idea!
-    self.idea.save!
-    self.save!
-    User.user_creates_idea_notification self.user, idea
+    if self.idea.exists?
+      if self.save! and self.privacy == Privacy::Values[:public]
+        User.user_shares_idea_notification self.user, self.idea
+      end
+    else
+      if self.idea.save! and self.save!
+        User.user_creates_idea_notification self.user, self.idea
+      end
+    end
   end  
 
   # sample params
@@ -37,9 +43,13 @@ class UserIdea
   def self.new_with_idea params, user
     @user_idea = UserIdea.new(params)
     @user_idea.user = user
-    @user_idea.idea.created_by = user
-    @user_idea.idea.owned_by = user
-    @user_idea.idea.privacy = @user_idea.privacy
+    if @user_idea.idea.exists?
+      @user_idea.idea.reload
+    else
+      @user_idea.idea.created_by = user
+      @user_idea.idea.owned_by = user
+      @user_idea.idea.privacy = @user_idea.privacy
+    end
     @user_idea
   end
 

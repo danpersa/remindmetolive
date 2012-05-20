@@ -59,19 +59,24 @@ describe SocialEvent do
         @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
         @social_event2 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago
         @social_event3 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
+        @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 4.days.ago
         @social_events = SocialEvent.of_user(user)
       end
 
       it 'should have the correct size' do
-        @social_events.size.should == 3
+        @social_events.size.should == 4
       end
 
       it 'should not include social events of other users' do
-        @social_events.include?(@other_social_event).should == false
+        @social_events.should_not include(@other_social_event)
       end
 
       it 'should include the user\'s social events in the right order' do
-        @social_events.should == [@social_event2, @social_event1, @social_event3]
+        @social_events.should == [@social_event2, @social_event1, @social_event3, @social_event4]
+      end
+
+      it 'should include social events where the user is mentioned in the users array' do
+        @social_events.should include(@social_event4)
       end
     end
 
@@ -94,11 +99,11 @@ describe SocialEvent do
       end
 
       it 'should not include social events of other users' do
-        @social_events.include?(@other_social_event).should == false
+        @social_events.should_not include(@other_social_event)
       end
 
       it 'should not include private social events' do
-        @social_events.include?(@private_social_event).should == false
+        @social_events.should_not include(@private_social_event)
       end
 
       it 'should include the user\'s social events in the right order' do
@@ -131,11 +136,11 @@ describe SocialEvent do
       end
 
       it 'should not include social events of users others then the followed users' do
-        @social_events.include?(@social_event3).should == false
+        @social_events.should_not include(@social_event3)
       end
 
       it 'should not include private social events of followed users' do
-        @social_events.include?(@private_social_event).should == false
+        @social_events.should_not include(@private_social_event)
       end
 
       it 'should include the followed user\'s social events in the right order' do
@@ -170,18 +175,16 @@ describe SocialEvent do
       end
 
       it 'should not include social events of users others then the followed users' do
-        @social_events.include?(@social_event3).should == false
+        @social_events.should_not include(@social_event3)
       end
 
       it 'should not include private social events of followed users' do
-        @social_events.include?(@private_social_event).should == false
+        @social_events.should_not include(@private_social_event)
       end
 
       it 'should include the followed user\'s social events and own events in the right order' do
         @social_events.entries.should == [@own_social_event0, @social_event2, @social_event1, @social_event0, @own_social_event1]
       end
     end
-
   end
-
 end

@@ -26,6 +26,18 @@ module RemindMeToLive
           :created_by => user, :idea => idea)
     end
 
+    def user_shares_idea_notification user, idea
+      ActiveSupport::Notifications.instrument(
+          SocialEventNotification::Values[:idea][:shared],
+          :shared_by => user, :idea => idea)
+    end
+
+    def user_unshares_idea_notification user, idea
+      ActiveSupport::Notifications.instrument(
+          SocialEventNotification::Values[:idea][:unshared],
+          :created_by => user, :idea => idea)
+    end
+
     def user_marks_idea_as_good_notification user, idea
       ActiveSupport::Notifications.instrument(
           SocialEventNotification::Values[:idea][:good],

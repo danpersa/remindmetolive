@@ -1,2 +1,1 @@
-$('#follow-form').html('<%= escape_javascript(render('users/unfollow')) %>');
-$('#followers').html('<%= "#{@user.followers.count} followers" %>');
+$('#follow-form-<%= @user.id %>').html('<%= escape_javascript(render :partial => 'users/unfollow', :locals => {:user => @user}) %>');

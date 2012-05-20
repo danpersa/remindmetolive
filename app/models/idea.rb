@@ -31,16 +31,20 @@ class Idea
   validates_length_of         :content, minimum: 3, maximum: 255
 
   def mark_as_good_by! user
+    return if self.marked_as_good_by? user
     self.add_to_set :users_marked_the_idea_good_ids, user.id
     self.users_marked_the_idea_good_count += 1
     self.save!
+    self.reload
     User.user_marks_idea_as_good_notification user, self
   end
 
   def unmark_as_good_by! user
+    return unless self.marked_as_good_by? user
     self.users_marked_the_idea_good.delete user
     self.users_marked_the_idea_good_count -= 1
     self.save!
+    self.reload
     User.user_unmarks_idea_as_good_notification user, self
   end
 
@@ -49,16 +53,20 @@ class Idea
   end
 
   def mark_as_done_by! user
+    return if self.marked_as_done_by? user
     self.add_to_set :users_marked_the_idea_done_ids, user.id
     self.users_marked_the_idea_done_count += 1
     self.save!
+    self.reload
     User.user_marks_idea_as_done_notification user, self
   end
 
   def unmark_as_done_by! user
+    return unless self.marked_as_done_by? user
     self.users_marked_the_idea_done.delete user
     self.users_marked_the_idea_done_count -= 1
     self.save!
+    self.reload
     User.user_unmarks_idea_as_done_notification user, self
   end
 
@@ -91,6 +99,12 @@ class Idea
 
   def self.find_by_id id
     self.first conditions: {_id: id}
+  end
+
+  def exists?
+    idea = Idea.find_by_id self.id
+    return true unless idea.nil?
+    return false
   end
 
   def idea_lists_of user

@@ -182,136 +182,157 @@ describe Idea do
   end
 
   describe 'methods' do
-    let :idea do
-      FactoryGirl.create :simple_idea
-    end
-
-    let :user do
-      FactoryGirl.create :simple_user
+    before  do
+      @idea = FactoryGirl.create :simple_idea
+      @user = FactoryGirl.create :simple_user
     end
 
     describe '#mark_as_good_by!' do
       before do
-        idea.mark_as_good_by! user
+        @idea.mark_as_good_by! @user
       end
 
       it 'should increment the users_marked_the_idea_good_count counter' do
-        idea.users_marked_the_idea_good_count.should == 1
+        @idea.users_marked_the_idea_good_count.should == 1
       end
 
       it 'should add a new user in the users_marked_the_idea_good array' do
-        idea.users_marked_the_idea_good.include?(user).should == true
+        @idea.users_marked_the_idea_good.include?(@user).should == true
+      end
+
+      context 'already marked as good' do
+        before do
+          @idea.mark_as_good_by! @user
+        end
+
+        it 'should not increment the users_marked_the_idea_good_count counter' do
+          @idea.users_marked_the_idea_good_count.should == 1 
+        end
       end
     end
 
     describe '#marked_as_good_by?' do
       before do
-        idea.mark_as_good_by! user
+        @idea.mark_as_good_by! @user
       end
 
       it 'should be true if the user marked the idea as good' do
-        idea.marked_as_good_by?(user).should == true
+        @idea.marked_as_good_by?(@user).should == true
       end
 
       it 'should not be true if the user didn\'t mark the idea' do
-        idea.marked_as_good_by?(FactoryGirl.build :user).should_not == true
+        @idea.marked_as_good_by?(FactoryGirl.build :user).should_not == true
       end
     end
 
     describe '#unmark_as_good_by!' do
-      let :idea do
-        FactoryGirl.create :simple_idea
-      end
-
-      let :user do
-        FactoryGirl.create :simple_user
-      end
-
-      before do
-        idea.mark_as_good_by! user
-        idea.unmark_as_good_by! user
+      before  do
+        @idea.mark_as_good_by! @user
+        @idea.unmark_as_good_by! @user
       end
 
       it 'should decrement the users_marked_the_idea_good_count counter' do
-        idea.users_marked_the_idea_good_count.should == 0
+        @idea.users_marked_the_idea_good_count.should == 0
       end
 
       it 'should remove the user in the users_marked_the_idea_good array' do
-        idea.users_marked_the_idea_good.include?(user).should_not == true
+        @idea.users_marked_the_idea_good.include?(@user).should_not == true
+      end
+
+      context 'not marked as good' do
+        before do
+          @idea.unmark_as_good_by! @user
+        end
+
+        it 'should not decrement the users_marked_the_idea_good_count counter' do
+          @idea.users_marked_the_idea_good_count.should == 0
+        end
       end
     end
 
     describe '#mark_as_done_by!' do
       before do
-        idea.mark_as_done_by! user
+        @idea.mark_as_done_by! @user
       end
 
       it 'should increment the users_marked_the_idea_done_count counter' do
-        idea.users_marked_the_idea_done_count.should == 1
+        @idea.users_marked_the_idea_done_count.should == 1
       end
 
       it 'should add a new user in the users_marked_the_idea_done array' do
-        idea.users_marked_the_idea_done.include?(user).should == true
+        @idea.users_marked_the_idea_done.include?(@user).should == true
+      end
+
+      context 'already marked as done' do
+        before do
+          @idea.mark_as_done_by! @user
+        end
+
+        it 'should not increment the users_marked_the_idea_done_count counter' do
+          @idea.users_marked_the_idea_done_count.should == 1 
+        end
       end
     end
 
     describe '#unmark_as_done_by!' do
-      let :idea do
-        FactoryGirl.create :simple_idea
-      end
-
-      let :user do
-        FactoryGirl.create :simple_user
-      end
-
       before do
-        idea.mark_as_done_by! user
-        idea.unmark_as_done_by! user
+        @idea.mark_as_done_by! @user
+        @idea.unmark_as_done_by! @user
       end
 
       it 'should decrement the users_marked_the_idea_done_count counter' do
-        idea.users_marked_the_idea_done_count.should == 0
+        @idea.users_marked_the_idea_done_count.should == 0
       end
 
       it 'should remove the user in the users_marked_the_idea_done array' do
-        idea.users_marked_the_idea_done.include?(user).should_not == true
+        @idea.users_marked_the_idea_done.include?(@user).should_not == true
+      end
+
+      context 'not marked as done' do
+        before do
+          @idea.unmark_as_done_by! @user
+        end
+
+        it 'should not decrement the users_marked_the_idea_done_count counter' do
+          @idea.users_marked_the_idea_done_count.should == 0
+        end
       end
     end
 
     describe '#marked_as_done_by?' do
       before do
-        idea.mark_as_done_by! user
+        @idea.mark_as_done_by! @user
       end
 
       it 'should be true if the user marked the idea as done' do
-        idea.marked_as_done_by?(user).should == true
+        @idea.marked_as_done_by?(@user).should == true
       end
 
       it 'should not be true if the user didn\'t mark the idea' do
-        idea.marked_as_done_by?(FactoryGirl.build :user).should_not == true
+        @idea.marked_as_done_by?(FactoryGirl.build :user).should_not == true
       end
     end
 
     describe '#public?' do
       it 'should return true if the privacy field is public' do
-        idea.should be_public
+        @idea.should be_public
       end
 
       it 'should return false if the privacy field is private' do
-        idea.privacy = Privacy::Values[:private]
-        idea.should_not be_public
+        @idea.privacy = Privacy::Values[:private]
+        @idea.should_not be_public
       end
     end
 
     describe '#private?' do
       it 'should return true if the privacy field is private' do
-        idea.privacy = Privacy::Values[:private]
-        idea.should be_private
+        @idea.privacy = Privacy::Values[:private]
+        @idea.should be_private
       end
 
       it 'should return false if the privacy field is public' do
-        idea.privacy = Privacy::Values[:public]
-        idea.should_not be_private
+        @idea.privacy = Privacy::Values[:public]
+        @idea.should_not be_private
       end
     end
 

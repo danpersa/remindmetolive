@@ -1,9 +1,6 @@
 class FollowingUserSocialEvent < SocialEvent
   include Mongoid::Document
 
-  MAX_FIRST_USERS = 3
-  SECONDS_PER_DAY = 86_400
-
   field :users_count,  type: Integer, default: 1
   field :first_users_count,  type: Integer, default: 1
 
@@ -16,8 +13,8 @@ class FollowingUserSocialEvent < SocialEvent
 
   def self.created_by_user_today_with_following user, following
     today = Time.now.utc
-    start_time = Time.utc(today.year, today.month, today.day)
-    end_time = Time.utc(today.year, today.month, today.day + 1)
+    start_time = self.start_of_day today
+    end_time = self.end_of_day today
     FollowingUserSocialEvent.first(:conditions => 
                                    {:created_at => {'$gte' => start_time,'$lt' => end_time},
                                     :created_by_id => user.id,
@@ -26,8 +23,8 @@ class FollowingUserSocialEvent < SocialEvent
 
   def self.created_by_user_today user
     today = Time.now.utc
-    start_time = Time.utc(today.year, today.month, today.day)
-    end_time = Time.utc(today.year, today.month, today.day) +  1 * SECONDS_PER_DAY # we add one day
+    start_time = self.start_of_day today
+    end_time = self.end_of_day today
     FollowingUserSocialEvent.first(:conditions => 
                                    {:created_at => {'$gte' => start_time,'$lt' => end_time},
                                     :created_by_id => user.id})
@@ -36,14 +33,24 @@ class FollowingUserSocialEvent < SocialEvent
   def self.create! created_by, following
     event_created_today_by_user = FollowingUserSocialEvent.created_by_user_today created_by
     unless event_created_today_by_user
-      return FollowingUserSocialEvent.old_create! :created_by => created_by, :users => [following], :first_users => [following]
+      return FollowingUserSocialEvent.old_create! :created_by => created_by,
+                                                  :users => [following],
+                                                  :first_users => [following]
     else
       created_by_user_today_with_following = self.created_by_user_today_with_following created_by, following
       unless created_by_user_today_with_following
         if event_created_today_by_user.first_users_count < MAX_FIRST_USERS
-          FollowingUserSocialEvent.collection.update({:_id => event_created_today_by_user.id}, {:$addToSet => {:first_user_ids => following.id, :user_ids => following.id}, :$inc => {:first_users_count => 1, :users_count => 1}})
+          FollowingUserSocialEvent.collection.update(
+            {:_id => event_created_today_by_user.id}, 
+            {:$addToSet => {:first_user_ids => following.id, :user_ids => following.id},
+             :$inc => {:first_users_count => 1, :users_count => 1}
+            })
         else
-          FollowingUserSocialEvent.collection.update({:_id => event_created_today_by_user.id}, {:$addToSet => {:user_ids => following.id}, :$inc => {:users_count => 1}})
+          FollowingUserSocialEvent.collection.update(
+            {:_id => event_created_today_by_user.id}, 
+            {:$addToSet => {:user_ids => following.id}, 
+             :$inc => {:users_count => 1}
+            })
         end
       end
     end
