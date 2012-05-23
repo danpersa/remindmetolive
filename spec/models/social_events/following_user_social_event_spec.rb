@@ -127,7 +127,7 @@ describe FollowingUserSocialEvent do
       end
     end
 
-    describe 'remove user from following social event' do
+    describe 'unfollow' do
       let :user do
         FactoryGirl.create :unique_user
       end
@@ -142,7 +142,7 @@ describe FollowingUserSocialEvent do
 
       it 'should do nothing if the following event does not contain the parameter user' do
         following_event = FollowingUserSocialEvent.create! user, followed
-        following_event.remove_user another_user
+        FollowingUserSocialEvent.unfollow! another_user, followed
         FollowingUserSocialEvent.find(following_event.id).should_not be_nil
         FollowingUserSocialEvent.find(following_event.id).users.count.should == 1
       end
@@ -150,7 +150,7 @@ describe FollowingUserSocialEvent do
       describe 'one followed user' do
         it 'should destroy the entire event' do
           following_event = FollowingUserSocialEvent.create! user, followed
-          following_event.remove_user followed
+          FollowingUserSocialEvent.unfollow! user, followed
           lambda { FollowingUserSocialEvent.find(following_event.id) }.should raise_error(Mongoid::Errors::DocumentNotFound)
         end
       end
@@ -160,7 +160,7 @@ describe FollowingUserSocialEvent do
           following_event = FollowingUserSocialEvent.create! user, followed
           FollowingUserSocialEvent.create! user, another_user
           @following_event = FollowingUserSocialEvent.find(following_event.id)
-          @following_event.remove_user followed
+          FollowingUserSocialEvent.unfollow! user, followed
           @following_event = FollowingUserSocialEvent.find(following_event.id)
         end
 
@@ -193,9 +193,9 @@ describe FollowingUserSocialEvent do
           following_event = FollowingUserSocialEvent.create! user, followed
           FollowingUserSocialEvent.create! user, another_user
           FollowingUserSocialEvent.create! user, FactoryGirl.create(:unique_user)
-            FollowingUserSocialEvent.create! user, FactoryGirl.create(:unique_user)
+          FollowingUserSocialEvent.create! user, FactoryGirl.create(:unique_user)
           @following_event = FollowingUserSocialEvent.find(following_event.id)
-          @following_event.remove_user followed
+          FollowingUserSocialEvent.unfollow! user, followed
           @following_event = FollowingUserSocialEvent.find(following_event.id)
         end
 

@@ -58,11 +58,13 @@ end
 
 ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:user][:followed] do |name, start, finish, id, payload|
   if RemindMeToLive::Application.config.enable_social_event_notifications
-    FollowedUserSocialEvent.create! :created_by => payload[:created_by],
-                                    :user => payload[:followed]
+    #FollowedUserSocialEvent.create! :created_by => payload[:created_by],
+    #                                :user => payload[:followed]
   end
 end
 
 ActiveSupport::Notifications.subscribe SocialEventNotification::Values[:user][:unfollowed] do |name, start, finish, id, payload|
-  
+  if RemindMeToLive::Application.config.enable_social_event_notifications
+    FollowingUserSocialEvent.unfollow! payload[:created_by], payload[:unfollowed]
+  end
 end

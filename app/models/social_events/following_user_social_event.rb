@@ -40,44 +40,20 @@ class FollowingUserSocialEvent < SocialEvent
       created_by_user_today_with_following = self.created_by_user_today_with_following created_by, following
       unless created_by_user_today_with_following
         if event_created_today_by_user.first_users_count < MAX_FIRST_USERS
-          FollowingUserSocialEvent.collection.update(
-            {:_id => event_created_today_by_user.id}, 
-            {:$addToSet => {:first_user_ids => following.id, :user_ids => following.id},
-             :$inc => {:first_users_count => 1, :users_count => 1}
-            })
+          event_created_today_by_user.push_with_first_user following
         else
-          FollowingUserSocialEvent.collection.update(
-            {:_id => event_created_today_by_user.id}, 
-            {:$addToSet => {:user_ids => following.id}, 
-             :$inc => {:users_count => 1}
-            })
+          event_created_today_by_user.push_user following
         end
       end
     end
     return event_created_today_by_user
   end
 
-  def remove_user followed
-    self.users.find(followed.id) # should rise the error
-    self.destroy and return if self.users_count == 1
-
-    if (self.first_users.include? followed)
-      FollowingUserSocialEvent.collection.update({:_id => self.id}, {:$pull => {:first_user_ids => followed.id, :user_ids => followed.id}, :$inc => {:first_users_count => -1, :users_count => -1}})
-    else
-      FollowingUserSocialEvent.collection.update({:_id => self.id}, {:$pull => {:user_ids => followed.id}, :$inc => {:users_count => -1}})
-    end
-    repopulate_first_users self.id
-  rescue Mongoid::Errors::DocumentNotFound
-    return nil
-  end
-
-  private
-
-  def repopulate_first_users following_event_id
-    following_event = FollowingUserSocialEvent.find(following_event_id)
-    if following_event.first_users_count < MAX_FIRST_USERS and following_event.users_count > following_event.first_users_count
-      user = following_event.users.not_in(:_id => following_event.first_user_ids).first
-      FollowingUserSocialEvent.collection.update({:_id => following_event_id}, {:$addToSet => {:first_user_ids => user.id}, :$inc => {:first_users_count => 1}})
+  def self.unfollow! created_by, unfollowed
+    social_events = self.where(:created_by_id => created_by.id).entries
+    social_events.each do |social_event|
+      social_event.remove_user unfollowed
     end
   end
+
 end
