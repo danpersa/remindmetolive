@@ -3,7 +3,7 @@ require 'spec_helper'
 describe IdeaList do
 
   let :user do
-    FactoryGirl.build :pending_user
+    FactoryGirl.create :pending_user
   end
 
   before do

@@ -20,7 +20,7 @@ class User < EdgeAuth::Identity
   
   embeds_many :idea_lists
 
-  index :username, unique: true
+  # index :username, unique: true
 
   #has_many :created_ideas, class_name: 'Idea', inverse_of: :created_by
   #has_many :owned_ideas,   class_name: 'Idea', inverse_of: :owned_by
@@ -155,11 +155,11 @@ class User < EdgeAuth::Identity
   end
 
   def self.find_by_password_reset_code password_reset_code
-    User.first(conditions: { password_reset_code: password_reset_code }) 
+    User.where(password_reset_code: password_reset_code).first 
   end
 
   def self.find_by_email email
-    User.first(conditions: { email: email })
+    User.where(email: email).first
   end
 
   def push_follower follower
@@ -167,10 +167,9 @@ class User < EdgeAuth::Identity
                           {:follower_ids.in => [follower.id]})
                   .first
     return self unless already.nil?
-    User.collection.update(
-          {:_id => self.id},
-          {:$addToSet => {:follower_ids => follower.id},
-           :$inc => {:followers_count => 1}})
+    User.where(:_id => self.id)
+        .find_and_modify({:$addToSet => {:follower_ids => follower.id},
+                          :$inc => {:followers_count => 1}})
     self.reload
   end
 
@@ -179,10 +178,9 @@ class User < EdgeAuth::Identity
                           {:following_ids.in => [following.id]})
                   .first
     return self unless already.nil?
-    User.collection.update(
-          {:_id => self.id},
-          {:$addToSet => {:following_ids => following.id},
-           :$inc => {:following_count => 1}})
+    User.where(:_id => self.id)
+        .find_and_modify({:$addToSet => {:following_ids => following.id},
+                          :$inc => {:following_count => 1}})
     self.reload
   end
 end

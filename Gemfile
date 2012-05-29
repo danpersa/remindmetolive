@@ -1,12 +1,13 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.3'
 
 gem 'faker'
-gem 'mongoid', '2.4.5' #git: 'https://github.com/mongoid/mongoid.git'
+gem 'mongoid', '3.0.0.rc' #git: 'https://github.com/mongoid/mongoid.git'
 gem 'bson_ext'
 gem 'mongo_ext'
-gem 'edge-state-machine'
+gem 'edge-state-machine', git: 'https://danpersa@github.com/danpersa/edge-state-machine.git',
+                          branch: 'edge-state-machine-mongoid3'
 gem 'simple_form'
 gem 'gravatar_image_tag'
 gem 'kaminari'

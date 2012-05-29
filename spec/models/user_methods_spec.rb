@@ -48,12 +48,12 @@ describe User do
 
     it 'should not include the followed user in the following array more than once' do
       user.follow!(followed)
-      user.following.count(conditions: { _id: followed.id }).should == 1
+      user.following.where(_id: followed.id).count.should == 1
     end
 
     it 'should not include the follower user in the followers array more than once' do
       user.follow!(followed)
-      followed.followers.count(conditions: { _id: user.id }).should == 1
+      followed.followers.where(_id: user.id).count.should == 1
     end
 
     it 'should increment the followers count for the followed user' do
