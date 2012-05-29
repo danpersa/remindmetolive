@@ -23,11 +23,11 @@ describe User do
 
   describe 'follow!' do
     let :user do
-      FactoryGirl.build :unique_user
+      FactoryGirl.create :unique_user
     end
 
     let :followed do
-      FactoryGirl.build :unique_user
+      FactoryGirl.create :unique_user
     end
 
     before do
@@ -67,11 +67,11 @@ describe User do
 
   describe 'unfollow!' do
     let :user do
-      FactoryGirl.build :unique_user
+      FactoryGirl.create :unique_user
     end
 
     let :followed do
-      FactoryGirl.build :unique_user
+      FactoryGirl.create :unique_user
     end
 
     before do
@@ -611,4 +611,47 @@ describe User do
       @user.has_user_idea?(@other_user_idea).should == false
     end
   end
+
+  describe '#push_follower' do
+    before do
+      @user = FactoryGirl.create :unique_user
+      @other_user = FactoryGirl.create :unique_user
+      @user.push_follower(@other_user)
+    end
+
+    it 'should increment the followers_count' do
+      @user.followers_count.should == 1
+    end
+
+    it 'should include the other_user as a follower' do
+      @user.followers.should include(@other_user)
+    end
+
+    it 'should not increment the followers_count two times for the same follower' do
+      @user.push_follower(@other_user)
+      @user.followers_count.should == 1
+    end
+  end
+
+  describe '#push_following' do
+    before do
+      @user = FactoryGirl.create :unique_user
+      @other_user = FactoryGirl.create :unique_user
+      @user.push_following(@other_user)
+    end
+
+    it 'should increment the following_count' do
+      @user.following_count.should == 1
+    end
+
+    it 'should include the other_user as a following' do
+      @user.following.should include(@other_user)
+    end
+
+    it 'should not increment the following_count two times for the same following user' do
+      @user.push_following(@other_user)
+      @user.following_count.should == 1
+    end
+  end
+
 end

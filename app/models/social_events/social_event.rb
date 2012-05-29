@@ -9,11 +9,6 @@ class SocialEvent
 
   belongs_to :created_by, :class_name => 'User'
 
-  index :created_at
-  index :updated_at
-  index :created_by_id
-  index :user_ids
-
   validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]
 
   # all the public social events of the users followed by the user
@@ -57,10 +52,10 @@ class SocialEvent
 
     if (self.first_users.include? user)
       self.pull_with_first_user user
+      repopulate_first_users self.id
     else
       self.pull_user user
     end
-    repopulate_first_users self.id
   rescue Mongoid::Errors::DocumentNotFound
     return nil
   end

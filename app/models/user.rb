@@ -60,12 +60,8 @@ class User < EdgeAuth::Identity
 
   def follow!(followed)
     #return if self.following? followed
-    self.push(:following_ids, followed.id)
-    self.following_count += 1
-    followed.push(:follower_ids, self.id)
-    followed.followers_count += 1
-    followed.save!
-    self.save!
+    self.push_following followed
+    followed.push_follower self
     User.user_is_following_notification self, followed
   end
 
@@ -164,5 +160,29 @@ class User < EdgeAuth::Identity
 
   def self.find_by_email email
     User.first(conditions: { email: email })
+  end
+
+  def push_follower follower
+    already = User.all_of({:_id => self.id},
+                          {:follower_ids.in => [follower.id]})
+                  .first
+    return self unless already.nil?
+    User.collection.update(
+          {:_id => self.id},
+          {:$addToSet => {:follower_ids => follower.id},
+           :$inc => {:followers_count => 1}})
+    self.reload
+  end
+
+  def push_following following
+    already = User.all_of({:_id => self.id},
+                          {:following_ids.in => [following.id]})
+                  .first
+    return self unless already.nil?
+    User.collection.update(
+          {:_id => self.id},
+          {:$addToSet => {:following_ids => following.id},
+           :$inc => {:following_count => 1}})
+    self.reload
   end
 end
