@@ -32,17 +32,28 @@ Spork.each_run do
     # keep our mongo DB all shiney and new between tests
     # require 'database_cleaner'
 
-    # config.before(:suite) do
+    config.before(:suite) do
     #   DatabaseCleaner.strategy = :truncation
     #   DatabaseCleaner.orm = "mongoid"
-    # end
+      #@session = Moped::Session.new([ 'localhost:27017' ])
+      #@session.use 'remind_me_to_live_test'
+    end
 
     config.before(:each) do
-      # DatabaseCleaner.clean
-      session = Moped::Session.new([ 'localhost:27017' ])
-      session.use 'remind_me_to_live_test'
-      session.drop
+      Mongoid.purge!
+      
+      #@session['system.namespaces'].find(name: { '$not' => /system|\$/ }).to_a.map do |collection|
+      #  _, name = collection['name'].split('.', 2)
+      #  @session[name].drop
+      #end
+
+      #DatabaseCleaner.clean
+      #User.delete_all
+      #UserIdea.delete_all
+      #Idea.delete_all
+      #SocialEvent.delete_all
     end
+    
 
 	  def test_activate_user(user)
       if !user.activated?
