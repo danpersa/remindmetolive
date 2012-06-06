@@ -15,19 +15,19 @@ class FollowingUserSocialEvent < SocialEvent
     today = Time.now.utc
     start_time = self.start_of_day today
     end_time = self.end_of_day today
-    FollowingUserSocialEvent.first(:conditions => 
-                                   {:created_at => {'$gte' => start_time,'$lt' => end_time},
+    FollowingUserSocialEvent.where({:created_at => {'$gte' => start_time,'$lt' => end_time},
                                     :created_by_id => user.id,
                                     :user_ids => {'$in' => [following.id]}})
+                            .first
   end
 
   def self.created_by_user_today user
     today = Time.now.utc
     start_time = self.start_of_day today
     end_time = self.end_of_day today
-    FollowingUserSocialEvent.first(:conditions => 
-                                   {:created_at => {'$gte' => start_time,'$lt' => end_time},
+    FollowingUserSocialEvent.where({:created_at => {'$gte' => start_time,'$lt' => end_time},
                                     :created_by_id => user.id})
+                            .first
   end
 
   def self.create! created_by, following

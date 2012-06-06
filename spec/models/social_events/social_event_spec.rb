@@ -57,10 +57,15 @@ describe SocialEvent do
       before do
         @other_social_event = FactoryGirl.create :social_event
         @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
+        puts @social_event1.updated_at.to_s
         @social_event2 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago
+        puts @social_event2.updated_at.to_s
         @social_event3 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
+        puts @social_event3.updated_at.to_s
         @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 4.days.ago
-        @social_events = SocialEvent.of_user(user)
+        puts @social_event4.updated_at.to_s
+        @social_events = SocialEvent.of_user(user).entries
+        puts "XXXXX"
       end
 
       it 'should have the correct size' do
@@ -72,6 +77,9 @@ describe SocialEvent do
       end
 
       it 'should include the user\'s social events in the right order' do
+        @social_events.each do |se|
+          puts se.updated_at.to_s
+        end
         @social_events.should == [@social_event2, @social_event1, @social_event3, @social_event4]
       end
 
