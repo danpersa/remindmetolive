@@ -29,7 +29,7 @@ describe FollowingUserSocialEvent do
       end
 
       it 'should return the right following user social event' do
-        @result.created_at.utc.should == @following_user_social_event.created_at.utc
+        @result.created_at.to_s.should == @following_user_social_event.created_at.to_s
       end
     end
 
@@ -58,7 +58,7 @@ describe FollowingUserSocialEvent do
       end
 
       it 'should return the right following user social event' do
-        @result.created_at.utc.should == @following_user_social_event.created_at.utc
+        @result.created_at.to_s.should == @following_user_social_event.created_at.to_s
       end
     end
 

@@ -55,18 +55,14 @@ describe SocialEvent do
       end
 
       before do
-        puts "AAAa"
+        
         @other_social_event = FactoryGirl.create :social_event
         @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
-        puts @social_event1.updated_at.to_s
         @social_event2 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago
-        puts @social_event2.updated_at.to_s
         @social_event3 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
-        puts @social_event3.updated_at.to_s
         @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 4.days.ago
-        puts @social_event4.updated_at.to_s
         @social_events = SocialEvent.of_user(user).entries
-        puts "BBBb"
+        
       end
 
       it 'should have the correct size' do
@@ -100,8 +96,8 @@ describe SocialEvent do
         @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
         @social_event2 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
         @social_event3 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 4.days.ago
-        @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 4.days.ago
-        @social_events = SocialEvent.public_of_user(user)
+        @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 5.days.ago
+        @social_events = SocialEvent.public_of_user(user).entries
       end
 
       it 'should have the correct size' do
@@ -178,7 +174,7 @@ describe SocialEvent do
         @social_event1 = FactoryGirl.create :social_event, :created_by => user1, :updated_at => 3.days.ago
         @social_event2 = FactoryGirl.create :social_event, :created_by => user2, :updated_at => 2.days.ago
         @social_event3 = FactoryGirl.create :social_event, :created_by => user3, :updated_at => 4.days.ago
-        @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 5.days.ago
+        @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 6.days.ago
         @social_events = SocialEvent.own_or_public_of_users_followed_by(user)
       end
 
