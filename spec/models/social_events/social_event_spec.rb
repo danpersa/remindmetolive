@@ -51,10 +51,11 @@ describe SocialEvent do
 
     describe 'self.of_user' do
       let :user do
-        FactoryGirl.create :unique_user
+        FactoryGirl.create :unique_user, :updated_at => 2.days.ago
       end
 
       before do
+        puts "AAAa"
         @other_social_event = FactoryGirl.create :social_event
         @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
         puts @social_event1.updated_at.to_s
@@ -65,7 +66,7 @@ describe SocialEvent do
         @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 4.days.ago
         puts @social_event4.updated_at.to_s
         @social_events = SocialEvent.of_user(user).entries
-        puts "XXXXX"
+        puts "BBBb"
       end
 
       it 'should have the correct size' do
