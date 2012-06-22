@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: https://github.com/jnicklas/capybara.git
-  revision: 6cb1b124d5204999d51fbb3de99eb2c686078f90
+  revision: d76987f1213dea6d9dca59f655479f931cac6b49
   specs:
     capybara (1.1.2)
       mime-types (>= 1.16)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/mongoid/mongoid.git
-  revision: 1ec6d429b8627471717879b9fea429b0dd818201
+  revision: bba1a3531ca72cf45be981f2a197b88411eb012e
   specs:
     mongoid (3.0.0.rc)
       activemodel (~> 3.1)
@@ -127,7 +127,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mime-types (1.18)
+    mime-types (1.19)
     moped (1.0.0.rc)
     multi_json (1.3.6)
     nokogiri (1.5.4)
