@@ -1,11 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.5'
 
 gem 'faker'
-gem 'mongoid', '3.0.0.rc' #git: 'https://github.com/mongoid/mongoid.git'
-gem 'bson_ext'
-gem 'mongo_ext'
+gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
+
 gem 'edge-state-machine', git: 'https://danpersa@github.com/danpersa/edge-state-machine.git',
                           branch: 'edge-state-machine-mongoid3'
 gem 'simple_form'
@@ -37,8 +36,11 @@ group :development, :test do
   gem 'simplecov', :require => false
   gem 'quiet_assets'
   gem 'thin'
+  gem 'database_cleaner', :git => 'https://github.com/bmabey/database_cleaner.git'
+end
+
+group :test do
   gem 'cucumber-rails'
-  gem 'database_cleaner'
 end
 
 # To use ActiveModel has_secure_password

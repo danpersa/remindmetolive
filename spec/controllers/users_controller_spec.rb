@@ -49,13 +49,13 @@ describe UsersController do
 
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
-          get :following
+          get :following, :id => 1
         end
       end
 
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
-          get :followers
+          get :followers, :id => 1
         end
       end
     end

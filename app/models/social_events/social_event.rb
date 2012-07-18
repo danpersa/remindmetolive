@@ -29,8 +29,7 @@ class SocialEvent
   end
 
   def self.of_user user
-    SocialEvent.any_of({:created_by_id => user.id},
-                       {:user_ids.in => [user.id]})
+    SocialEvent.or({:user_ids.in => [user.id]}, {:created_by_id => user.id})
                .desc(:updated_at)
   end
 
@@ -49,7 +48,6 @@ class SocialEvent
   def remove_user user
     self.users.find(user.id) # should rise the error
     self.destroy and return if self.users_count == 1
-
     if (self.first_users.include? user)
       self.pull_with_first_user user
       repopulate_first_users self.id
@@ -64,34 +62,32 @@ class SocialEvent
     following_event = SocialEvent.find(following_event_id)
     if following_event.first_users_count < MAX_FIRST_USERS and following_event.users_count > following_event.first_users_count
       user = following_event.users.not_in(:_id => following_event.first_user_ids).first
-      SocialEvent.collection.update({:_id => following_event_id}, {:$addToSet => {:first_user_ids => user.id}, :$inc => {:first_users_count => 1}})
+      SocialEvent.where({:_id => following_event_id})
+                 .find_and_modify({:$addToSet => {:first_user_ids => user.id}, :$inc => {:first_users_count => 1}})
     end
   end
 
   def push_user user
-    SocialEvent.collection.update(
-          {:_id => self.id},
-          {:$addToSet => {:user_ids => user.id},
-          :$inc => {:users_count => 1}})
+    SocialEvent.where({:_id => self.id})
+               .find_and_modify({:$addToSet => {:user_ids => user.id},
+                                 :$inc => {:users_count => 1}})
   end
 
   def pull_user user
-    SocialEvent.collection.update({:_id => self.id},
-                                  {:$pull => {:user_ids => user.id},
-                                   :$inc => {:users_count => -1}})
+    SocialEvent.where(:_id => self.id)
+               .find_and_modify({:$pull => {:user_ids => user.id},
+                                 :$inc => {:users_count => -1}})
   end
 
   def push_with_first_user user
-    SocialEvent.collection.update(
-            {:_id => self.id}, 
-            {:$addToSet => {:first_user_ids => user.id, :user_ids => user.id},
-             :$inc => {:first_users_count => 1, :users_count => 1}})
+    SocialEvent.where(:_id => self.id)
+               .find_and_modify({:$addToSet => {:first_user_ids => user.id, :user_ids => user.id},
+                                 :$inc => {:first_users_count => 1, :users_count => 1}})
   end
 
   def pull_with_first_user user
-    SocialEvent.collection.update(
-          {:_id => self.id},
-          {:$pull => {:first_user_ids => user.id, :user_ids => user.id},
-           :$inc => {:first_users_count => -1, :users_count => -1}})
+    SocialEvent.where(:_id => self.id)
+               .find_and_modify({:$pull => {:first_user_ids => user.id, :user_ids => user.id},
+                                 :$inc => {:first_users_count => -1, :users_count => -1}})
   end
 end

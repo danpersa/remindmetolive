@@ -48,4 +48,6 @@ RemindMeToLive::Application.configure do
   config.disable_registration_confirmation_mail = true
 
   config.enable_social_event_notifications = false
+
+  
 end

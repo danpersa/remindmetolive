@@ -98,7 +98,7 @@ class Idea
   end
 
   def self.find_by_id id
-    self.first conditions: {_id: id}
+    Idea.where(_id: id).first
   end
 
   def exists?
@@ -108,10 +108,8 @@ class Idea
   end
 
   def idea_lists_of user
-    logger.info "BEFORE!!!!!!!!!!"
     idea_lists = user.idea_lists.all
     #any_in(:idea_ids => [self.id]).all
-    logger.info idea_lists.size
     return idea_lists
   end
 end

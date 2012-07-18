@@ -1,16 +1,17 @@
-develpment:
+development:
   sessions:
     default:
-      database: remind_me_to_live_development
+      database: remind_me_to_live_test
       hosts:
         - localhost:27017
-
 test: &TEST
   sessions:
     default:
       database: remind_me_to_live_test
       hosts:
         - localhost:27017
+  #options:
+  #  identity_map_enabled: true
 
 cucumber:
     <<: *TEST
