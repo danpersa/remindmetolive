@@ -1,0 +1,30 @@
+
+
+/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *= require_self
+ */
+ @import "foundation";
+ /*
+ *= require prototype
+ *= require prototype_first
+ *= require prototype_news_feed
+ *= require prototype_second
+ */
+@import "prototype";
+@import "prototype_first";
+@import "prototype_news_feed";
+@import "prototype_second";
+
+@import "custom_forms";
+@import "sessions";
+@import "users";
+@import "ideas";
+@import "idea_lists"; 
+@import "pages";
+@import "globals";
+
+.row.display { background: #f4f4f4; margin-bottom: 10px; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; }
+.row.display .column, .row.display .columns { background: #e7e7e7; font-size: 11px; text-indent: 3px; padding-top: 6px; padding-bottom: 6px; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; }

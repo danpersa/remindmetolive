@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.5'
+gem 'rails', '3.2.6'
 
 gem 'faker'
 gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
@@ -19,7 +19,8 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-  gem 'zurb-foundation'
+  gem 'compass-rails', '~> 1.0.3'
+  gem 'zurb-foundation', '>= 3.0.5'
 end
 
 gem 'jquery-rails'
