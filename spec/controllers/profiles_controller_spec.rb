@@ -47,12 +47,12 @@ describe ProfilesController do
       end
       
       it 'should not edit' do
-        get :edit, :user_id => Moped::BSON::ObjectId('4f341be673d987547700ffff')
+        get :edit, :user_id => Moped::BSON::ObjectId.from_string('4f341be673d987547700ffff')
         response.should redirect_to(user_profile_path(@user))
       end
       
       it 'should not create' do
-        post :create, :user_id => Moped::BSON::ObjectId('4f341be673d987547700ffff'),
+        post :create, :user_id => Moped::BSON::ObjectId.from_string('4f341be673d987547700ffff'),
              :profile => @attr
         response.should redirect_to(user_profile_path(@user))
       end

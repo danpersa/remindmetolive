@@ -103,17 +103,17 @@ describe IdeaListsController do
       end
 
       it 'should deny access if the idea list does not exist' do
-        get :show, :id => Moped::BSON::ObjectId('4f341be673d987547700ffff')
+        get :show, :id => Moped::BSON::ObjectId.from_string('4f341be673d987547700ffff')
         response.should redirect_to(idea_lists_path)
       end
 
       it 'should deny access if the idea list does not exist' do
-        put :update, :id => Moped::BSON::ObjectId('4f341be673d987547700ffff')
+        put :update, :id => Moped::BSON::ObjectId.from_string('4f341be673d987547700ffff')
         response.should redirect_to(idea_lists_path)
       end
 
       it 'should deny access if the idea list does not exist' do
-        delete :destroy, :id => Moped::BSON::ObjectId('4f341be673d987547700ffff')
+        delete :destroy, :id => Moped::BSON::ObjectId.from_string('4f341be673d987547700ffff')
         response.should redirect_to(idea_lists_path)
       end
     end

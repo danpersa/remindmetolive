@@ -61,9 +61,9 @@ module RemindMeToLive
     #used for pagination
     config.items_per_page                  = 20
 
-    # Mongoid.logger.level = Logger::INFO
-    # Moped.logger.level = Logger::INFO
-    Mongoid.logger.level = Logger::DEBUG
-    Moped.logger.level = Logger::DEBUG
+    Mongoid.logger.level = Logger::INFO
+    Moped.logger.level = Logger::INFO
+    # Mongoid.logger.level = Logger::DEBUG
+    # Moped.logger.level = Logger::DEBUG
   end
 end
