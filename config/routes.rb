@@ -94,15 +94,6 @@ RemindMeToLive::Application.routes.draw do
             # the new path is the same as the create path
             :path_names => {:new => ''}
 
-  root                                  :to => 'prototype#first'
-  match '/first',                       :to => 'prototype#first'
-  match '/second',                      :to => 'prototype#second'
-  match '/third',                       :to => 'prototype#third'
-  match '/forms',                       :to => 'prototype#forms'
-  match '/login-form',                  :to => 'prototype#login_form'
-  match '/navbar',                      :to => 'prototype#navbar'
-  match '/news-feed-page',              :to => 'prototype#news_feed'
-
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action

@@ -1,27 +1,29 @@
 require 'faker'
-require 'mongo'
+# require 'mongo'
 
 namespace :db do
   desc "Fill database with sample data "
   task :populate => :environment do
     RemindMeToLive::Application.config.action_mailer.delivery_method = :test
     RemindMeToLive::Application.config.action_mailer.logger = nil
+    Mongoid.logger.level = Logger::INFO
+    Moped.logger.level = Logger::INFO
 
     print ::Rails.env
     Mongoid.purge!
     beginning_time = Time.now
 
-    conn = Mongo::Connection.new
-    db   = conn['remind_me_to_live_development']
-    indexes = db['system.indexes']
+    #conn = Mongo::Connection.new
+    #db   = conn['remind_me_to_live_development']
+    #indexes = db['system.indexes']
 
-    indexes.insert([{:name=>"created_at_1", :ns=>"remind_me_to_live_development.social_events", :key=>{"created_at"=>1}, :unique=>false}])
-    indexes.insert([{:name=>"created_by_id_1", :ns=>"remind_me_to_live_development.social_events", :key=>{"created_by_id"=>1}, :unique=>false}])
-    indexes.insert([{:name=>"user_ids_1", :ns=>"remind_me_to_live_development.social_events", :key=>{"user_ids"=>1}, :unique=>false}])
+    #indexes.insert([{:name=>"created_at_1", :ns=>"remind_me_to_live_development.social_events", :key=>{"created_at"=>1}, :unique=>false}])
+    #indexes.insert([{:name=>"created_by_id_1", :ns=>"remind_me_to_live_development.social_events", :key=>{"created_by_id"=>1}, :unique=>false}])
+    #indexes.insert([{:name=>"user_ids_1", :ns=>"remind_me_to_live_development.social_events", :key=>{"user_ids"=>1}, :unique=>false}])
 
-    indexes.insert([{:name=>"username_1", :ns=>"remind_me_to_live_development.users", :key=>{"username"=>1}, :unique=>true}])
-    indexes.insert([{:name=>"email_1", :ns=>"remind_me_to_live_development.users", :key=>{"email"=>1}, :unique=>true}])
-    indexes.insert([{:name=>"salt_1", :ns=>"remind_me_to_live_development.users", :key=>{"salt"=>1}, :unique=>false}])
+    #indexes.insert([{:name=>"username_1", :ns=>"remind_me_to_live_development.users", :key=>{"username"=>1}, :unique=>true}])
+    #indexes.insert([{:name=>"email_1", :ns=>"remind_me_to_live_development.users", :key=>{"email"=>1}, :unique=>true}])
+    #indexes.insert([{:name=>"salt_1", :ns=>"remind_me_to_live_development.users", :key=>{"salt"=>1}, :unique=>false}])
 
     admin = make_users
     make_ideas(admin)
@@ -51,7 +53,7 @@ def make_users
   admin.save!
   admin.activate!
   print "."
-  99.times do |n|
+  49.times do |n|
     print "."
     username = Faker::Name.name[0, 25]
     email = "example-#{n+1}@railstutorial.org"
@@ -76,7 +78,7 @@ def make_ideas(admin)
     if user.id == 1
       next
     end
-    20.times do
+    10.times do
       content = Faker::Lorem.sentence(5).downcase.chomp(".")
       idea = user.create_new_idea!(:content => content, :privacy => Privacy::Values[:public], :reminder_date => reminder_date)
     end
@@ -85,10 +87,10 @@ end
 
 def make_relationships(admin)
   debug "make relationships: "
-  users = User.all(:limit => 20)
+  users = User.all.limit 10
   user = admin
-  following = users[3..20]
-  followers = users[3..10]
+  following = users[3..10]
+  followers = users[3..5]
   debug "    admin follows other users: "
   following.each { |followed| user.follow!(followed); print "."; }
   debug "    other users follow admin: "
@@ -103,14 +105,20 @@ end
 
 def make_idea_lists(admin)
   debug "make idea lists: "
-  (0..10).each do
+  (0..5).each do
     print "."
     idea_list = admin.create_idea_list Faker::Lorem.sentence(2).downcase.chomp(".")[0, 30]
+    debug "zero"
     number_of_ideas = Idea.count
-    (0..10).entries.each do |idea|
+    (0..5).entries.each do |idea|
+      debug "unu"
       random = Random.rand(number_of_ideas)
+      debug "doi"
       idea = Idea.all.skip(random).first
+      debug "trei"
       idea_list.add_idea_as idea, Privacy::Values[:public]
+      debug "patru"
     end
+    debug "cinci"
   end
 end

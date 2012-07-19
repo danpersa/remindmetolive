@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.6'
 
-gem 'faker'
+
 gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
 
 gem 'edge-state-machine', git: 'https://danpersa@github.com/danpersa/edge-state-machine.git',
@@ -26,6 +26,7 @@ end
 gem 'jquery-rails'
 
 group :development, :test do
+  gem 'faker'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'spork', '~> 0.9.0.rc'
