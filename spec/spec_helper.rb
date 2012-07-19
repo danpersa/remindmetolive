@@ -48,9 +48,8 @@ Spork.each_run do
       (finish - start) * 1000.0
     end
 
-    
 
-	  def test_activate_user(user)
+    def test_activate_user(user)
       if !user.activated?
         user.activate!
       end
@@ -68,12 +67,6 @@ Spork.each_run do
       fill_in "Password", :with => user.password
       click_button "Sign in"
       return user
-    end
-    
-    def create_community_user
-      community_user = User.create!(:name => "community", :email => "community@remindmetolive.com", :password => "thesercretpassword123")
-      # we don't let anyone to sign in as the community user
-      community_user.block!
     end
     
     def future_date
