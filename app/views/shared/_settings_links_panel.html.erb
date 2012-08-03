@@ -1,8 +1,8 @@
 <div class="settings-links-panel">
   <h5>Settings Links</h5>
   <dl class="nice tabs vertical">
-    <dd><%= link_to "Public profile", user_profile_path(current_user), :class => profiles_edit_active_class %></dd>
-    <dd><%= link_to "Change password", change_passwords_path, :class => change_passwords_active_class %></dd>
-    <dd><%= link_to "Account admin", edit_user_path(current_user), :class => users_edit_class %></dd>
+    <dd class="<%= profiles_edit_active_class %>"><%= link_to "Public profile", user_profile_path(current_user) %></dd>
+    <dd class="<%= change_passwords_active_class %>"><%= link_to "Change password", change_passwords_path %></dd>
+    <dd class="<%= users_edit_class %>"><%= link_to "Account admin", edit_user_path(current_user)%></dd>
   </dl>
 </div>

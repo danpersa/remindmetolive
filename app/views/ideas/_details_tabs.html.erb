@@ -1,7 +1,8 @@
-<dl class="tabs">
-  <dd><%= link_to 'Details', idea_path(@idea), :class => details_tab_active_class %></dd>
-  <dd><%= link_to 'Who shared this', users_idea_path(@idea), :class => users_tab_active_class %></dd>
-  <dd><%= link_to 'Friends sharing this', followed_users_idea_path(@idea), :class => followed_users_tab_active_class %></dd>
-  <dd><%= link_to 'Who did this', users_marked_the_idea_done_idea_path(@idea), :class => users_marked_the_idea_done_tab_active_class %></dd>
-  <dd><%= link_to 'Who marked it as good', users_marked_the_idea_good_idea_path(@idea), :class => users_marked_the_idea_good_tab_active_class %></dd>
+<dl class="tabs three-up">
+  <dd class="<%= users_tab_active_class %>"><%= link_to 'Who shared this', users_idea_path(@idea) %></dd>
+  <dd class="<%= followed_users_tab_active_class %>"><%= link_to 'Friends sharing this', followed_users_idea_path(@idea) %></dd>
+  <dd class="<%= users_marked_the_idea_done_tab_active_class %>"><%= link_to 'Who did this', users_marked_the_idea_done_idea_path(@idea) %></dd>
+</dl>
+<dl class="tabs one-up">
+  <dd class="<%= users_marked_the_idea_good_tab_active_class %>"><%= link_to 'Who marked it as good', users_marked_the_idea_good_idea_path(@idea) %></dd>
 </dl>

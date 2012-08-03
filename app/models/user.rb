@@ -154,13 +154,13 @@ class User < EdgeAuth::Identity
     UserMailer.reset_password(self).deliver
   end
 
-  #def self.find_by_password_reset_code password_reset_code
-  #  User.where(password_reset_code: password_reset_code).first 
-  #end
+  def self.find_by_password_reset_code password_reset_code
+    User.where(password_reset_code: password_reset_code).first 
+  end
 
-  #def self.find_by_email email
-   # User.where(email: email).first
-  #end
+  def self.find_by_email email
+    User.where(email: email).first
+  end
 
   def push_follower follower
     already = User.all_of({:_id => self.id},

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.6'
+gem 'rails', '3.2.7'
 
 
 gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
@@ -10,7 +10,7 @@ gem 'edge-state-machine', git: 'https://danpersa@github.com/danpersa/edge-state-
 gem 'simple_form'
 gem 'gravatar_image_tag'
 gem 'kaminari'
-gem 'edge-layouts'
+gem 'edge-layouts', git: 'https://github.com/danpersa/edge-layouts.git'
 gem 'edge-auth'
 gem 'edge-captcha'
 # Gems used only for assets and not required

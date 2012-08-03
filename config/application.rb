@@ -57,6 +57,7 @@ module RemindMeToLive
     end
 
     #config.mongoid.logger = Logger.new($stdout)
+    config.disable_registration_confirmation_mail = false
 
     #used for pagination
     config.items_per_page                  = 20

@@ -30,7 +30,7 @@ module UsersHelper
   end
 
   def users_ideas_active_class
-    return 'active' if "#{params[:controller].parameterize}_#{params[:action].parameterize}" == 'users_ideas'
+    return 'active' if "#{params[:controller].parameterize}_#{params[:action].parameterize}" == 'user_ideas_index'
   end
 
   def users_edit_class

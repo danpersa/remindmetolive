@@ -42,19 +42,17 @@ class ShareIdeaSocialEvent < IdeaSocialEvent
   	today = Time.now.utc
     start_time = self.start_of_day today
     end_time = self.end_of_day today
-    self.first(:conditions => 
-                {:created_at => {'$gte' => start_time,'$lt' => end_time},
-                 :idea_id => idea.id})
+    self.where({:created_at => {'$gte' => start_time,'$lt' => end_time},
+                :idea_id => idea.id}).first
   end
 
   def self.for_idea_created_today_by idea, shared_by
   	today = Time.now.utc
     start_time = self.start_of_day today
     end_time = self.end_of_day today
-    self.first(:conditions => 
-                {:created_at => {'$gte' => start_time,'$lt' => end_time},
+    self.where({:created_at => {'$gte' => start_time,'$lt' => end_time},
                  :idea_id => idea.id,
                  :user_ids => {'$in' => [shared_by.id]}
-                })
+              }).first
   end
 end

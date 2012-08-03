@@ -46,12 +46,14 @@ $( function() {
   var ta = document.getElementById('user_idea_idea_content');
   if (ta != null) {
     ta.onfocus = function(){
-      $(this).animate({ height: "80px" }, 500);
+      $(this).height("90px");
+      //$(this).animate({ height: "90px" });
     }
 
     ta.onblur = function(){
       if (this.value == '') {
-          $(this).animate({ height: "30px" }, 500);
+        $(this).height("30px");
+        //$(this).animate({ height: "30px" }, 300);
       }
     }
   }

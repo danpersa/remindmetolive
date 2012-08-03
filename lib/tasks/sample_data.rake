@@ -108,17 +108,11 @@ def make_idea_lists(admin)
   (0..5).each do
     print "."
     idea_list = admin.create_idea_list Faker::Lorem.sentence(2).downcase.chomp(".")[0, 30]
-    debug "zero"
     number_of_ideas = Idea.count
     (0..5).entries.each do |idea|
-      debug "unu"
       random = Random.rand(number_of_ideas)
-      debug "doi"
       idea = Idea.all.skip(random).first
-      debug "trei"
       idea_list.add_idea_as idea, Privacy::Values[:public]
-      debug "patru"
     end
-    debug "cinci"
   end
 end

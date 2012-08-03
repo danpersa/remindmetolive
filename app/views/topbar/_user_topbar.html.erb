@@ -1,16 +1,16 @@
 <div id="zurBar" class="container">
   <div class="row">
-    <div class="three columns">
+    <div class="three mobile-four columns">
       <h1><%= link_to "remind me to live", root_path, :class => "brand" %></h1>
     </div>
-    <div class="four columns hide-on-phones left">
+    <div class="four columns hide-for-small left">
       <strong class="left">
         <%= link_to 'News Feed', root_path %>
         <%= link_to "Profile", current_user %>
         <%= link_to "Find People", users_path %>
       </strong>
     </div>
-    <div class="five columns hide-on-phones right">
+    <div class="five columns hide-for-small right">
       <strong class="right">
         <%= link_to "Settings", user_profile_path(current_user) %>
         <%= link_to "Sign out", signout_path, :method => :delete %>
