@@ -1,20 +1,37 @@
-<div id="zurBar" class="container">
-  <div class="row">
-    <div class="three mobile-four columns">
-      <h1><%= link_to "remind me to live", root_path, :class => "brand" %></h1>
-    </div>
-    <div class="four columns hide-for-small left">
-      <strong class="left">
-        <%= link_to 'News Feed', root_path %>
-        <%= link_to "Profile", current_user %>
-        <%= link_to "Find People", users_path %>
-      </strong>
-    </div>
-    <div class="five columns hide-for-small right">
-      <strong class="right">
-        <%= link_to "Settings", user_profile_path(current_user) %>
-        <%= link_to "Sign out", signout_path, :method => :delete %>
-      </strong>
-    </div>
-  </div>
+<div class="contain-to-grid">
+  <!-- <nav> goes here -->
+  <nav class="top-bar">
+    <ul>
+      <li class="name"><h1><%= link_to "remind me to live", root_path, :class => "brand" %></h1></li>
+      <li class="toggle-topbar"><a href="#"></a></li>
+    </ul>
+    <section>
+      <ul class="left">
+        <li><%= link_to 'News Feed', root_path %></li>
+        <li><%= link_to "Profile", current_user %></li>
+        <li><%= link_to "Find People", users_path %></li>
+        <li class="divider"></li>
+        <li class="search">
+          <form>
+            <input type="search">
+          </form>
+        </li>
+        <li class="divider"></li>
+      </ul>
+      <ul class="right">
+        <li class="has-dropdown">
+          <%= link_to current_user.display_name, "#" %>
+          <ul class="dropdown">
+            <li><%= link_to "About",  about_path %></li>
+            <li><%= link_to "Contact", contact_path %></li>
+            <li><%= link_to "Help", help_path %></li>
+            <li class="divider"></li>
+            <li><label>OPTIONS</label></li>
+            <li><%= link_to "Settings", user_profile_path(current_user) %></li>
+            <li><%= link_to "Sign out", signout_path, :method => :delete %></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </nav>
 </div>

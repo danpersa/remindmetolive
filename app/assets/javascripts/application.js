@@ -13,7 +13,6 @@ $( function() {
   //$("button, input:submit").button();
 
 
-
 //  $(".alert-message").alert();
 //  $(".alert-message").alert('close');
   $('#post-button').addClass('disabled').attr('disabled', true);
@@ -58,6 +57,11 @@ $( function() {
     }
   }
   initToolbars();
+  /* $(document).foundationTopBar(); */
+  $(document).foundationCustomForms();
+
+  $(document).foundationTopBar({breakPoint:978,initialized:false,index:0});
+  $('.toggle-topbar').click(function(){$('.top-bar').toggleClass('expanded');});
 });
 
 function addNotification(message, styleClass) {

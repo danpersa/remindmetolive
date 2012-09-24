@@ -5,6 +5,9 @@
   padding: 15px 20px 13px 20px;
 }
 
+.brand {
+  color: #2BA6CB !important;
+}
 
 @media handheld, only screen and (max-width: 767px) {
   #zurBar { padding: 15px 0px 13px 0px; }
@@ -15,7 +18,7 @@
   line-height: 16px;
 }
 
-#zurBar h1 {
+h1 {
   color: #1FB3D8;
   font-size: 20px;
   font-weight: normal;

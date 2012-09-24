@@ -1,15 +1,19 @@
-<div id="zurBar" class="container">
-  <div class="row">
-    <div class="three mobile-four columns">
-        <h1><%= link_to "remind me to live", root_path, :class => "brand" %></h1>
-    </div>
-    <div class="nine columns hide-for-small right">
-      <strong class="right">
-        <%= link_to "About",  about_path %>
-        <%= link_to "Contact", contact_path %>
-        <%= link_to "Help", help_path %>
-        <%= link_to "Sign in", signin_path, :class => 'nice small radius blue button' %>
-      </strong>
-    </div>
-  </div>
+<div class="contain-to-grid">
+  <!-- <nav> goes here -->
+  <nav class="top-bar">
+    <ul>
+      <li class="name"><h1><%= link_to "remind me to live", root_path, :class => "brand" %></h1></li>
+      <li class="toggle-topbar"><a href="#"></a></li>
+    </ul>
+    <section>
+      <ul class="left">
+      </ul>
+      <ul class="right">
+        <li><%= link_to "About",  about_path %></li>
+        <li><%= link_to "Contact", contact_path %></li>
+        <li><%= link_to "Help", help_path %></li>
+        <li><%= link_to "Sign in", signin_path, :class => 'nice small radius blue button' %></li>
+      </ul>
+    </section>
+  </nav>
 </div>
