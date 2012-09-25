@@ -12,6 +12,7 @@ gem 'kaminari'
 gem 'edge-layouts', git: 'https://github.com/danpersa/edge-layouts.git'
 gem 'edge-auth'
 gem 'edge-captcha'
+gem 'thin'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -36,7 +37,6 @@ group :development, :test do
   gem 'therubyracer'
   gem 'simplecov', :require => false
   gem 'quiet_assets'
-  gem 'thin'
   gem 'database_cleaner', :git => 'https://github.com/bmabey/database_cleaner.git'
 end
 
