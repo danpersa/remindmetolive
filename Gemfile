@@ -5,8 +5,7 @@ gem 'rails', '3.2.8'
 
 gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
 
-gem 'edge-state-machine', git: 'https://danpersa@github.com/danpersa/edge-state-machine.git',
-                          branch: 'edge-state-machine-mongoid3'
+gem 'edge-state-machine', '~> 1.0.0'
 gem 'simple_form'
 gem 'gravatar_image_tag'
 gem 'kaminari'

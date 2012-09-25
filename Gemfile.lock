@@ -1,11 +1,4 @@
 GIT
-  remote: https://danpersa@github.com/danpersa/edge-state-machine.git
-  revision: 093008680d98fa9e7b25196a75182576b03f38f5
-  branch: edge-state-machine-mongoid3
-  specs:
-    edge-state-machine (0.9.1)
-
-GIT
   remote: https://github.com/bmabey/database_cleaner.git
   revision: e1c3b908d5224b73f5bf229e46f498a90a8f17cb
   specs:
@@ -104,6 +97,7 @@ GEM
       rails (~> 3.2.1)
     edge-captcha (0.0.2)
       rails (~> 3.2.1)
+    edge-state-machine (1.0.0)
     erubis (2.7.0)
     eventmachine (1.0.0)
     execjs (1.4.0)
@@ -249,7 +243,7 @@ DEPENDENCIES
   edge-auth
   edge-captcha
   edge-layouts!
-  edge-state-machine!
+  edge-state-machine (~> 1.0.0)
   execjs
   factory_girl_rails
   faker
