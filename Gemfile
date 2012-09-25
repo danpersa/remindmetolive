@@ -26,8 +26,9 @@ end
 
 gem 'jquery-rails'
 
+gem 'faker'
 group :development, :test do
-  gem 'faker'
+
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'spork', '~> 0.9.0.rc'
