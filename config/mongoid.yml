@@ -12,13 +12,8 @@ test: &TEST
         - localhost:27017
   #options:
   #  identity_map_enabled: true
-
 production:
-  sessions:
-    default:
-      database: remind_me_to_live_test
-      hosts:
-        - mongodb://remindmetolive:Qwerty123@ds037987-a.mongolab.com:37987/heroku_app7871152
+  uri: <%= ENV['MONGOLAB_URI'] %>
 
 cucumber:
     <<: *TEST

@@ -9,7 +9,7 @@ RemindMeToLive::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.serve_static_assets = true
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -31,7 +31,7 @@ RemindMeToLive::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :debug
 
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -43,7 +43,7 @@ RemindMeToLive::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile += %w( search.js )
+  config.assets.precompile += %w( narrow_layout.css jquery.textchange.min.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
@@ -65,13 +65,14 @@ RemindMeToLive::Application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { :host => "remindmetolive.heroku.com" }
+
   config.action_mailer.smtp_settings = {
-  :address              => "smtp.gmail.com",
-  :port                 => 587,
-  #:domain               => "wappa.be",
-  :user_name            => "dan.persa@gmail.com",
-  :password             => "Wcrxz70698",
-  :authentication       => "plain",
-  #:enable_starttls_auto => true
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :domain               => "gmail.com",
+    :user_name            => "remind.me.to.live@gmail.com",
+    :password             => "Qwerty~123",
+    :authentication       => "plain",
+    :enable_starttls_auto => true
   }
 end
