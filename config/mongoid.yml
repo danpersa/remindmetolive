@@ -12,8 +12,14 @@ test: &TEST
         - localhost:27017
   #options:
   #  identity_map_enabled: true
+
 production:
-  uri: <%= ENV['MONGOLAB_URI'] %>
+  sessions:
+    default:
+      uri: <%= ENV['MONGOLAB_URI'] %>
+      options:
+        skip_version_check: true
+        safe: true
 
 cucumber:
     <<: *TEST
