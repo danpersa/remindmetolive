@@ -3,9 +3,7 @@
     <div class="twelve columns">
       <h5>Remind me to</h5>
       <%= @idea.content %>
-      <%= f.simple_fields_for :idea do |idea_form| %>
-        <%= idea_form.hidden_field :id, :value => @idea.id %>
-      <% end %>
+      <%= f.hidden_field :idea_id, :value => @idea.id %>
     </div>
   </div>
   <div class="row mobile">
@@ -14,8 +12,8 @@
       <%= f.input :reminder_date, :label => false, :placeholder => 'eg: 10/10/2011', :size => 20 %>
     </div>
     <div class="five mobile-four columns" id="user_idea_privacy_div">
-        <%= f.label :privacy, 'as' %>
-    <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last %>
+      <%= f.label :privacy, 'as' %>
+      <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last %>
     </div>
   </div>
   <hr />

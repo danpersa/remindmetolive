@@ -111,6 +111,10 @@ class User < EdgeAuth::Identity
     self.ideas.where(:idea_id => idea.id).count > 0
   end
 
+  def user_idea idea
+    self.ideas.where(:idea_id => idea.id).first
+  end
+
   def has_user_idea? user_idea
     self.ideas.where(:_id => user_idea.id).count > 0
   end

@@ -10,11 +10,12 @@
 
   <div class="row mobile">
     <div class="twelve columns phone-four">
-      <div><%= @idea.users_marked_the_idea_good_count %> people think that this idea is good</div>
-      <div><%= @idea.users_marked_the_idea_done_count %> people already did this</div>
-      <div>12355 people want to remember this idea</div>
+      <div><%= pluralize(@idea.users_marked_the_idea_good_count, "person") %> think that this idea is good</div>
+      <div><%= pluralize(@idea.users_marked_the_idea_done_count, "person") %> already did this</div>
+      <div><%= pluralize(@idea.user_ideas.count, "person") %> want to remember this idea</div>
     </div>
   </div>
+  <br />
 
   <div class="row mobile">
     <div class="twelve columns phone-four">

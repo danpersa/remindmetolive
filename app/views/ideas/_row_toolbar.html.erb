@@ -4,6 +4,13 @@
   </span> ·
   <% unless current_user.has_idea? idea %>
     <%= link_to 'Remind me too', new_for_existing_idea_path(idea.id), :remote => true %> ·
+  <% else %>
+    <% user_idea = current_user.user_idea idea %>
+    <% if user_idea.reminder_date.nil? %>
+      <a href="#">Create reminder</a> ·
+    <% else %>
+      <a href="#">Modify reminder</a> ·
+    <% end %>
   <% end %>
   <span class="good_idea_<%= idea.id %>">
     <%= render :partial => 'ideas/good_idea_link', :locals => {:idea => idea} %>
