@@ -3,7 +3,7 @@
 #end
 
 Given /^a logged user with email "([^"]*)"$/ do |email|
-  user = FactoryGirl.create(:user, :email => email)
+  user = FactoryGirl.create(:pending_user, :email => email)
   password = user.password
   step %{"#{user.email}"'s the account is activated}
   step %{I sign in with "#{email}" and "#{password}"}

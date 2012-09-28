@@ -12,18 +12,6 @@ GIT
       rails (~> 3.2.1)
 
 GIT
-  remote: https://github.com/jnicklas/capybara.git
-  revision: 81d2ab3afc51c35b9fa18188e49c1f718cd3514d
-  specs:
-    capybara (2.0.0.beta2)
-      mime-types (>= 1.16)
-      nokogiri (>= 1.3.3)
-      rack (>= 1.0.0)
-      rack-test (>= 0.5.4)
-      selenium-webdriver (~> 2.0)
-      xpath (~> 1.0.0.beta1)
-
-GIT
   remote: https://github.com/mongoid/mongoid.git
   revision: 4300efb3392d8e55bffa45990b30fca95035b32f
   specs:
@@ -66,6 +54,13 @@ GEM
     addressable (2.3.2)
     arel (3.0.2)
     builder (3.0.3)
+    capybara (1.1.2)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      selenium-webdriver (~> 2.0)
+      xpath (~> 0.1.4)
     childprocess (0.3.5)
       ffi (~> 1.0, >= 1.0.6)
     chunky_png (1.2.6)
@@ -223,7 +218,7 @@ GEM
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
     watchr (0.7)
-    xpath (1.0.0.beta1)
+    xpath (0.1.4)
       nokogiri (~> 1.3)
     zurb-foundation (3.1.1)
       compass (>= 0.12.2)
@@ -235,7 +230,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  capybara!
+  capybara (~> 1.1.2)
   coffee-rails (~> 3.2.1)
   compass-rails (~> 1.0.3)
   cucumber-rails

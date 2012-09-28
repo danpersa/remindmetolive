@@ -9,4 +9,4 @@ Feature: 2.1 - The user accesses his profile page
     When I go to the profile page of "brandon@example.com"
     Then I should see "brandon@example.com"'s display name
     And I should see "has a new idea"
-    And I should see "ana are mere"
+    And I should see "play the violin"

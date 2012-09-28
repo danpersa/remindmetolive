@@ -6,7 +6,6 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 require 'cucumber/rails'
-require 'factory_girl/step_definitions'
 
 RemindMeToLive::Application.config.enable_social_event_notifications = true
 

@@ -12,7 +12,7 @@ end
 
 When /^I click on one of the delete links$/ do
   #within(:css, '#table-div') do
-    idea_link = page.find(:css, "delete") 
+    idea_link = page.find(:css, ".delete") 
     idea_link.click
   #end
 end
