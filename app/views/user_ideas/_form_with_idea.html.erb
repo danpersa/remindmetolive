@@ -8,18 +8,14 @@
       <% end %>
     </div>
   </div>
-  <div class="row mobile" style="padding-top: 20px;">
-    <div class="two columns">
+  <div class="row mobile">
+    <div class="seven mobile-four columns">
       <%= f.label :reminder_date, 'on' %>
+      <%= f.input :reminder_date, :label => false, :placeholder => 'eg: 10/10/2011', :size => 20 %>
     </div>
-    <div class="four columns">
-      <%= f.input :reminder_date, :label => false, :placeholder => 'eg: 10/10/2011 (optional)', :size => 20 %>
-    </div>
-    <div class="one columns">
-      <%= f.label :privacy, 'as' %>
-    </div>
-    <div class="three columns">
-      <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last %>
+    <div class="five mobile-four columns" id="user_idea_privacy_div">
+        <%= f.label :privacy, 'as' %>
+    <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last %>
     </div>
   </div>
   <hr />
