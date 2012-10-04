@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: https://github.com/danpersa/edge-auth.git
-  revision: 33d51ebd0728c2c3d9261210ab04ef784851fb94
+  revision: 2ec0380eed27cda75ce4b5ac392f14cc2f5e049d
   specs:
     edge-auth (0.0.4)
       rails (~> 3.2.1)
