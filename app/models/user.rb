@@ -1,7 +1,7 @@
 require 'mongoid/edge-state-machine'
 require 'notifications'
 
-class User < EdgeAuth::Identity
+class User < EdgeAuth::User
   extend RemindMeToLive::Notifications
 
   field :username                    , :type => String
