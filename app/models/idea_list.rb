@@ -4,7 +4,7 @@ class IdeaList
   field :name,                :type => String
   field :ideas_count,         :type => Integer, default: 0
 
-  embedded_in                 :user
+  belongs_to                  :user
   has_and_belongs_to_many     :ideas, class_name: 'UserIdea'
 
   validates_presence_of       :name

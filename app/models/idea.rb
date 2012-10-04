@@ -18,11 +18,7 @@ class Idea
 
   has_and_belongs_to_many     :users_marked_the_idea_good, :class_name => 'User', :inverse_of => nil
   has_and_belongs_to_many     :users_marked_the_idea_done, :class_name => 'User', :inverse_of => nil
-  has_many                    :user_ideas  
-
-  # we don't need this because the ideas can be in idea lists from different users
-  # and for now, we don't want to filter by user
-  # has_and_belongs_to_many     :idea_lists
+  has_many                    :user_ideas
 
   validates_presence_of       :privacy
   validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]

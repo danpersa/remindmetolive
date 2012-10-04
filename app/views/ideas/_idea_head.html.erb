@@ -31,5 +31,18 @@
     </div>
   </div>
 
+  <% unless @user_idea.nil? %>
+  <div class="row mobile">
+    <div class="ten columns offset-by-two phone-four">
+      The idea is part of the following lists:
+      <%= form_for @user_idea do |f| %>
+        <%= f.text_field :idea_list_tokens, "data-pre" => @user_idea.idea_lists.map(&:attributes).to_json %>
+        <br/>
+        <%= f.submit "Update lists", :class => "btn primary" %>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+
 <br />
 <%= render 'ideas/details_tabs' %>

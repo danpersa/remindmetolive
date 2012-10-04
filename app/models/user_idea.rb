@@ -1,12 +1,16 @@
 class UserIdea
   include Mongoid::Document
 
+  attr_reader :idea_list_tokens
+
   field :privacy,                  :type => Integer
   field :reminder_created_at,      :type => DateTime, :default => Time.now
   field :reminder_date,            :type => Date
 
   belongs_to :user, inverse_of: :ideas
   belongs_to :idea, inverse_of: :user_ideas
+
+  has_and_belongs_to_many    :idea_lists, inverse_of: :ideas
 
   validates_presence_of       :privacy
   validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]
@@ -35,7 +39,11 @@ class UserIdea
         User.user_creates_idea_notification self.user, self.idea
       end
     end
-  end  
+  end
+
+  def idea_list_tokens=(ids)
+    self.idea_list_ids = ids.split(",")
+  end
 
   # sample params
   # {"idea"=>{"content"=>"learn to play"},

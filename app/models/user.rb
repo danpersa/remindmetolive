@@ -15,10 +15,9 @@ class User < EdgeAuth::Identity
   has_and_belongs_to_many    :following, class_name: 'User'
 
   has_many :ideas, class_name: 'UserIdea', inverse_of: :user
+  has_many :idea_lists
 
   embeds_one  :profile
-  
-  embeds_many :idea_lists
 
   # index :username, unique: true
 
