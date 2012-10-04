@@ -11,7 +11,7 @@ gem 'simple_form'
 gem 'gravatar_image_tag'
 gem 'kaminari'
 gem 'edge-layouts', git: 'https://github.com/danpersa/edge-layouts.git'
-gem 'edge-auth'
+gem 'edge-auth', git: 'https://github.com/danpersa/edge-auth.git'
 gem 'edge-captcha'
 gem 'thin'
 # Gems used only for assets and not required
