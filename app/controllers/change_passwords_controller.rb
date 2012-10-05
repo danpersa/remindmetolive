@@ -1,3 +1,3 @@
-class ChangePasswordsController < EdgeAuth::ChangePasswordsController
-
+class ChangePasswordsController < ApplicationController
+  include EdgeAuth::Concerns::ChangePasswords
 end

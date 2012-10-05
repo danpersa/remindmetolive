@@ -1,0 +1,3 @@
+module ChangeResetedPasswordsHelper
+  include ApplicationHelper
+end

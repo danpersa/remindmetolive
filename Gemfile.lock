@@ -5,13 +5,6 @@ GIT
     database_cleaner (0.8.0)
 
 GIT
-  remote: https://github.com/danpersa/edge-auth.git
-  revision: 2ec0380eed27cda75ce4b5ac392f14cc2f5e049d
-  specs:
-    edge-auth (0.0.4)
-      rails (~> 3.2.1)
-
-GIT
   remote: https://github.com/danpersa/edge-layouts.git
   revision: 63bed1ffa41b18eae691c53929d5a78d1bd49d53
   specs:
@@ -27,6 +20,12 @@ GIT
       moped (~> 1.2)
       origin (~> 1.0)
       tzinfo (~> 0.3.22)
+
+PATH
+  remote: /home/dix/prog/rails/edge-auth
+  specs:
+    edge-auth (0.0.4)
+      rails (~> 3.2.1)
 
 GEM
   remote: http://rubygems.org/

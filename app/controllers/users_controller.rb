@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   include RecaptchaHelper
   include UsersHelper
+  include ApplicationHelper
 
   layout 'section_with_default_sidebar'
 

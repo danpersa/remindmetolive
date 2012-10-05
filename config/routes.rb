@@ -2,6 +2,8 @@ RemindMeToLive::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
+  mount EdgeAuth::Engine, :at => "/auth"
+
   root                                  :to => 'pages#home'
   match '/signup',                      :to => 'users#new'
   match '/activate',                    :to => 'users#activate'

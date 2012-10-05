@@ -1,4 +1,5 @@
 module IdeasHelper
+  include ApplicationHelper
 
   def details_tab_active_class
     return 'active' if "#{params[:controller].parameterize}_#{params[:action].parameterize}" == 'ideas_show'
