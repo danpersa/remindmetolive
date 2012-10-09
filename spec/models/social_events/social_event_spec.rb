@@ -74,9 +74,6 @@ describe SocialEvent do
       end
 
       it 'should include the user\'s social events in the right order' do
-        @social_events.each do |se|
-          puts se.updated_at.to_s
-        end
         @social_events.should == [@social_event2, @social_event1, @social_event3, @social_event4]
       end
 

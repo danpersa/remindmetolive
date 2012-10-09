@@ -27,7 +27,7 @@ class IdeaList
     user_idea = self.ideas.find(user_idea.id) # exception
     return false
   rescue Mongoid::Errors::DocumentNotFound
-    self.ideas.push user_idea
+    self.ideas << user_idea
     self.ideas_count += 1
     self.save
   end

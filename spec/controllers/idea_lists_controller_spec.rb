@@ -391,9 +391,10 @@ describe IdeaListsController do
 
     describe 'success' do
 
-      it 'should create new idea_list_ownership' do
+      it 'should create new idea_list' do
         lambda do
           post :add_idea, :id => @idea_list, :idea_id => @idea.id
+          @idea_list.reload
         end.should change(@idea_list.ideas, :count).by(1)
       end
     end

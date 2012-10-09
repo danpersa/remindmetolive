@@ -31,7 +31,6 @@ class User < EdgeAuth::User
   validates_length_of         :username, minimum: 5, maximum: 25
   validates_uniqueness_of     :username
 
-
   # should only be called with pagination
   def ideas_ordered_by_reminder_created_at
     self.ideas.desc(:reminder_created_at)
@@ -129,9 +128,10 @@ class User < EdgeAuth::User
   end
 
   def remove_idea_list idea_list
-    self.idea_lists.find(idea_list.id) # should raise an error
+    idea_list = self.idea_lists.find(idea_list.id) # should raise an error
     self.idea_lists_count -= 1
     self.idea_lists.delete idea_list
+    idea_list.destroy
     return self.save
   rescue Mongoid::Errors::DocumentNotFound
     return false

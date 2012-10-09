@@ -1,5 +1,5 @@
 class ChangeResetedPasswordsController < ApplicationController
-  include EdgeAuth::Concerns::ChangeResetedPasswords
+  include EdgeAuth::Concerns::ChangeResetedPasswordsController
   
   layout 'one_section_narrow'
 end

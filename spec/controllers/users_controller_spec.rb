@@ -257,14 +257,14 @@ describe UsersController do
     describe 'success' do
 
       before(:each) do
-        @attr = { :username => 'New User', :email => 'user@example.com',
+        @attr ={ :username => 'New User', :email => 'user@example.com',
                   :password => 'foobar', :password_confirmation => 'foobar' }
       end
 
       it 'should create a user' do
         lambda do
           post :create, :user => @attr
-        end.should change(User, :count).by(1)
+        end.should change(EdgeAuth::User, :count).by(1)
       end
 
       it 'should redirect to the signin page' do
@@ -352,6 +352,7 @@ describe UsersController do
         @attr = { :email => '', :username => '' }
       end
 
+#keepppeeeeeeeeeeee
       context 'when blank username' do
 
         it 'should render the edit page' do
