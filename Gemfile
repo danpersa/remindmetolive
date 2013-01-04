@@ -11,8 +11,9 @@ gem 'simple_form'
 gem 'gravatar_image_tag'
 gem 'kaminari'
 gem 'edge-layouts', git: 'https://github.com/danpersa/edge-layouts.git'
-gem 'edge-auth', path: '/home/dix/prog/rails/edge-auth'
-               # git: 'https://github.com/danpersa/edge-auth.git'
+gem 'edge-auth', git: 'https://github.com/danpersa/edge-auth.git'
+	           #path: '/home/dix/prog/rails/edge-auth'
+
 gem 'edge-captcha'
 gem 'thin'
 # Gems used only for assets and not required
@@ -23,6 +24,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails', '~> 1.0.3'
   gem 'zurb-foundation', '>= 3.0.5'
+  gem "select2-rails"
 end
 
 gem 'jquery-rails'

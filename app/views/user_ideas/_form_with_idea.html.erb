@@ -11,7 +11,7 @@
       <%= f.label :reminder_date, 'on' %>
       <%= f.input :reminder_date, :label => false, :placeholder => 'eg: 10/10/2011', :size => 20 %>
     </div>
-    <div class="five mobile-four columns" id="user_idea_privacy_div">
+    <div class="five mobile-four columns">
       <%= f.label :privacy, 'as' %>
       <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last %>
     </div>
