@@ -16,6 +16,7 @@ class IdeasController < ApplicationController
 
   def show
     init_head
+    @idea_lists = IdeaList.owned_by current_user
     respond_to do |format|
       format.html {
         init_default_sidebar
@@ -89,6 +90,25 @@ class IdeasController < ApplicationController
       format.js {
         render :partial => 'ideas/update_users_marked_the_idea_done_table'
       }
+    end
+  end
+
+  def update
+    @idea = Idea.find(params[:id])
+    idea_list_ids = params[:idea][:idea_list_tokens]
+    # we should remove the current idea from all the users's lists
+    idea_list_ids.each do |idea_list_id|
+      idea_list = IdeaList.where(_id: idea_list_id).first
+      puts idea_list
+      unless idea_list.nil?
+        idea_list.add_idea_as @idea
+      end
+    end
+    if @idea.save!
+      flash[:success] = "Successfully updated idea!"
+      redirect_to @idea
+    else
+      render :action => 'show'
     end
   end
 

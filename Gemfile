@@ -13,8 +13,8 @@ gem 'kaminari'
 gem 'edge-layouts', git: 'https://github.com/danpersa/edge-layouts.git'
 gem 'edge-auth', git: 'https://github.com/danpersa/edge-auth.git'
 	           #path: '/home/dix/prog/rails/edge-auth'
+gem 'edge-captcha', git: 'https://github.com/danpersa/edge-captcha.git'
 
-gem 'edge-captcha'
 gem 'thin'
 # Gems used only for assets and not required
 # in production environments by default.
@@ -23,7 +23,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails', '~> 1.0.3'
-  gem 'zurb-foundation', '>= 3.0.5'
+  gem 'zurb-foundation', '>= 3.2.3'
   gem "select2-rails"
 end
 
@@ -39,7 +39,8 @@ group :development, :test do
   gem 'launchy'
   gem 'watchr'
   gem 'execjs'
-  gem 'therubyracer'
+  gem 'therubyracer', '~> 0.11.0beta5'
+  gem 'libv8', "~> 3.11.8"
   gem 'simplecov', :require => false
   gem 'quiet_assets'
   gem 'database_cleaner', :git => 'https://github.com/bmabey/database_cleaner.git'

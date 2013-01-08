@@ -364,4 +364,12 @@ describe IdeasController do
       end
     end
   end
+
+  describe 'PUT update' do
+
+    it 'should update tokens' do
+      pending
+    end
+
+  end
 end

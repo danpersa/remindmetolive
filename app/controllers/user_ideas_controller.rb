@@ -75,17 +75,6 @@ class UserIdeasController < ApplicationController
     end
   end
 
-  def update
-    @idea = Idea.find(params[:id])
-    @idea.idea_list_tokens = params[:idea][:idea_list_tokens]
-    if @idea.save!
-      flash[:success] = "Successfully updated idea!"
-      redirect_to @idea
-    else
-      render :action => 'show'
-    end
-  end
-
   def destroy
     @user = current_user
     idea = @user_idea.idea

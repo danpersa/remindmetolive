@@ -20,12 +20,6 @@ describe UserIdeasController do
 
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
-          post :update, :id => 1
-        end
-      end
-
-      it_should_behave_like 'deny access unless signed in' do
-        let(:request_action) do
           delete :destroy, :id => 1
         end
       end
@@ -158,14 +152,6 @@ describe UserIdeasController do
         response.should render_template('pages/home')
       end
     end
-  end
-  
-  describe 'PUT update' do
-
-    it 'should update tokens' do
-      pending
-    end
-
   end
 
   describe 'DELETE destroy' do

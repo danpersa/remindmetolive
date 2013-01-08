@@ -29,6 +29,7 @@ RemindMeToLive::Application.routes.draw do
                                         :as => 'new_for_existing_idea'
 
   resources :sessions, :only => [:new, :create, :destroy]
+
   resources :users do
     member do
       get :following, :followers
@@ -39,7 +40,7 @@ RemindMeToLive::Application.routes.draw do
   end
 
 
-  resources :ideas, :only => [:show, :create, :update, :destroy] do
+  resources :ideas, :only => [:show, :update, :destroy] do
     member do
       # the list of users that shares the idea
       get :users
@@ -49,7 +50,7 @@ RemindMeToLive::Application.routes.draw do
     end
   end
 
-  resources :user_ideas, :only => [:index, :show, :create, :update, :destroy],
+  resources :user_ideas, :only => [:index, :show, :create, :destroy],
             :path => 'ideas-to-remember'
 
   resources :idea_lists, :only => [:index, :show, :new, :create, :edit, :update, :destroy],

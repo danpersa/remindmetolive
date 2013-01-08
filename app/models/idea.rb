@@ -7,6 +7,7 @@ class Idea
 
   attr_accessor :users_marked_the_idea_good
   attr_accessor :users_marked_the_idea_done
+  attr_reader :idea_list_tokens
 
   field :content                         ,  type: String
   field :privacy                         ,  type: Integer
@@ -25,6 +26,10 @@ class Idea
 
   validates_presence_of       :content
   validates_length_of         :content, minimum: 3, maximum: 255
+
+  def idea_list_tokens=(ids)
+    self.idea_list_ids = ids.split(",")
+  end
 
   def mark_as_good_by! user
     return if self.marked_as_good_by? user
@@ -107,5 +112,10 @@ class Idea
     idea_lists = user.idea_lists.all
     #any_in(:idea_ids => [self.id]).all
     return idea_lists
+  end
+
+
+  def idea_list_ids_as_json_of user
+    idea_lists_of(user).map{|idea_list| idea_list.id}.to_json
   end
 end

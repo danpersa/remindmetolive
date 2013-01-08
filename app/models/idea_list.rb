@@ -32,6 +32,13 @@ class IdeaList
     self.save
   end
 
+  def add_ideas idea_ids
+    idea_ids.each do |idea_id|
+      idea = Idea.find idea_id
+      add_idea_as idea
+    end
+  end
+
   def remove_idea idea
     user_idea = self.ideas.where(:idea_id => idea.id).first
     return false if user_idea.nil?
