@@ -96,20 +96,10 @@ class IdeasController < ApplicationController
   def update
     @idea = Idea.find(params[:id])
     idea_list_ids = params[:idea][:idea_list_tokens]
-    # we should remove the current idea from all the users's lists
-    idea_list_ids.each do |idea_list_id|
-      idea_list = IdeaList.where(_id: idea_list_id).first
-      puts idea_list
-      unless idea_list.nil?
-        idea_list.add_idea_as @idea
-      end
-    end
-    if @idea.save!
-      flash[:success] = "Successfully updated idea!"
-      redirect_to @idea
-    else
-      render :action => 'show'
-    end
+    @idea.put_in_idea_lists_of_user idea_list_ids, @user
+    
+    flash[:success] = "Successfully updated idea!"
+    redirect_to @idea
   end
 
   private
