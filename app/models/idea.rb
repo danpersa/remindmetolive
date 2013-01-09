@@ -27,10 +27,6 @@ class Idea
   validates_presence_of       :content
   validates_length_of         :content, minimum: 3, maximum: 255
 
-  def idea_list_tokens=(ids)
-    self.idea_list_ids = ids.split(",")
-  end
-
   def mark_as_good_by! user
     return if self.marked_as_good_by? user
     self.add_to_set :users_marked_the_idea_good_ids, user.id
@@ -109,13 +105,44 @@ class Idea
   end
 
   def idea_lists_of user
-    idea_lists = user.idea_lists.all
-    #any_in(:idea_ids => [self.id]).all
+    user_idea = user.user_idea_for_idea self
+    return [] if user_idea.nil?
+    idea_lists = user.idea_lists.in(:idea_ids => [user_idea.id])
     return idea_lists
   end
 
-
   def idea_list_ids_as_json_of user
     idea_lists_of(user).map{|idea_list| idea_list.id}.to_json
+  end
+
+  def put_in_idea_lists_of_user idea_list_ids, user
+    idea_lists_containing_idea = self.idea_lists_of user
+    # puts 'initial lists: '
+    # puts idea_lists_containing_idea.map{|idea_list| idea_list.id}
+    idea_lists_containing_idea_ids = idea_lists_containing_idea.map{|idea_list| idea_list.id.to_s}
+    idea_lists_ids_to_be_removed_from = idea_lists_containing_idea_ids - idea_list_ids
+
+    # puts 'we remove: '
+    # puts idea_lists_ids_to_be_removed_from
+
+    idea_lists_ids_to_be_removed_from.each do |idea_list_id|
+      idea_list = IdeaList.where(_id: idea_list_id).first
+      idea_list.remove_idea self
+    end
+
+    # debug
+    # idea = Idea.find self.id
+    # idea_lists = idea.idea_lists_of user
+    # puts 'after remove'
+    # puts idea_lists.map{|idea_list| idea_list.id}
+    # debug
+
+    idea_list_ids.each do |idea_list_id|
+      idea_list = IdeaList.where(_id: idea_list_id).first
+      # puts "we add to: "
+      # puts idea_list.id
+      idea_list.add_idea_as self unless idea_list.nil?
+    end
+    # puts ""
   end
 end

@@ -181,13 +181,18 @@ describe IdeaList do
         @user = FactoryGirl.create(:unique_user)
         @idea_list = @user.idea_lists.create(@attr)
         @user.create_new_idea!(:content => 'ana are mere', :privacy => Privacy::Values[:public])
-        idea = Idea.first
-        @idea_list.add_idea_as idea
-        @idea_list.remove_idea idea
+        @idea = Idea.first
+        @idea_list.add_idea_as @idea
+        @idea.idea_lists_of(@user).should_not be_empty
+        @idea_list.remove_idea @idea
       end
 
       it 'should remove the idea from the idea list' do
         @user.idea_lists.first.ideas.should be_empty
+      end
+
+      it 'should remove the idea from the idea list' do
+        @idea.idea_lists_of(@user).should be_empty
       end
 
       it 'should not remove the idea from the user\'s ideas' do

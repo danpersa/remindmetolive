@@ -39,6 +39,10 @@ class IdeaList
     end
   end
 
+  def has_idea idea
+
+  end
+
   def remove_idea idea
     user_idea = self.ideas.where(:idea_id => idea.id).first
     return false if user_idea.nil?

@@ -435,16 +435,51 @@ describe Idea do
       @user = FactoryGirl.create(:unique_user)
       @idea_list1 = @user.idea_lists.create({:name => "The Bucket List"})
       @idea_list2 = @user.idea_lists.create({:name => "The Final List"})
-      idea = @user.create_new_idea!(:content => 'ana are mere', :privacy => Privacy::Values[:public]).idea
+      idea = @user.create_new_idea!(:content => 'ana are mere',
+                                    :privacy => Privacy::Values[:public]).idea
       @idea_list1.add_idea_as idea, Privacy::Values[:public]
       @idea_list2.add_idea_as idea, Privacy::Values[:public]
       idea_lists_of_user = idea.idea_lists_of(@user)
-      idea_lists_of_user = idea.idea_lists_of(@user)
-      idea_lists_of_user = idea.idea_lists_of(@user)
-      idea_lists_of_user = idea.idea_lists_of(@user)
-      #idea.idea_lists_of(@user).should_not be_nil
-      #idea.idea_lists_of(@user).size.should == 2
+      idea.idea_lists_of(@user).should_not be_nil
+      idea.idea_lists_of(@user).size.should == 2
+    end
+  end
 
+  describe '#put_in_idea_lists_of_user' do
+    before do
+      @user = FactoryGirl.create(:unique_user)
+      @idea_list1 = @user.idea_lists.create({:name => "The Bucket List"})
+      @idea_list2 = @user.idea_lists.create({:name => "The Final List"})
+      @idea_list3 = @user.idea_lists.create({:name => "The Final List1"})
+      idea = @user.create_new_idea!(:content => 'ana are mere',
+                                    :privacy => Privacy::Values[:public]).idea
+      @idea_list1.add_idea_as idea, Privacy::Values[:public]
+      @idea_list2.add_idea_as idea, Privacy::Values[:public]
+
+      idea.put_in_idea_lists_of_user [@idea_list1.id.to_s, @idea_list3.id.to_s], @user
+
+      idea = Idea.find idea.id
+
+      @idea_list_ids = idea.idea_lists_of(@user).entries.map{|idea_list| idea_list.id}
+      # puts 'final result'
+      # puts @idea_list_ids
+      
+    end
+
+    it 'should have the correct size' do
+      @idea_list_ids.size.should == 2
+    end
+
+    it 'should include the list that he was already added in, but given as a list to be added again' do
+      @idea_list_ids.should include(@idea_list1.id)
+    end
+
+    it 'should not include the list he was in, but it was not given as a list to be added' do
+      @idea_list_ids.should_not include(@idea_list2.id)
+    end
+
+    it 'should include the new list' do
+      @idea_list_ids.should include(@idea_list3.id)
     end
   end
 end

@@ -1,5 +1,5 @@
   <div class="row mobile">
-    <div class="twelve columns phone-four">
+    <div class="twelve columns mobile-four">
       <div class="idea-content">
         <h4>Remind me to...</h4>
         <h3><%= @idea.content %></h3>
@@ -9,7 +9,7 @@
 
 
   <div class="row mobile">
-    <div class="twelve columns phone-four">
+    <div class="twelve columns mobile-four">
       <div><%= pluralize(@idea.users_marked_the_idea_good_count, "person") %> think that this idea is good</div>
       <div><%= pluralize(@idea.users_marked_the_idea_done_count, "person") %> already did this</div>
       <div><%= pluralize(@idea.user_ideas.count, "person") %> want to remember this idea</div>
@@ -18,7 +18,7 @@
   <br />
 
   <div class="row mobile">
-    <div class="twelve columns phone-four">
+    <div class="twelve columns mobile-four">
       <% if @user_idea.nil? %>
         <%= link_to 'Remind me too', new_for_existing_idea_path(@idea.id), :remote => true %>
       <% else %>
@@ -31,14 +31,22 @@
     </div>
   </div>
 
+  <br />
   <div class="row mobile">
-    <div id="idea_idea_list_tokens_data" data="<%= @idea.idea_list_ids_as_json_of(current_user)%>">
-    <div class="ten columns offset-by-two phone-four">
+    <div class="eleven columns mobile-four">
+      <div id="idea_idea_list_tokens_data" data="<%= @idea.idea_list_ids_as_json_of(current_user)%>" ></div>
       The idea is part of the following lists:
       <%= simple_form_for @idea do |f| %>
-        <%= f.input :idea_list_tokens, :collection => @idea_lists, :include_blank => false, :input_html => { :multiple => ''} %>
-        <br/>
-        <%= f.submit "Update lists", :class => "btn primary" %>
+        <br />
+        <div class="row mobile">
+          <div class="nine columns mobile-three">
+            <%= f.input :idea_list_tokens, :collection => @idea_lists, :include_blank => false, :label => false, :input_html => { :multiple => ''} %>
+            <br/>
+          </div>
+          <div class="two mobile-one columns ">
+            <%= f.submit "Update lists", :class => "round button" %>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
