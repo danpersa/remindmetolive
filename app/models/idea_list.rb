@@ -16,7 +16,7 @@ class IdeaList
     user.idea_lists
   end
 
-  def add_idea_as idea, privacy = nil
+  def add_idea_as idea, privacy = Privacy::Values[:public]
     user_idea = nil
     unless user.has_idea? idea
       params = {:idea_id => idea.id, :privacy => privacy}
@@ -27,17 +27,29 @@ class IdeaList
     user_idea = self.ideas.find(user_idea.id) # exception
     return false
   rescue Mongoid::Errors::DocumentNotFound
-    self.ideas << user_idea
-    self.ideas_count += 1
-    self.save
+    self.push_user_idea user_idea
+    self.reload
   end
 
   def remove_idea idea
     user_idea = self.ideas.where(:idea_id => idea.id).first
     return false if user_idea.nil?
-    self.ideas.delete user_idea
-    self.ideas_count -= 1
-    return self.save
+    pull_user_idea user_idea
+    self.reload
+  end
+
+  protected
+
+  def push_user_idea user_idea
+    IdeaList.where(_id: self.id)
+            .find_and_modify({:$addToSet => {:idea_ids => user_idea.id},
+                              :$inc => {:ideas_count => 1}})
+  end
+
+  def pull_user_idea user_idea
+    IdeaList.where(_id: self.id)
+            .find_and_modify({:$pull => {:idea_ids => user_idea.id},
+                              :$inc =>  {:ideas_count => -1}})
   end
 
   private

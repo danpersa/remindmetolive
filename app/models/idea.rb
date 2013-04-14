@@ -140,7 +140,9 @@ class Idea
     idea_list_ids.each do |idea_list_id|
       idea_list = IdeaList.where(_id: idea_list_id).first
       # puts "we add to: "
-      # puts idea_list.id
+      # if not idea_list.nil?
+      #  puts idea_list.name
+      # end
       idea_list.add_idea_as self unless idea_list.nil?
     end
     # puts ""

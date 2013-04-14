@@ -314,8 +314,9 @@ describe User do
 
     context 'when failure' do
       it 'shouldn\'t create two user ideas for the same user and the same idea' do
-        another_user.create_user_idea! :idea_id => @idea.id,
-                                       :privacy => Privacy::Values[:public]
+        lambda { another_user.create_user_idea! :idea_id => @idea.id,
+                                                :privacy => Privacy::Values[:public]
+        }.should raise_error
         @idea.user_ideas.where(:user_id => another_user.id).count.should == 1
       end
     end

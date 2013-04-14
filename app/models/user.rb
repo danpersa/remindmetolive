@@ -98,9 +98,11 @@ class User < EdgeAuth::User
     if user_idea.valid?
       user_idea.save!
       user_idea.reload
-    end
-    if user_idea.privacy == Privacy::Values[:public]
-      User.user_shares_idea_notification self, user_idea.idea
+      if user_idea.privacy == Privacy::Values[:public]
+        User.user_shares_idea_notification self, user_idea.idea
+      end
+    else
+      raise 'An error has occured'
     end
     return user_idea
   end
