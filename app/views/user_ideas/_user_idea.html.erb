@@ -6,12 +6,13 @@
     <div class="idea-item table-item">
       ...<strong><%= idea.content %></strong><%= (" on " + user_idea.reminder_date.to_s) unless user_idea.reminder_date.nil? %>
     </div>
+    <br/>
     <section>
       <div class="row">
-        <div class="five phone-two columns">
+        <div class="three phone-two columns">
           <div class="row">
             <div class="twelve columns">
-              <div class="timestamp">created <%= time_ago_in_words(idea.created_at) %> ago</div>
+              <div class="timestamp"><%= time_ago_in_words(idea.created_at) %> ago</div>
             </div>
           </div>
           <div class="row">
@@ -20,7 +21,7 @@
             </div>
           </div>
         </div>
-        <div class="seven phone-two columns">
+        <div class="nine phone-two columns">
           <%= render :partial => 'ideas/row_toolbar', :locals => {:idea => idea} %>
         </div>
       </div>

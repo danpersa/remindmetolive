@@ -15,7 +15,7 @@
       </div>
       <div class="five mobile-four columns">
         <%= f.label :privacy, 'as' %>
-        <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last %>
+        <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last, {}, {:class => 'privacySelect'} %>
       </div>
     </div>
     <div class="row" id="action_row">

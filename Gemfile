@@ -4,7 +4,7 @@ ruby "1.9.3"
 gem 'rails', '3.2.8'
 
 
-gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
+gem 'mongoid', '3.1.2'
 
 gem 'edge-state-machine', '~> 1.0.0'
 gem 'simple_form'
@@ -23,7 +23,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails', '~> 1.0.3'
-  gem 'zurb-foundation', '>= 3.2.3'
+  gem 'zurb-foundation', '3.2.5'
   gem "select2-rails"
 end
 

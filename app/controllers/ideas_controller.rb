@@ -96,7 +96,7 @@ class IdeasController < ApplicationController
   def update
     @idea = Idea.find(params[:id])
     idea_list_ids = params[:idea][:idea_list_tokens]
-    @idea.put_in_idea_lists_of_user idea_list_ids, @user
+    @idea.put_in_idea_lists_of_user idea_list_ids, current_user
     
     flash[:success] = "Successfully updated idea!"
     redirect_to @idea

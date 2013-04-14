@@ -151,31 +151,6 @@ describe IdeaList do
       end
     end
 
-    describe 'add ideas' do
-      before do
-        @user = FactoryGirl.create(:unique_user)
-        @idea_list = @user.idea_lists.create(@attr)
-      end
-
-      describe 'the user already has the idea in his user ideas' do
-        before do
-          user_idea1 = @user.create_new_idea!(:content => 'ana are mere1', :privacy => Privacy::Values[:public])
-          user_idea2 = @user.create_new_idea!(:content => 'ana are mere2', :privacy => Privacy::Values[:public])
-          idea_ids = [user_idea1.idea.id, user_idea2.idea.id]
-          @idea_list.add_ideas idea_ids
-        end
-
-        it 'should add the idea to the idea list' do
-          @user.idea_lists.first.ideas.first.idea.content.should == 'ana are mere1'
-        end
-
-        it 'should increment the ideas_count' do
-          @user.idea_lists.first.ideas_count.should == 2
-        end
-      end
-
-    end
-
     describe 'remove idea' do
       before do
         @user = FactoryGirl.create(:unique_user)

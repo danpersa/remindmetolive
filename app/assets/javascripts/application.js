@@ -74,6 +74,21 @@ function addNotification(message, styleClass) {
   initAlertBoxes();
 }
 
+function decorateUserIdeaPrivacy() {
+  $(".privacySelect").select2({
+    width: '245px',
+    minimumResultsForSearch: 3
+  });
+}
+
+function decorateUserIdeaPrivacyPopup() {
+  $(".privacySelectPopup").select2({
+    width: '175px',
+    height: '31px',
+    minimumResultsForSearch: 3
+  });
+}
+
 function addNotificationNotice(message) {
   addNotification(message, "notice");
 }
