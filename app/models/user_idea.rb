@@ -4,6 +4,8 @@ class UserIdea
   field :privacy,                  :type => Integer
   field :reminder_created_at,      :type => DateTime, :default => Time.now
   field :reminder_date,            :type => Date
+  field :repeat,                   :type => Integer
+  field :reminder_on,              :type => String
 
   belongs_to :user, inverse_of: :ideas
   belongs_to :idea, inverse_of: :user_ideas
