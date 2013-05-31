@@ -4,8 +4,8 @@ class ShareIdeaSocialEvent < IdeaSocialEvent
   field :users_count,  type: Integer, default: 1
   field :first_users_count,  type: Integer, default: 1
 
-  has_and_belongs_to_many :first_users, :class_name => 'User'
-  has_and_belongs_to_many :users
+  has_and_belongs_to_many :first_users, class_name: 'User', inverse_of: nil
+  has_and_belongs_to_many :users, inverse_of: nil
 
 
   class << self

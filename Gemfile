@@ -4,7 +4,7 @@ ruby "2.0.0"
 gem 'rails', '3.2.13'
 
 
-gem 'mongoid', '3.1.2'
+gem 'mongoid', '3.1.4'
 
 gem 'edge-state-machine', '~> 1.0.0'
 gem 'simple_form'
