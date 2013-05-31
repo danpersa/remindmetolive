@@ -91,7 +91,7 @@ describe FollowingUserSocialEvent do
         FollowingUserSocialEvent.create! user, another_user
         today = Time.now.utc
         start_time = Time.utc(today.year, today.month, today.day)
-        end_time = Time.utc(today.year, today.month, today.day + 1)
+        end_time = Time.utc(today.year, today.month, today.day) + (60 * 60 * 24)
         events = FollowingUserSocialEvent.where(
                                    {:created_at => {'$gte' => start_time,'$lt' => end_time},
                                     :created_by_id => user.id})
