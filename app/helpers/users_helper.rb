@@ -13,10 +13,10 @@ module UsersHelper
 
   def display_first_users event
     html = ""
-    if event.first_users_count == 1
-      html << "<strong>#{link_to_user event.first_users[0]}</strong>"
-    elsif event.first_users_count == 2
-      html << "<strong>#{link_to_user event.first_users[0]}</strong> and <strong>#{link_to_user event.first_users[1]}</strong> "
+    if event.users_count == 1
+      html << "<strong>#{link_to_user event.users[0]}</strong>"
+    elsif event.users_count == 2
+      html << "<strong>#{link_to_user event.users[0]}</strong> and <strong>#{link_to_user event.users[1]}</strong> "
     else
       other_user_count = event.users_count - 2
 
@@ -24,7 +24,7 @@ module UsersHelper
         "<strong>#{other_user_count} other #{pluralize_without_numbers(other_user_count, 'person', 'people')}</strong>".html_safe
       end
 
-      html << "<strong>#{link_to_user event.first_users[0]}</strong>, <strong>#{link_to_user event.first_users[1]}</strong> and "
+      html << "<strong>#{link_to_user event.users[0]}</strong>, <strong>#{link_to_user event.users[1]}</strong> and "
       html << link_to_other_people
     end
     return html.html_safe

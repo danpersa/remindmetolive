@@ -2,9 +2,7 @@ class FollowingUserSocialEvent < SocialEvent
   include Mongoid::Document
 
   field :users_count,  type: Integer, default: 1
-  field :first_users_count,  type: Integer, default: 1
 
-  has_and_belongs_to_many :first_users, class_name: 'User', inverse_of: nil
   has_and_belongs_to_many :users, inverse_of: nil
 
   class << self
@@ -34,16 +32,11 @@ class FollowingUserSocialEvent < SocialEvent
     event_created_today_by_user = FollowingUserSocialEvent.created_by_user_today created_by
     unless event_created_today_by_user
       return FollowingUserSocialEvent.old_create! :created_by => created_by,
-                                                  :users => [following],
-                                                  :first_users => [following]
+                                                  :users => [following]
     else
       created_by_user_today_with_following = self.created_by_user_today_with_following created_by, following
       unless created_by_user_today_with_following
-        if event_created_today_by_user.first_users_count < MAX_FIRST_USERS
-          event_created_today_by_user.push_with_first_user following
-        else
-          event_created_today_by_user.push_user following
-        end
+        event_created_today_by_user.push_user following  
       end
     end
     return event_created_today_by_user

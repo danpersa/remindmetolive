@@ -240,33 +240,6 @@ describe SocialEvent do
         it 'should decrement the users count field' do
           @following_event.users_count.should == 1
         end
-
-        describe 'user is also in the first_users collection' do
-          it 'should remove the user from the first_users collection' do
-            @following_event.first_users.include?(followed).should == false
-          end
-
-          it 'should decrement first_users_count' do
-            @following_event.first_users_count.should == 1
-          end
-        end
-      end
-
-      describe 'first_users auto repopulate' do
-
-        before do
-          following_event = FollowingUserSocialEvent.create! user, followed
-          FollowingUserSocialEvent.create! user, another_user
-          FollowingUserSocialEvent.create! user, FactoryGirl.create(:unique_user)
-            FollowingUserSocialEvent.create! user, FactoryGirl.create(:unique_user)
-          @following_event = FollowingUserSocialEvent.find(following_event.id)
-          @following_event.remove_user followed
-          @following_event = FollowingUserSocialEvent.find(following_event.id)
-        end
-
-        it 'should keep the first_users collection size constant' do
-          @following_event.first_users.size.should == FollowingUserSocialEvent::MAX_FIRST_USERS
-        end
       end
     end
   end

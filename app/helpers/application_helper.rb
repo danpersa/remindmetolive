@@ -66,8 +66,9 @@ module ApplicationHelper
 
   def init_feeds_table
     @social_events = SocialEvent.own_or_public_of_users_followed_by(current_user)
-                                .without(:users)
+                                .slice(user_ids: [0, 3])
                                 .page(params[:page]).per(RemindMeToLive::Application.config.items_per_page)
+
   end
 
   def init_default_sidebar
