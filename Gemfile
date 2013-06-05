@@ -5,6 +5,7 @@ gem 'rails', '3.2.13'
 
 
 gem 'mongoid', '3.1.4'
+gem 'mandrill-api'
 
 gem 'edge-state-machine', '~> 1.0.0'
 gem 'simple_form'
@@ -24,7 +25,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails', '~> 1.0.3'
   gem 'zurb-foundation', '3.2.5'
-  gem "select2-rails"
+  gem "select2-rails", '3.3.2'
 end
 
 gem 'jquery-rails'
