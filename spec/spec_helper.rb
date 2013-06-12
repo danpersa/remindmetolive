@@ -10,6 +10,7 @@ ENV['RAILS_ENV'] ||= 'test'
 
 Spork.prefork do
   require File.expand_path('../../config/environment', __FILE__)
+
   require 'rspec/rails'
 
   # Requires supporting ruby files with custom matchers and macros, etc,

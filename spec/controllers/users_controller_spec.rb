@@ -284,8 +284,8 @@ describe UsersController do
 
       describe 'mail sending after registration' do
         before do
-          RemindMeToLive::Application.config.disable_registration_confirmation_mail = false
           ActionMailer::Base.deliveries = []
+          RemindMeToLive::Application.config.disable_registration_confirmation_mail = false
         end
 
         it 'should send registration confirmation any mail' do

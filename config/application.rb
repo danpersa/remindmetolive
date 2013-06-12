@@ -20,9 +20,11 @@ module RemindMeToLive
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
+    config.autoload_paths += %W(#{config.root}/app/constants)
     config.autoload_paths += %W(#{config.root}/app/models/social_events)
     config.autoload_paths += %W(#{config.root}/app/controllers/edge_auth/concerns)
     config.autoload_paths += %W(#{config.root}/lib/utilities)
+    config.autoload_paths += %W(#{config.root}/app/value_object)
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.

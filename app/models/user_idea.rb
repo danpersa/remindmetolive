@@ -45,16 +45,18 @@ class UserIdea
   # {"idea"=>{"content"=>"learn to play"},
   #  "reminder_date"=>"10/10/2012", "privacy"=>"0"}
   def self.new_with_idea params, user
-    @user_idea = UserIdea.new(params)
-    @user_idea.user = user
-    if @user_idea.idea.exists?
-      @user_idea.idea.reload
+    user_idea = UserIdea.new(params)
+    user_idea.reminder_date = calculate_next_reminder user_idea
+    user_idea.user = user
+    user_idea
+    if user_idea.idea.exists?
+      user_idea.idea.reload
     else
-      @user_idea.idea.created_by = user
-      @user_idea.idea.owned_by = user
-      @user_idea.idea.privacy = @user_idea.privacy
+      user_idea.idea.created_by = user
+      user_idea.idea.owned_by = user
+      user_idea.idea.privacy = user_idea.privacy
     end
-    @user_idea
+    user_idea
   end
 
   def self.find_by_id id
@@ -71,5 +73,22 @@ class UserIdea
     errors.add(:idea, "can't create two user ideas for the same idea") if
       not self.idea.nil? and UserIdea.not_in(_id: [self.id])
               .where(idea_id: self.idea.id, user_id: self.user.id).count > 0
+  end
+
+  def self.calculate_next_reminder user_idea
+    unless user_idea.repeat.nil?
+      logger.info '---- repeate date ------'
+      next_reminder = NextReminder.from DateTime.now.utc,
+                                        user_idea.repeat.to_i,
+                                        user_idea.reminder_on
+      logger.info next_reminder.date
+
+      next_reminder.date
+    else
+      logger.info '---- non repeat date ------'
+      next_reminder_date = DateTime.strptime(user_idea.reminder_on, '%m/%d/%Y')
+      logger.info next_reminder_date.to_s
+      next_reminder_date
+    end
   end
 end

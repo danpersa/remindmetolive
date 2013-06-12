@@ -4,7 +4,8 @@
   </div>
   <div class="ten phone-three columns" style="height: 69px;">
     <div class="feed-item table-item">
-      <strong><%= link_to following_user_social_event.created_by.display_name, following_user_social_event.created_by %></strong> is now following <%= display_first_users following_user_social_event %>
+      <%= link_to_user following_user_social_event.created_by %>
+      is now following <%= display_first_users following_user_social_event %>
     </div>
     <div class="row bottom-bar">
       <div class="three phone-one columns">

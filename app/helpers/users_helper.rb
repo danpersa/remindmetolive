@@ -8,7 +8,7 @@ module UsersHelper
   end
 
   def link_to_user user
-    "#{link_to user.display_name, user}"
+    "<strong>#{link_to user.display_name, user}</strong>".html_safe
   end
 
   def display_first_users event

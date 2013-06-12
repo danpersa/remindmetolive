@@ -55,12 +55,17 @@ class UserIdeasController < ApplicationController
         }
       else
         format.html {
+          logger.info '--- reminder date ----'
+          logger.info @user_idea.reminder_date
+          logger.info '--- user idea errors ---'
           @user_idea.errors.each do |error|
             logger.info error
+            logger.info @user_idea.errors[error]
           end
-          logger.info 'idea errors'
+          logger.info '--- idea errors ---'
           @user_idea.idea.errors.each do |error|
             logger.info error
+            logger.info @user_idea.idea.errors[error]
           end
           init_feeds_table
           @user = current_user

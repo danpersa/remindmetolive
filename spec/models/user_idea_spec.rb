@@ -104,20 +104,19 @@ describe UserIdea do
     end
   end
 
-  describe 'methods' do
-    describe 'set_reminder method' do
+  
+  describe '#set_reminder' do
 
-      it 'should have an set_reminder method' do
-        user_idea = FactoryGirl.build :simple_user_idea
-        user_idea.should respond_to :set_reminder
-      end
+    it 'should have an set_reminder method' do
+      user_idea = FactoryGirl.build :simple_user_idea
+      user_idea.should respond_to :set_reminder
+    end
 
-      it 'should initilize the reminder_created_at attribute' do
-        user_idea = FactoryGirl.build :simple_user_idea
-        reminder_date = Date.new
-        user_idea.set_reminder reminder_date
-        user_idea.reminder_created_at.should_not be_nil
-      end
+    it 'should initilize the reminder_created_at attribute' do
+      user_idea = FactoryGirl.build :simple_user_idea
+      reminder_date = Date.new
+      user_idea.set_reminder reminder_date
+      user_idea.reminder_created_at.should_not be_nil
     end
   end
 end

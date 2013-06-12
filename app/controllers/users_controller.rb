@@ -39,6 +39,27 @@ class UsersController < ApplicationController
     # the user is searched in the existing_user before interceptor
   end
 
+  def create
+    @auth_form_options = {:builder => SupersizeFormBuilder}
+    @auth_form_model = User.new(params[:user])
+    unless verify_recaptcha(request.remote_ip, params)
+      @title = 'Sign up'
+      # we trigger the validation manually
+      @auth_form_model.valid?
+      @auth_form_model.errors[:recaptcha] = 'The CAPTCHA solution was incorrect. Please re-try'
+      render :template => 'users/new', :layout => 'one_section_narrow'
+      return
+    end
+
+    if @auth_form_model.save
+      flash[:success] = "Please follow the steps from the email we sent you to activate your account!!"
+      redirect_to signin_path
+    else
+      @title = "Sign up"
+      render :template => 'users/new', :layout => 'one_section_narrow'
+    end
+  end
+
   def update
     # the user is searched in the existing_user before interceptor
     if @user.update_attributes(params[:user])

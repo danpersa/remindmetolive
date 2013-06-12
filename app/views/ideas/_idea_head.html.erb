@@ -3,6 +3,9 @@
       <div class="idea-content">
         <h4>Remind me to...</h4>
         <h3><%= @idea.content %></h3>
+        <% unless @user_idea.nil? and @user_idea.reminder_date.nil? %>
+        <h5><%= @user_idea.reminder_date.strftime("on %m/%d/%Y") %></h3>
+        <% end %>
     </div>
     </div>
   </div>
@@ -43,7 +46,7 @@
             <%= f.input :idea_list_tokens, :collection => @idea_lists, :include_blank => false, :label => false, :input_html => { :multiple => ''} %>
             <br/>
           </div>
-          <div class="two mobile-one columns ">
+          <div class="two columns mobile-one">
             <%= f.submit "Update lists", :class => "round button" %>
           </div>
         </div>
