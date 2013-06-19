@@ -77,17 +77,17 @@ class UserIdea
 
   def self.calculate_next_reminder user_idea
     unless user_idea.repeat.nil?
-      logger.info '---- repeate date ------'
+      logger.debug '---- repeate date ------'
       next_reminder = NextReminder.from DateTime.now.utc,
                                         user_idea.repeat.to_i,
                                         user_idea.reminder_on
-      logger.info next_reminder.date
+      logger.debug next_reminder.date
 
       next_reminder.date
     else
-      logger.info '---- non repeat date ------'
+      logger.debug '---- non repeat date ------'
       next_reminder_date = DateTime.strptime(user_idea.reminder_on, '%m/%d/%Y')
-      logger.info next_reminder_date.to_s
+      logger.debug next_reminder_date.to_s
       next_reminder_date
     end
   end

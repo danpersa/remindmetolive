@@ -107,7 +107,7 @@ describe UserIdeasController do
       let :attr do
         { :idea => { :content => 'Lorem ipsum' },
           :privacy => Privacy::Values[:public],
-          :reminder_date => Date.new(2014) }
+          :reminder_on => '2/1/2014' }
       end
        
       it 'should create an idea' do
@@ -138,7 +138,7 @@ describe UserIdeasController do
       let :attr do
         { :idea => { :content => '' },
           :privacy => Privacy::Values[:public],
-          :reminder_date => Date.new(2014) }
+          :reminder_on => '2/1/2014' }
       end
 
       it 'should not create an idea without content' do
