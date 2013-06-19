@@ -36,7 +36,7 @@ class IdeaForm
     end 
 
     user_idea_attributes = params.slice(:privacy, :reminder_on, :repeat)
-                            .merge(user: @user, idea: idea)
+                            .merge(user: @user, idea_id: idea_id)
 
 
     user_idea = UserIdea.new({:privacy => params[:privacy],
