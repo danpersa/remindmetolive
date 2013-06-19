@@ -3,6 +3,28 @@ require 'spec_helper'
 describe NextReminder do
 
   describe '#from' do
+    context 'when there is no reminder' do
+      let(:next_reminder) do
+        NextReminder.from DateTime.now.utc,
+                          nil
+      end
+
+      it 'should return nil' do
+        next_reminder.date.should == nil
+      end
+    end
+
+    context 'when the reminder does not repeat' do
+      let(:next_reminder) do
+        NextReminder.from DateTime.now.utc,
+                          nil, '3/21/2014'
+      end
+
+      it 'should return the correct date' do
+        next_reminder.date.should == DateTime.new(2014, 3, 21)
+      end
+    end
+
     context 'when the reminder repeats every day' do
 
       let(:next_reminder) do

@@ -8,8 +8,17 @@ class NextReminder
   end
 
   def self.from current_time, repeat, reminder_on = nil
+    unless repeat.nil?
+      repeat = repeat.to_i
+    end
     next_reminder = nil
     case repeat
+      when nil
+        unless reminder_on.nil?
+          next_reminder = NextReminder.new DateTime.strptime(reminder_on, '%m/%d/%Y')
+        else
+          next_reminder = NextReminder.new nil
+        end
       when Repeat::Values[:every_day]
         next_reminder = NextReminder.new current_time.tomorrow.to_date
       when Repeat::Values[:every_week]
@@ -94,6 +103,4 @@ class NextReminder
         raise 'An error has occured'
     end
   end
-
-
 end
