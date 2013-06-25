@@ -13,7 +13,7 @@ class NextReminder
     end
     next_reminder = nil
     case repeat
-      when nil
+      when Repeat::Values[:never]
         unless reminder_on.nil?
           next_reminder = NextReminder.new DateTime.strptime(reminder_on, '%m/%d/%Y')
         else

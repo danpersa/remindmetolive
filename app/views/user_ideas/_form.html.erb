@@ -13,7 +13,7 @@
     </div>
     <div class="row">
       <div class="five mobile-four columns">        
-        <%= f.input :repeat, :as => :hidden, :label => false %>
+        <%= f.collection_select :repeat, [[0, 'Never'] ,[1, 'Every day'],[2, 'Every week on'],[3, 'Every month on'],[4, 'Every specified season'],[5, 'Every year on']], :first, :last, {}%>
       </div>
       <div class="one mobile-four columns" style="height: 20px;"></div>
       <div class="five mobile-four columns" style="height: 45px;">

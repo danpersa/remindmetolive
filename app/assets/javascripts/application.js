@@ -82,13 +82,7 @@ function decorateUserIdeaPrivacy() {
   $("#user_idea_repeat").select2({
     placeholder: "Repeat",
     width: '100%',
-    allowClear: true,
-    data: [{id: 0, text: 'Every day'},
-         {id: 1, text: 'Every week on'},
-         {id: 2, text: 'Every month on'},
-         {id: 3, text: 'Every specified season'},
-         {id: 4, text: 'Every year on'}
-        ]
+    allowClear: false
   });
   $('#user_idea_reminder_on').attr("placeholder", "eg: 11/20/2014");
   $('#user_idea_reminder_on').datepicker();
@@ -100,21 +94,21 @@ function decorateUserIdeaPrivacy() {
       $('#user_idea_reminder_on').val("");
       switch(e.val)
       {
-      case "0":
+      case "1":
         // alert("0");
         $("#user_idea_reminder_on").hide();
         $("#user_idea_reminder_on").datepicker("destroy");
         $("#user_idea_reminder_on").select2('destroy');
         // hide field
         break;
-      case "1":
+      case "2":
         // alert("1-week");
         $('#user_idea_reminder_on').attr("placeholder", "eg: Monday");
         $("#user_idea_reminder_on").show();
         $("#user_idea_reminder_on").datepicker("destroy");
         $("#user_idea_reminder_on").select2({
           width: '100%',
-          allowClear: true,
+          allowClear: false,
           data: [{id: 0, text: 'Sunday'},
                  {id: 1, text: 'Monday'},
                  {id: 2, text: 'Tuesday'},
@@ -125,21 +119,21 @@ function decorateUserIdeaPrivacy() {
                 ]
         });
         break;
-      case "2":
+      case "3":
         // alert("3-month");
         $('#user_idea_reminder_on').attr("placeholder", "Day of the month (eg: 11)");
         $("#user_idea_reminder_on").show();
         $("#user_idea_reminder_on").datepicker("destroy");
         $("#user_idea_reminder_on").select2('destroy');
         break;
-      case "3":
+      case "4":
         // alert("3-season");
         $('#user_idea_reminder_on').attr("placeholder", "eg: in Summer");
         $("#user_idea_reminder_on").show();
         $("#user_idea_reminder_on").datepicker("destroy");
         $("#user_idea_reminder_on").select2({
           width: '100%',
-          allowClear: true,
+          allowClear: false,
           data: [{id: 0, text: 'in Spring'},
                  {id: 1, text: 'in Summer'},
                  {id: 2, text: 'in Autumn'},
@@ -147,7 +141,7 @@ function decorateUserIdeaPrivacy() {
                 ]
         });
         break;
-      case "4":
+      case "5":
         //alert("4-year");
         $('#user_idea_reminder_on').attr("placeholder", "Month and day (eg: 11/20)");
         $("#user_idea_reminder_on").show();

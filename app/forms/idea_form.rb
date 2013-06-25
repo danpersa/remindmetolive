@@ -10,7 +10,8 @@ class IdeaForm
   validates_presence_of       :content
   validates_length_of         :content, minimum: 3, maximum: 255
 
-  validates_inclusion_of      :repeat, in: [
+  validates_inclusion_of      :repeat, in: [  
+                                              Repeat::Values[:never],
                                               Repeat::Values[:every_day],
                                               Repeat::Values[:every_week],
                                               Repeat::Values[:every_month],
@@ -18,7 +19,7 @@ class IdeaForm
                                               Repeat::Values[:every_year]
                                            ] 
 
-  validate                    :reminder_on_cannot_be_in_the_past
+  #validate                    :reminder_on_cannot_be_in_the_past
 
   attr_accessor :content, :privacy, :repeat, :reminder_on, :idea_id
 
@@ -27,6 +28,7 @@ class IdeaForm
   end
 
   def submit(params)
+    puts 'SUBMIT'
     self.privacy = params[:privacy]
     self.content = params[:content]
     self.repeat = params[:repeat]
@@ -34,18 +36,24 @@ class IdeaForm
     self.idea_id = params[:idea_id]
 
     unless valid?
+      puts 'NOT VALID'
+      self.errors.each do |error|
+        puts error
+        puts errors[error]
+      end
       return false
     end
 
     idea = initialize_idea params
 
-    next_reminder = NextReminder.new DateTime.now.utc,
-                                     params[:repeat],
-                                     params[:reminder_on]
+    next_reminder = NextReminder.from DateTime.now.utc,
+                                      params[:repeat],
+                                      params[:reminder_on]
 
     user_idea = initalize_user_idea params, idea, next_reminder.date
 
     idea.save!
+    puts 'SAVE IDEA'
     
     
     if next_reminder.date.nil?
@@ -56,6 +64,7 @@ class IdeaForm
       # if next reminder is null, we don't create a new user idea
     else
       if user_idea.new_record?
+        puts 'SAVE USER IDEA'
         user_idea.save!
       else
         user_idea.update_attributes! user_idea_attributes
