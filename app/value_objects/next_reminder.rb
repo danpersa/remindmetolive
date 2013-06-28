@@ -10,6 +10,8 @@ class NextReminder
   def self.from current_time, repeat, reminder_on = nil
     unless repeat.nil?
       repeat = repeat.to_i
+    else
+      repeat = 0
     end
     next_reminder = nil
     case repeat

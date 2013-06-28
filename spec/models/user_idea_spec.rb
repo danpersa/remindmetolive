@@ -119,4 +119,15 @@ describe UserIdea do
       user_idea.reminder_created_at.should_not be_nil
     end
   end
+
+  describe '#find_by_id' do
+    let :user_idea do
+      FactoryGirl.create :simple_user_idea
+    end
+
+    it 'should find the idea' do
+      result_user_idea = UserIdea.find_by_id user_idea.id
+      result_user_idea.should_not be_nil
+    end
+  end
 end

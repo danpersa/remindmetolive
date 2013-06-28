@@ -60,7 +60,7 @@ class UserIdea
   end
 
   def self.find_by_id id
-    self.first conditions: {_id: id}
+    UserIdea.where(_id: id).first
   end
 
   private

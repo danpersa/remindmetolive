@@ -7,9 +7,8 @@ class IdeaForm
   validates_presence_of       :privacy
   validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]
 
-  validates_presence_of       :content
-  validates_length_of         :content, minimum: 3, maximum: 255
 
+  validates_presence_of       :repeat
   validates_inclusion_of      :repeat, in: [  
                                               Repeat::Values[:never],
                                               Repeat::Values[:every_day],
@@ -19,7 +18,8 @@ class IdeaForm
                                               Repeat::Values[:every_year]
                                            ] 
 
-  #validate                    :reminder_on_cannot_be_in_the_past
+  validate                    :reminder_on_cannot_be_in_the_past
+  validate                    :content_and_idea_id
 
   attr_accessor :content, :privacy, :repeat, :reminder_on, :idea_id
 
@@ -28,13 +28,18 @@ class IdeaForm
   end
 
   def submit(params)
-    puts 'SUBMIT'
+
     self.privacy = params[:privacy]
     self.content = params[:content]
     self.repeat = params[:repeat]
     self.reminder_on = params[:reminder_on]
     self.idea_id = params[:idea_id]
 
+    next_reminder = NextReminder.from DateTime.now.utc,
+                                  params[:repeat],
+                                  params[:reminder_on]
+
+    @reminder_date = next_reminder.date
     unless valid?
       puts 'NOT VALID'
       self.errors.each do |error|
@@ -46,30 +51,10 @@ class IdeaForm
 
     idea = initialize_idea params
 
-    next_reminder = NextReminder.from DateTime.now.utc,
-                                      params[:repeat],
-                                      params[:reminder_on]
-
     user_idea = initalize_user_idea params, idea, next_reminder.date
-
     idea.save!
-    puts 'SAVE IDEA'
-    
-    
-    if next_reminder.date.nil?
-      unless user_idea.new_record?
-        # if next reminder is null and we have a user_idea, we delete it
-        user_idea.destroy!
-      end
-      # if next reminder is null, we don't create a new user idea
-    else
-      if user_idea.new_record?
-        puts 'SAVE USER IDEA'
-        user_idea.save!
-      else
-        user_idea.update_attributes! user_idea_attributes
-      end      
-    end
+    user_idea.save!
+  
     User.user_creates_idea_notification @user, idea
     true
   end
@@ -86,7 +71,7 @@ class IdeaForm
   private
 
   def initialize_idea params
-    if self.idea_id.nil?
+    unless idea_id_present?
       idea_attributes = params.slice(:content, :privacy)
                               .merge(created_by: @user, owned_by: @user)
       idea = Idea.new idea_attributes
@@ -98,18 +83,39 @@ class IdeaForm
   end
 
   def initalize_user_idea params, idea, next_reminder_date
+
     user_idea_attributes = params.slice(:privacy, :reminder_on, :repeat)
                                  .merge user: @user,
                                         reminder_date: next_reminder_date,
                                         idea_id: self.idea_id,
                                         :reminder_created_at => Time.now
-
-    user_idea = nil                                    
     if @user.has_idea? idea
       user_idea = @user.user_idea idea
+      user_idea.write_attributes user_idea_attributes
     else
       user_idea = UserIdea.new user_idea_attributes
     end
     user_idea
+  end
+
+private
+  def content_and_idea_id
+    unless idea_id_present?
+      validates_presence_of       :content
+      validates_length_of         :content, minimum: 3, maximum: 255
+    end
+  end
+
+  def idea_id_present?
+    return not(self.idea_id.nil?)
+  end
+
+  def content_present?
+    return not(self.content.nil?)
+  end
+
+  def reminder_on_cannot_be_in_the_past
+    errors.add(:reminder_on, "can't be in the past") if
+      @reminder_date != nil and @reminder_date < Date.today
   end
 end
