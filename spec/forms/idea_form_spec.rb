@@ -248,6 +248,10 @@ describe IdeaForm do
         it 'should change the next reminder date to the specified date' do
           @result_user_idea.reminder_date.should == DateTime.new(2015, 3, 20).to_date
         end
+
+        it 'should not create a new idea' do
+          Idea.count.should == 1
+        end
       end
     end
 

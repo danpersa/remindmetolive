@@ -3,13 +3,13 @@
     <%= link_to 'Show', idea_path(idea) %>
   </span> ·
   <% unless current_user.has_idea? idea %>
-    <%= link_to 'Remind me too', new_for_existing_idea_path(idea.id), :remote => true %> ·
+    <%= link_to 'Remind me too', idea_form_path(idea.id), :remote => true %> ·
   <% else %>
     <% user_idea = current_user.user_idea idea %>
     <% if user_idea.reminder_date.nil? %>
-      <a href="#">Create reminder</a> ·
+      <%= link_to 'Create reminder', idea_form_path(idea.id), :remote => true %> ·
     <% else %>
-      <a href="#">Modify reminder</a> ·
+      <%= link_to 'Modify reminder', idea_form_path(idea.id), :remote => true %> ·
     <% end %>
   <% end %>
   <span class="good_idea_<%= idea.id %>">

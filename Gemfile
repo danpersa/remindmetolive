@@ -16,6 +16,8 @@ gem 'edge-auth', git: 'https://github.com/danpersa/edge-auth.git'
 	           #path: '/home/dix/prog/rails/edge-auth'
 gem 'edge-captcha', git: 'https://github.com/danpersa/edge-captcha.git'
 
+gem 'virtus'
+
 gem 'thin'
 # Gems used only for assets and not required
 # in production environments by default.

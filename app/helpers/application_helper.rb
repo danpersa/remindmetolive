@@ -82,4 +82,12 @@ module ApplicationHelper
                      .includes(:privacy).page(params[:page])
                      .per(RemindMeToLive::Application.config.items_per_page)
   end
+
+  def log_errors model
+    logger.info 'Errors for model: '
+    model.errors.each do |error|
+      logger.info error
+      logger.info model.errors[error]
+    end
+  end
 end

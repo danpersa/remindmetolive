@@ -14,7 +14,7 @@ class PagesController < ApplicationController
         format.html {
           store_current_page
           store_location
-          @user_idea = UserIdea.new
+          @idea_form = IdeaForm.new current_user
           init_default_sidebar
           render :layout => 'section_with_default_sidebar'
         }

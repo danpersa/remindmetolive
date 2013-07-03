@@ -30,20 +30,20 @@ $( function() {
     $('#characters-left').html( 140 - parseInt($(this).val().length) );
   });
 
-  $('#user_idea_idea_content').bind('hastext', function () {
+  $('#idea_form_content').bind('hastext', function () {
     $('#post-button').removeClass('disabled').attr('disabled', false);
   });
 
-  $('#user_idea_idea_content').bind('notext', function () {
+  $('#idea_form_content').bind('notext', function () {
     $('#post-button').addClass('disabled').attr('disabled', true);
   });
 
-  $('#user_idea_idea_content').bind('textchange', function (event, previousText) {
+  $('#idea_form_content').bind('textchange', function (event, previousText) {
     $('#characters-left').html( 140 - parseInt($(this).val().length) );
   });
 
 
-  var ta = document.getElementById('user_idea_idea_content');
+  var ta = document.getElementById('idea_form_content');
   if (ta != null) {
     ta.onfocus = function(){
       $(this).height("90px");
@@ -74,97 +74,105 @@ function addNotification(message, styleClass) {
   initAlertBoxes();
 }
 
-function decorateUserIdeaPrivacy() {
-  $(".privacySelect").select2({
+function decorateIdeaFormPrivacy(sel) {
+  $(sel).select2({
     width: '100%',
     minimumResultsForSearch: 3
   });
-  $("#user_idea_repeat").select2({
+}
+
+function decorateIdeaFormReminderOn(value, reminderOnSel) {
+
+  // alert("change "+JSON.stringify({val:e.val, added:e.added, removed:e.removed}));
+  switch(value)
+  {
+  case "1":
+    // alert("0");
+    $(reminderOnSel).hide();
+    $(reminderOnSel).datepicker("destroy");
+    $(reminderOnSel).select2('destroy');
+    // hide field
+    break;
+  case "2":
+    // alert("1-week");
+    $(reminderOnSel).attr("placeholder", "eg: Monday");
+    $(reminderOnSel).show();
+    $(reminderOnSel).datepicker("destroy");
+    $(reminderOnSel).select2({
+      width: '100%',
+      allowClear: false,
+      data: [{id: 0, text: 'Sunday'},
+             {id: 1, text: 'Monday'},
+             {id: 2, text: 'Tuesday'},
+             {id: 3, text: 'Wendesay'},
+             {id: 4, text: 'Thursday'},
+             {id: 5, text: 'Friday'},
+             {id: 6, text: 'Saturday'}
+            ]
+    });
+    break;
+  case "3":
+    // alert("3-month");
+    $(reminderOnSel).attr("placeholder", "Day of the month (eg: 11)");
+    $(reminderOnSel).show();
+    $(reminderOnSel).datepicker("destroy");
+    $(reminderOnSel).select2('destroy');
+    break;
+  case "4":
+    // alert("3-season");
+    $(reminderOnSel).attr("placeholder", "eg: in Summer");
+    $(reminderOnSel).show();
+    $(reminderOnSel).datepicker("destroy");
+    $(reminderOnSel).select2({
+      width: '100%',
+      allowClear: false,
+      data: [{id: 0, text: 'in Spring'},
+             {id: 1, text: 'in Summer'},
+             {id: 2, text: 'in Autumn'},
+             {id: 3, text: 'in Winter'}
+            ]
+    });
+    break;
+  case "5":
+    //alert("4-year");
+    $(reminderOnSel).attr("placeholder", "Month and day (eg: 11/20)");
+    $(reminderOnSel).show();
+    $(reminderOnSel).datepicker("destroy");
+    $(reminderOnSel).select2('destroy');
+    break;
+  default:
+    $(reminderOnSel).attr("placeholder", "eg: 11/20/2014");
+    $(reminderOnSel).show();
+    $(reminderOnSel).select2('destroy');
+    $(reminderOnSel).datepicker();
+    // alert("default");
+  }
+
+}
+
+function decorateIdeaFormRepeat(repeatSel, reminderOnSel) {
+  $(repeatSel).select2({
     placeholder: "Repeat",
     width: '100%',
     allowClear: false
   });
-  $('#user_idea_reminder_on').attr("placeholder", "eg: 11/20/2014");
-  $('#user_idea_reminder_on').datepicker();
 
-  $("#user_idea_repeat").on("change",
-    function(e) { 
+  decorateIdeaFormReminderOn($(repeatSel).val(), reminderOnSel);
 
-      // alert("change "+JSON.stringify({val:e.val, added:e.added, removed:e.removed}));
-      $('#user_idea_reminder_on').val("");
-      switch(e.val)
-      {
-      case "1":
-        // alert("0");
-        $("#user_idea_reminder_on").hide();
-        $("#user_idea_reminder_on").datepicker("destroy");
-        $("#user_idea_reminder_on").select2('destroy');
-        // hide field
-        break;
-      case "2":
-        // alert("1-week");
-        $('#user_idea_reminder_on').attr("placeholder", "eg: Monday");
-        $("#user_idea_reminder_on").show();
-        $("#user_idea_reminder_on").datepicker("destroy");
-        $("#user_idea_reminder_on").select2({
-          width: '100%',
-          allowClear: false,
-          data: [{id: 0, text: 'Sunday'},
-                 {id: 1, text: 'Monday'},
-                 {id: 2, text: 'Tuesday'},
-                 {id: 3, text: 'Wendesay'},
-                 {id: 4, text: 'Thursday'},
-                 {id: 5, text: 'Friday'},
-                 {id: 6, text: 'Saturday'}
-                ]
-        });
-        break;
-      case "3":
-        // alert("3-month");
-        $('#user_idea_reminder_on').attr("placeholder", "Day of the month (eg: 11)");
-        $("#user_idea_reminder_on").show();
-        $("#user_idea_reminder_on").datepicker("destroy");
-        $("#user_idea_reminder_on").select2('destroy');
-        break;
-      case "4":
-        // alert("3-season");
-        $('#user_idea_reminder_on').attr("placeholder", "eg: in Summer");
-        $("#user_idea_reminder_on").show();
-        $("#user_idea_reminder_on").datepicker("destroy");
-        $("#user_idea_reminder_on").select2({
-          width: '100%',
-          allowClear: false,
-          data: [{id: 0, text: 'in Spring'},
-                 {id: 1, text: 'in Summer'},
-                 {id: 2, text: 'in Autumn'},
-                 {id: 3, text: 'in Winter'}
-                ]
-        });
-        break;
-      case "5":
-        //alert("4-year");
-        $('#user_idea_reminder_on').attr("placeholder", "Month and day (eg: 11/20)");
-        $("#user_idea_reminder_on").show();
-        $("#user_idea_reminder_on").datepicker("destroy");
-        $("#user_idea_reminder_on").select2('destroy');
-        break;
-      default:
-        $('#user_idea_reminder_on').attr("placeholder", "eg: 11/20/2014");
-        $("#user_idea_reminder_on").show();
-        $("#user_idea_reminder_on").select2('destroy');
-        $("#user_idea_reminder_on").datepicker();
-        // alert("default");
-      }
-
+  $(repeatSel).on("change", function(e) {
+    $(reminderOnSel).val(""); 
+    decorateIdeaFormReminderOn(e.val, reminderOnSel)
   });
 }
 
-function decorateUserIdeaPrivacyPopup() {
-  $(".privacySelectPopup").select2({
-    width: '175px',
-    height: '31px',
-    minimumResultsForSearch: 3
-  });
+function decorateIdeaForm() {
+  decorateIdeaFormPrivacy(".privacySelect");
+  decorateIdeaFormRepeat("#idea_form_repeat", "#idea_form_reminder_on");
+}
+
+function decorateIdeaFormPopup() {
+  decorateIdeaFormPrivacy(".privacySelectPopup");
+  decorateIdeaFormRepeat("#existing_idea_form_repeat", "#existing_idea_form_reminder_on");
 }
 
 function addNotificationNotice(message) {
@@ -196,7 +204,7 @@ function updateCurrentPage() {
   var currentUrl = $("meta[name=current-url]").attr("content"); 
   $.get(currentUrl,
         function(data) {
-          script = $(data).text();
+          script = data;
           eval(script);
         },
         'script');

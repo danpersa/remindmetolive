@@ -1,5 +1,5 @@
 <%= render :partial => 'ideas/update_idea_head' %>
 
-$("#table-div").html("<%= escape_javascript(render(:partial => "user_ideas/users_table", :locals => {:user_ideas => @public_user_ideas })) %>");
+$("#table-div").html('<%= escape_javascript(render(:partial => "user_ideas/users_table", :locals => {:user_ideas => @public_user_ideas })) %>');
 
 initToolbars();

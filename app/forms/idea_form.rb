@@ -1,8 +1,10 @@
 class IdeaForm
+  include Virtus
   # Rails 4: include ActiveModel::Model
   extend ActiveModel::Naming
   include ActiveModel::Conversion
   include ActiveModel::Validations
+
 
   validates_presence_of       :privacy
   validates_inclusion_of      :privacy, in: [Privacy::Values[:public], Privacy::Values[:private]]
@@ -21,7 +23,11 @@ class IdeaForm
   validate                    :reminder_on_cannot_be_in_the_past
   validate                    :content_and_idea_id
 
-  attr_accessor :content, :privacy, :repeat, :reminder_on, :idea_id
+  attribute :content, String
+  attribute :privacy, Integer
+  attribute :repeat, Integer
+  attribute :reminder_on, String
+  attribute :idea_id, Integer
 
   def initialize(user)
     @user = user
@@ -52,10 +58,14 @@ class IdeaForm
     idea = initialize_idea params
 
     user_idea = initalize_user_idea params, idea, next_reminder.date
+    if idea.new_record?
+      User.user_creates_idea_notification @user, idea  
+    end
     idea.save!
-    user_idea.save!
-  
-    User.user_creates_idea_notification @user, idea
+    if user_idea.new_record?
+      # user shares idea notification
+    end
+    user_idea.save!  
     true
   end
 
@@ -65,7 +75,7 @@ class IdeaForm
   end
   
   def self.model_name
-    ActiveModel::Name.new(self, nil, "User")
+    ActiveModel::Name.new(self, nil, "IdeaForm")
   end
 
   private

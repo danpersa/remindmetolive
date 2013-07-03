@@ -23,7 +23,7 @@
   <div class="row mobile">
     <div class="twelve columns mobile-four">
       <% if @user_idea.nil? %>
-        <%= link_to 'Remind me too', new_for_existing_idea_path(@idea.id), :remote => true %>
+        <%= link_to 'Remind me too', idea_form_path(@idea.id), :remote => true %>
       <% else %>
         <% if @user_idea.reminder_date.nil? %>
           <a href="#">Create reminder</a>

@@ -24,9 +24,8 @@ RemindMeToLive::Application.routes.draw do
                                         :via => :delete,
                                         :as => 'unfollow'
 
-  match '/remind-me-too/:id',           :to => 'user_ideas#new_for_existing_idea',
-                                        #:constraints => { :idea_id => /[0-9]+/ },
-                                        :as => 'new_for_existing_idea'
+  resources :idea_forms, :only => [:create, :show],
+            :path => 'remind-me'
 
   resources :sessions, :only => [:new, :create, :destroy]
 

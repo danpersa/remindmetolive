@@ -5,7 +5,6 @@ class UserIdeasController < ApplicationController
 
   before_filter :authenticate
   before_filter :shared_by_logged_user, :only => [:destroy]
-  before_filter :own_idea_or_public, :only => [:new_for_existing_idea]
 
   respond_to :html, :js
 
@@ -20,26 +19,7 @@ class UserIdeasController < ApplicationController
     init_default_sidebar
   end
 
-  def new_for_existing_idea
-    @user_idea = UserIdea.new
-    @dialog_content = 'user_ideas/form_with_idea'
-    #if @idea.shared_by? current_user
-      #logger.info  "idea is shared"
-      #@title = "Create new reminder"
-    #else
-      logger.info  "idea is not shared"
-      @title = "Remind me too"
-    #end  
-    @submit_button_name = "Create reminder"
-    respond_with_remote_form 'user_ideas/new_for_existing_idea'
-  end
 
-
-  def new_for_existing_idea_from_location
-    location = params[:location]
-    init_reminders_form_url(location)
-    new_for_existing_idea
-  end
 
   def create
     @user_idea = UserIdea.new_with_idea params[:user_idea], current_user

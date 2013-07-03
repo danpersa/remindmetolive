@@ -33,11 +33,11 @@ form.nice div.form-field.error small.recaptcha, form.nice small.error.recaptcha 
   width: 302px;
 }
 
-#user_idea_idea_content {
+#idea_form_content {
   height: 30px;
   resize: none;
 }
-#user_idea_reminder_date {
+#idea_form_reminder_date {
 
 }
 
@@ -47,16 +47,16 @@ form.nice div.form-field.error small.recaptcha, form.nice small.error.recaptcha 
 }
 
 @media only screen and (max-width: 767px) {
-  #user_idea_idea_content {
+  #idea_form_content {
     
   }
 }
 
-#user_idea_privacy_div .custom.dropdown {
+#idea_form_privacy_div .custom.dropdown {
  width: 100% !important; 
 }
 
-/* #user_idea_privacy { */
+/* #idea_form_privacy { */
  /* display:none; */
 /* width: 200px;
 } */

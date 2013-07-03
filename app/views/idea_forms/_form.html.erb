@@ -1,0 +1,44 @@
+<%= simple_form_for @idea_form do |f| %>
+  <fieldset>
+    <div class="row mobile">
+      <div class="eleven mobile-four columns">
+        <%= f.label :content, 'Remind me to' %>
+        <%= f.input :content, :as => :text , :label => false, :placeholder => 'eg: learn to play the piano' %>
+      </div>
+      <div class="one mobile-four columns">
+         <span  id="characters-left" class="wrap">140</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="five mobile-four columns">        
+        <%= f.collection_select :repeat, [[0, 'Never repeat'] ,[1, 'Every day'],[2, 'Every week on'],[3, 'Every month on'],[4, 'Every specified season'],[5, 'Every year on']], :first, :last, {}%>
+      </div>
+      <div class="one mobile-four columns" style="height: 20px;"></div>
+      <div class="five mobile-four columns" style="height: 45px;">
+        <%= f.input :reminder_on, :label => false, :placeholder => 'eg: on Sunday', :size => 20 %>
+      </div>
+      <div class="one mobile-four columns">
+      </div>
+    </div>
+    <div class="row">
+      <div class="five mobile-four columns">
+        <%= f.collection_select :privacy, [[0, 'Public'] ,[1, 'Private']], :first, :last, {}, {:class => 'privacySelect'} %>
+      </div>
+      <div class="four mobile-four columns" style="height: 20px;" ></div>
+      <div class="two mobile-four columns">
+        <%= f.submit 'Post', :class => "nice small radius blue button right", :id => 'post-button' %>
+      </div>
+      <div class="one mobile-four columns" style="height: 20px;" ></div>
+    </div>
+    <div class="row" id="action_row">
+      <div class="five mobile-four columns">
+        
+      </div>
+      <div class="one mobile-four columns" style="height: 20px;">
+      <div class="four mobile-four columns">
+        
+      </div>
+      <div class="two mobile-four columns"></div>
+    </div>
+  </fieldset>
+<% end %>
