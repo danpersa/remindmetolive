@@ -1,5 +1,3 @@
-require 'mandrill'
-
 class PagesController < ApplicationController
   include ApplicationHelper
 
@@ -35,29 +33,6 @@ class PagesController < ApplicationController
 
   def help
     @title = 'Help'
-
-    m = Mandrill::API.new # All official Mandrill API clients will automatically pull your API key from the environment
-    rendered = m.templates.render 'daily-reminders', [
-      {:name => 'display_name', :content => 'Danix'},
-      {:name => 'reminders', :content => '<li>Remind me to live</li><li>Remind me to  play the piano</li>'}]
-    @mail_template = rendered['html'] # print out the rendered HTML
-
-    m.messages.send_template 'daily-reminders', [
-      {:name => 'display_name', :content => 'Danix'},
-      {:name => 'reminders', :content => '<li>Remind me to live</li><li>Remind me to  play the piano</li>'}],
-      {
-        html: "<p>Example HTML content</p>",
-        text: "Example text content",
-        subject: "You want to be reminded of something",
-        from_email: "reminders@remindmetolive.com",
-        from_name: "Remind Me To Live",
-        to: [
-            {
-                email: "dan.persa@gmail.com",
-                name: "Dan Persa"
-            }
-        ]
-    }
   end
 
   def reset_password_mail_sent
