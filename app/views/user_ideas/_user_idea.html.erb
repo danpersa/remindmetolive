@@ -1,8 +1,8 @@
 <div class="row mobile table-row show-toolbar">
-  <div class="two phone-one columns">
+  <div class="two mobile-one columns">
     <%= link_to gravatar_for(idea.created_by, :size => 65), idea.created_by %>
   </div>
-  <div class="ten phone-three columns">
+  <div class="ten mobile-three columns">
     <div class="idea-item table-item">
       ...<strong><%= idea.content %></strong><%= (" on " + user_idea.reminder_date.to_s) unless user_idea.reminder_date.nil? %>
     </div>

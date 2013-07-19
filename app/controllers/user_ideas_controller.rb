@@ -19,47 +19,6 @@ class UserIdeasController < ApplicationController
     init_default_sidebar
   end
 
-
-
-  def create
-    @user_idea = UserIdea.new_with_idea params[:user_idea], current_user
-    @idea = @user_idea.idea
-    @user = @idea.owned_by
-
-    respond_to do |format|
-      if @user_idea.valid_with_idea?
-        @user_idea.save_with_idea!
-        flash[:success] = "Idea created!"
-        format.html {
-          redirect_back_or root_path
-        }
-      else
-        format.html {
-          logger.info '--- reminder date ----'
-          logger.info @user_idea.reminder_date
-          logger.info '--- user idea errors ---'
-          @user_idea.errors.each do |error|
-            logger.info error
-            logger.info @user_idea.errors[error]
-          end
-          logger.info '--- idea errors ---'
-          @user_idea.idea.errors.each do |error|
-            logger.info error
-            logger.info @user_idea.idea.errors[error]
-          end
-          init_feeds_table
-          @user = current_user
-          init_default_sidebar
-          render 'pages/home'
-        }
-      end
-      format.js {
-          respond_with_remote_form
-          respond_with(@user_idea, :layout => !request.xhr?)
-        }
-    end
-  end
-
   def destroy
     @user = current_user
     idea = @user_idea.idea

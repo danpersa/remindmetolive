@@ -1,7 +1,7 @@
 <br/>
 <section>
   <div class="row">
-    <div class="three phone-two columns">
+    <div class="four mobile-two columns">
       <div class="row">
         <div class="twelve columns">
           <div class="timestamp"><%= time_ago_in_words(idea.created_at) %> ago</div>
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="nine phone-two columns">
+    <div class="eight mobile-two columns">
       <%= render :partial => 'ideas/row_toolbar', :locals => {:idea => idea} %>
     </div>
   </div>

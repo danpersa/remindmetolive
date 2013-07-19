@@ -49,7 +49,7 @@ RemindMeToLive::Application.routes.draw do
     end
   end
 
-  resources :user_ideas, :only => [:index, :show, :create, :destroy],
+  resources :user_ideas, :only => [:index, :destroy],
             :path => 'ideas-to-remember'
 
   resources :idea_lists, :only => [:index, :show, :new, :create, :edit, :update, :destroy],

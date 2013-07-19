@@ -14,12 +14,6 @@ describe UserIdeasController do
 
       it_should_behave_like 'deny access unless signed in' do
         let(:request_action) do
-          post :create
-        end
-      end
-
-      it_should_behave_like 'deny access unless signed in' do
-        let(:request_action) do
           delete :destroy, :id => 1
         end
       end
@@ -92,64 +86,6 @@ describe UserIdeasController do
       it 'should paginate the ideas' do
         page.should have_selector('ul.pagination')
         page.should have_link('2')
-      end
-    end
-  end
-
-  describe 'POST create' do
-
-    before do
-      @user = test_sign_in(FactoryGirl.create(:unique_user))
-    end
-
-    context 'when success' do
-
-      let :attr do
-        { :idea => { :content => 'Lorem ipsum' },
-          :privacy => Privacy::Values[:public],
-          :reminder_on => '2/1/2014' }
-      end
-       
-      it 'should create an idea' do
-        lambda do
-          post :create, :user_idea => attr  
-        end.should change(Idea, :count).by(1)
-      end
-
-      it 'should create an user idea' do
-        lambda do
-          post :create, :user_idea => attr  
-        end.should change(UserIdea, :count).by(1)
-      end
-    
-      it 'should redirect to the home page' do
-        post :create, :user_idea => attr
-        response.should redirect_to(root_path)
-      end
-
-      it 'should have a flash message' do
-        post :create, :user_idea => attr
-        flash[:success].should =~ /idea created/i
-      end
-    end
-
-    context 'when failure' do
-
-      let :attr do
-        { :idea => { :content => '' },
-          :privacy => Privacy::Values[:public],
-          :reminder_on => '2/1/2014' }
-      end
-
-      it 'should not create an idea without content' do
-        lambda do
-          post :create, :user_idea => attr
-        end.should_not change(Idea, :count)
-      end
-
-      it 'should render the home page' do
-        post :create, :user_idea => attr
-        response.should render_template('pages/home')
       end
     end
   end

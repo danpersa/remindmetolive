@@ -38,7 +38,6 @@ class IdeaFormsController < ApplicationController
     @idea_form = IdeaForm.new current_user
     @dialog_content = 'idea_forms/form_with_idea'
     if (not @idea.nil?) and current_user.has_idea?(@idea)
-      #logger.info  "idea is shared"
       user_idea = current_user.user_idea @idea
       if user_idea.reminder_date.nil?
         @title = "Create reminder"
