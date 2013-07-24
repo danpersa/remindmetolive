@@ -64,4 +64,16 @@ class SocialEvent
                .find_and_modify({:$pull => {:user_ids => user.id},
                                  :$inc => {:users_count => -1}})
   end
+
+  def self.delete_all_for user
+    SocialEvent.delete_all created_by_id: user.id
+  end
+
+  # removes the user from all social events
+  def self.remove_user user
+    social_events = SocialEvent.where :user_ids.in => [user.id]
+    social_events.each do |social_event|
+       social_event.remove_user user
+    end
+  end
 end

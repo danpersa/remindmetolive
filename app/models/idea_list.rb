@@ -38,6 +38,10 @@ class IdeaList
     self.reload
   end
 
+  def self.delete_all_for user
+    IdeaList.delete_all user_id: user.id
+  end
+
   protected
 
   def push_user_idea user_idea

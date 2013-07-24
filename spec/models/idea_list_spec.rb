@@ -180,4 +180,23 @@ describe IdeaList do
       end
     end
   end
+
+  describe '#delete_all_for' do
+    before do
+      user = FactoryGirl.create :unique_user
+      @idea_list1 = FactoryGirl.create :idea_list, user: user
+      @idea_list2 = FactoryGirl.create :idea_list, user: user
+      @idea_list3 = FactoryGirl.create :idea_list
+      IdeaList.delete_all_for user
+    end
+
+    it 'should destroy the user\'s idea lists' do
+      IdeaList.where(_id: @idea_list1.id).entries.should be_empty
+      IdeaList.where(_id: @idea_list2.id).entries.should be_empty
+    end
+
+    it 'should not destroy other idea lists' do
+      IdeaList.where(_id: @idea_list3.id).entries.should_not be_empty
+    end
+  end
 end

@@ -49,20 +49,18 @@ describe SocialEvent do
 
   describe 'methods' do
 
-    describe 'self.of_user' do
+    describe '#of_user' do
       let :user do
         FactoryGirl.create :unique_user, :updated_at => 2.days.ago
       end
 
-      before do
-        
+      before do      
         @other_social_event = FactoryGirl.create :social_event
         @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 2.days.ago
         @social_event2 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago
         @social_event3 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
         @social_event4 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 4.days.ago
         @social_events = SocialEvent.of_user(user).entries
-        
       end
 
       it 'should have the correct size' do
@@ -240,6 +238,67 @@ describe SocialEvent do
         it 'should decrement the users count field' do
           @following_event.users_count.should == 1
         end
+      end
+    end
+
+    describe '#self.delete_all_for' do
+      let :user do
+        FactoryGirl.create :unique_user
+      end
+
+      before do
+        @other_social_event = FactoryGirl.create :social_event
+        @private_social_event = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
+        @social_event1 = FactoryGirl.create :social_event, :created_by => user, :updated_at => 3.days.ago
+        @social_event2 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 5.days.ago
+        SocialEvent.delete_all_for user
+      end
+
+      it 'should destroy the user\'s social events' do
+        SocialEvent.where(_id: @private_social_event.id).entries.should be_empty
+        SocialEvent.where(_id: @social_event1.id).entries.should be_empty
+       
+      end
+
+      it 'should not destroy other social events' do
+        SocialEvent.where(_id: @other_social_event.id).entries.should_not be_empty
+        SocialEvent.where(_id: @social_event2.id).entries.should_not be_empty
+      end
+    end
+
+    describe '#self.remove_user' do
+      let :user do
+        FactoryGirl.create :unique_user
+      end
+
+      let :user1 do
+        FactoryGirl.create :unique_user
+      end
+
+      before do
+        @other_social_event = FactoryGirl.create :social_event
+        @private_social_event = FactoryGirl.create :social_event, :created_by => user, :updated_at => 1.days.ago, :privacy => Privacy::Values[:private]
+        @social_event1 = FactoryGirl.create :share_idea_social_event, :users => [user, user1], :updated_at => 5.days.ago, :users_count => 2
+        @social_event2 = FactoryGirl.create :share_idea_social_event, :users => [user], :updated_at => 5.days.ago
+        SocialEvent.remove_user user
+      end
+
+      it 'should destroy the social events where the user is the only member' do
+        SocialEvent.where(_id: @social_event2.id).entries.should be_empty      
+      end
+
+      it 'should not destroy the social events where the user is not the only member' do
+        SocialEvent.where(_id: @social_event1.id).entries.should_not be_empty
+      end
+
+      it 'should remove the user from the social events where he is a member' do
+        social_event = SocialEvent.where(_id: @social_event1.id).first
+        social_event.user_ids.should_not include(user.id)
+      end
+
+      it 'should not destroy other social events' do
+        SocialEvent.where(_id: @other_social_event.id).entries.should_not be_empty
+        SocialEvent.where(_id: @private_social_event.id).entries.should_not be_empty
       end
     end
   end

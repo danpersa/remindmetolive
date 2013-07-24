@@ -120,6 +120,22 @@ class UsersController < ApplicationController
     User.new params
   end
 
+  def destroy
+    if (current_user?(@user))
+      delete_own_account = true
+    end
+    # the user is searched in the existing_user before interceptor
+    @user.delete_account
+    
+    if (delete_own_account)
+      flash[:success] = "Your account was successfully deleted!"
+      redirect_to root_path
+    else
+      flash[:success] = "User destroyed."
+      redirect_to users_path
+    end
+  end
+
   private
 
   def init_show_user

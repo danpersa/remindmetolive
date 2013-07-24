@@ -482,4 +482,87 @@ describe Idea do
       @idea_list_ids.should include(@idea_list3.id)
     end
   end
+
+  describe '#delete_all_for' do
+    before do
+      user = FactoryGirl.create :unique_user
+      @idea1 = FactoryGirl.create :idea, created_by: user
+      @idea2 = FactoryGirl.create :idea, created_by: user
+      @idea3 = FactoryGirl.create :idea
+      @user_idea1 = FactoryGirl.create :user_idea, idea: @idea1
+      @user_idea2 = FactoryGirl.create :user_idea, idea: @idea2
+      @user_idea3 = FactoryGirl.create :user_idea, idea: @idea3
+      Idea.delete_all_for user
+    end
+
+    it 'should destroy the user\'s ideas' do
+      Idea.where(_id: @idea1.id).entries.should be_empty
+      Idea.where(_id: @idea2.id).entries.should be_empty
+    end
+
+    it 'should not destroy other ideas' do
+      Idea.where(_id: @idea3.id).entries.should_not be_empty
+    end
+
+    it 'should delete the user ideas for the deleted ideas' do
+      UserIdea.where(_id: @user_idea1.id).entries.should be_empty
+      UserIdea.where(_id: @user_idea2.id).entries.should be_empty
+    end
+
+    it 'should not delete the user ideas for other ideas' do
+      UserIdea.where(_id: @user_idea3.id).entries.should_not be_empty
+    end
+  end
+
+  describe '#remove_from_mark_as_done!' do
+    before  do
+      @user = FactoryGirl.create :unique_user
+      @other_user = FactoryGirl.create :unique_user
+      @idea1 = FactoryGirl.create :simple_idea
+      @idea2 = FactoryGirl.create :simple_idea
+      @idea1.mark_as_done_by! @user
+      @idea1.mark_as_done_by! @other_user
+      @idea2.mark_as_done_by! @user
+      Idea.remove_from_mark_as_done @user
+      @idea1 = Idea.find @idea1.id
+      @idea2 = Idea.find @idea2.id
+    end
+
+    it 'should decrement the users_marked_the_idea_done_count counter' do
+      @idea1.users_marked_the_idea_done_count.should == 1
+      @idea2.users_marked_the_idea_done_count.should == 0
+    end
+
+    it 'should remove the user in the users_marked_the_idea_done array' do
+      @idea1.users_marked_the_idea_done.should_not include(@user)
+      @idea1.users_marked_the_idea_done.should include(@other_user)
+      @idea2.users_marked_the_idea_done.should_not include(@user)
+    end
+  end
+
+  describe '#remove_from_mark_as_good!' do
+    before  do
+      @user = FactoryGirl.create :unique_user
+      @other_user = FactoryGirl.create :unique_user
+      @idea1 = FactoryGirl.create :simple_idea
+      @idea2 = FactoryGirl.create :simple_idea
+      @idea1.mark_as_good_by! @user
+      @idea1.mark_as_good_by! @other_user
+      @idea2.mark_as_good_by! @user
+      Idea.remove_from_mark_as_good @user
+      @idea1 = Idea.find @idea1.id
+      @idea2 = Idea.find @idea2.id
+    end
+
+    it 'should decrement the users_marked_the_idea_good_count counter' do
+      @idea1.users_marked_the_idea_good_count.should == 1
+      @idea2.users_marked_the_idea_good_count.should == 0
+    end
+
+    it 'should remove the user in the users_marked_the_idea_good array' do
+      @idea1.users_marked_the_idea_good.should_not include(@user)
+      @idea1.users_marked_the_idea_good.should include(@other_user)
+      @idea2.users_marked_the_idea_good.should_not include(@user)
+    end
+  end
 end

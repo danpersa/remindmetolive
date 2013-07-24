@@ -188,4 +188,16 @@ class User < EdgeAuth::User
                           :$inc => {:following_count => 1}})
     self.reload
   end
+
+  def delete_account
+    IdeaList.delete_all_for self
+    Idea.delete_all_for self
+    UserIdea.delete_all_for self
+    SocialEvent.delete_all_for self
+    # remove user from all social events
+    SocialEvent.remove_user self
+    Idea.remove_from_mark_as_good self
+    Idea.remove_from_mark_as_done self
+    self.destroy
+  end
 end

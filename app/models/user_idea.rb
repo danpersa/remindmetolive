@@ -40,4 +40,12 @@ class UserIdea
       not self.idea.nil? and UserIdea.not_in(_id: [self.id])
               .where(idea_id: self.idea.id, user_id: self.user.id).count > 0
   end
+
+  def self.delete_all_for user
+    UserIdea.delete_all user_id: user.id
+  end
+
+  def self.delete_all_for_idea idea
+    UserIdea.delete_all idea_id: idea.id
+  end
 end

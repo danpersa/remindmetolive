@@ -147,4 +147,30 @@ class Idea
     end
     # puts ""
   end
+
+  def self.delete_all_for user
+    ideas_to_delete = Idea.where created_by_id: user.id
+    ideas_to_delete.each do |idea|
+      UserIdea.delete_all_for_idea idea
+    end
+    Idea.delete_all created_by_id: user.id
+  end
+
+  def self.remove_from_mark_as_done user
+    ideas = Idea.where :users_marked_the_idea_done_ids.in => [user.id]
+    ideas.each do |idea|
+      idea.users_marked_the_idea_done.delete user
+      idea.users_marked_the_idea_done_count -= 1
+      idea.save!
+    end
+  end
+
+  def self.remove_from_mark_as_good user
+    ideas = Idea.where :users_marked_the_idea_good_ids.in => [user.id]
+    ideas.each do |idea|
+      idea.users_marked_the_idea_good.delete user
+      idea.users_marked_the_idea_good_count -= 1
+      idea.save!
+    end
+  end
 end

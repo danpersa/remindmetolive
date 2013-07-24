@@ -130,4 +130,44 @@ describe UserIdea do
       result_user_idea.should_not be_nil
     end
   end
+
+  describe '#delete_all_for_idea' do
+    before do
+      user = FactoryGirl.create :unique_user
+      idea = FactoryGirl.create :idea, created_by: user
+      @user_idea1 = FactoryGirl.create :user_idea, idea: idea
+      @user_idea2 = FactoryGirl.create :user_idea, idea: idea
+      @user_idea3 = FactoryGirl.create :user_idea
+      UserIdea.delete_all_for_idea idea
+    end
+
+    it 'should delete the user ideas for the specified idea' do
+      UserIdea.where(_id: @user_idea1.id).entries.should be_empty
+      UserIdea.where(_id: @user_idea2.id).entries.should be_empty
+    end
+
+    it 'should not delete the user ideas for other ideas' do
+      UserIdea.where(_id: @user_idea3.id).entries.should_not be_empty
+    end
+  end
+
+  describe '#delete_all_for' do
+    before do
+      user = FactoryGirl.create :unique_user
+      @user_idea1 = FactoryGirl.create :user_idea, user: user
+      @user_idea2 = FactoryGirl.create :user_idea, user: user
+      @user_idea3 = FactoryGirl.create :user_idea
+      UserIdea.delete_all_for user
+    end
+
+    it 'should destroy the user\'s user ideas' do
+      UserIdea.where(_id: @user_idea1.id).entries.should be_empty
+      UserIdea.where(_id: @user_idea2.id).entries.should be_empty
+    end
+
+    it 'should not destroy other user ideas' do
+      UserIdea.where(_id: @user_idea3.id).entries.should_not be_empty
+    end
+  end
+
 end
