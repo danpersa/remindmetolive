@@ -18,7 +18,7 @@ gem 'edge-captcha', git: 'https://github.com/danpersa/edge-captcha.git'
 
 gem 'virtus'
 
-#gem 'thin'
+gem 'thin'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
