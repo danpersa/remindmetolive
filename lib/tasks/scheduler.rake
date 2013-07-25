@@ -11,7 +11,7 @@ task :send_weekly_reminders => :environment do
     next
   end
   puts "Found user #{user.display_name}"
-  reminders = UserWeeklyReminders.new(user, DateTime.now.utc).reminders
+  reminders = UserWeeklyReminders.new(user, DateTime.now.utc.midnight).reminders
 
   content = ''
   reminders.each do |reminder|

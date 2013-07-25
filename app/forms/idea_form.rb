@@ -41,7 +41,7 @@ class IdeaForm
     self.reminder_on = params[:reminder_on]
     self.idea_id = params[:idea_id]
 
-    next_reminder = NextReminder.from DateTime.now.utc,
+    next_reminder = NextReminder.from DateTime.now.utc.midnight,
                                   params[:repeat],
                                   params[:reminder_on]
 
