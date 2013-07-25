@@ -16,5 +16,11 @@
   </div>
   <div class="three phone-one columns">
     <%= render :partial => 'users/follow_form', :locals => {:user => user} %>
+    <% if current_user.admin? %>
+      <%= link_to "Delete account", user_path(user), 
+          :method => :delete,
+          :confirm => "Once you delete your this account, there is no going back. Please be certain. Are you really sure?",
+          :title => "Delete account" %>
+    <% end %>
   </div>
 </div>

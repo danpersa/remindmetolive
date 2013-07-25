@@ -198,6 +198,7 @@ class User < EdgeAuth::User
     SocialEvent.remove_user self
     Idea.remove_from_mark_as_good self
     Idea.remove_from_mark_as_done self
+    # TODO remove from following
     self.destroy
   end
 end

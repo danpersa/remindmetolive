@@ -3,16 +3,23 @@ require 'mandrill'
 desc "This task sends the weekly reminders"
 task :send_weekly_reminders => :environment do
   puts 'Start send_weekly_reminders task...'
-
-  user = User.find_by_email 'example@railstutorial.org'
+  # email = 'example@railstutorial.org'
+  email = 'danix007ro@yahoo.com'
+  user = User.find_by_email email
+  if user.nil?
+    puts "User with email '#{email}' not found..."
+    next
+  end
+  puts "Found user #{user.display_name}"
   reminders = UserWeeklyReminders.new(user, DateTime.now.utc).reminders
 
   content = ''
   reminders.each do |reminder|
-    puts reminder.reminder_date.to_s
+    puts "Add reminder for date #{reminder.reminder_date.to_s}..."
     content << "<li>#{reminder.idea.content} on #{reminder.reminder_date.to_s}</li>"
   end
 
+  puts 'Start sending the mail...'
   send_mail content
   
   puts 'Done...'
