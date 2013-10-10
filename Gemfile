@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby "2.0.0"
 
-gem 'rails', '3.2.13'
+gem 'rails', '4.0.0'
 
 
 gem 'mongoid', '3.1.4'
@@ -19,16 +19,15 @@ gem 'edge-captcha', git: 'https://github.com/danpersa/edge-captcha.git'
 gem 'virtus'
 
 gem 'thin'
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
-  gem 'compass-rails', '~> 1.0.3'
-  gem 'zurb-foundation', '3.2.5'
-  gem "select2-rails", '3.3.2'
-end
+
+# assets gems
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'uglifier', '>= 1.3.0'
+gem 'compass-rails', '~> 1.0.3'
+gem 'zurb-foundation', '3.2.5'
+gem "select2-rails", '3.3.2'
+
 
 gem 'jquery-rails'
 

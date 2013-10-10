@@ -4,25 +4,25 @@ RemindMeToLive::Application.routes.draw do
 
   mount EdgeAuth::Engine, :at => "/auth"
 
-  root                                  :to => 'pages#home'
-  match '/signup',                      :to => 'users#new'
-  match '/activate',                    :to => 'users#activate'
-  match '/signin',                      :to => 'sessions#new'
-  match '/signout',                     :to => 'sessions#destroy'
+  root                                to: 'pages#home', via: :get
+  get '/signup',                      to: 'users#new'
+  get '/activate',                    to: 'users#activate'
+  get '/signin',                      to: 'sessions#new'
+  get '/signout',                     to: 'sessions#destroy'
 
-  match '/contact',                     :to => 'pages#contact'
-  match '/about',                       :to => 'pages#about'
-  match '/help',                        :to => 'pages#help'
-  match '/reset-password-mail-sent',    :to => 'pages#reset_password_mail_sent',
-                                        :as => 'reset_password_mail_sent'
+  get '/contact',                     to: 'pages#contact'
+  get '/about',                       to: 'pages#about'
+  get '/help',                        to: 'pages#help'
+  get '/reset-password-mail-sent',    to: 'pages#reset_password_mail_sent',
+                                      as: 'reset_password_mail_sent'
 
-  match '/follow',                      :to => 'users#follow',
-                                        :via => :post,
-                                        :as => 'follow'
+  match '/follow',                      to: 'users#follow',
+                                        via: :post,
+                                        as: 'follow'
 
-  match '/follow',                      :to => 'users#unfollow',
-                                        :via => :delete,
-                                        :as => 'unfollow'
+  match '/follow',                      to: 'users#unfollow',
+                                        via: :delete,
+                                        as: 'unfollow'
 
   resources :idea_forms, :only => [:create, :show],
             :path => 'remind-me'
@@ -59,18 +59,18 @@ RemindMeToLive::Application.routes.draw do
     end
   end
 
-  match '/good-ideas/:id',      :to => 'good_ideas#create',
-                                :via => :post,
-                                :as => 'good_idea_create'
+  match '/good-ideas/:id',      to: 'good_ideas#create',
+                                via: :post,
+                                as: 'good_idea_create'
 
   resources :good_ideas,
             :path => 'good-ideas',
             :only => [:destroy],
             :as => 'good_ideas'
 
-  match '/done-ideas/:id',      :to => 'done_ideas#create',
-                                :via => :post,
-                                :as => 'done_idea_create'
+  match '/done-ideas/:id',      to: 'done_ideas#create',
+                                via: :post,
+                                as: 'done_idea_create'
 
   resources :done_ideas,
             :path => 'done-ideas',
@@ -142,7 +142,7 @@ RemindMeToLive::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  # root to:  'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 
